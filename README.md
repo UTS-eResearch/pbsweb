@@ -350,7 +350,7 @@ Prints the list of jobs and their attributes:
 
 Copyright University of Technology Sydney. 
 This software is released under the GNU General Public License, either version
-3 of the License, or (at your option) any later version. See the file [LICENSE.txt](LICENSE.txt)
+3 of the License, or (at your option) any later version. See the file [LICENSE](LICENSE)
 for details.
 
 ## References
