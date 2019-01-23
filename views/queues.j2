@@ -1,0 +1,51 @@
+{% include 'head.html' %}
+
+<p>The information below can be found by running 
+"<span style="font-size:110%; font-family:monospace;">qstat -Q</span>" 
+for a summary of the queues and 
+"<span style="font-size:110%; font-family:monospace;">qstat -Qf</span>" 
+for detailed information on each queue. Q = number of queued jobs, R = number of running jobs.
+</p>
+
+<table class="status sortable" id="4ty7gd4">
+<tr>
+<th>Queue Name</th>
+<th>Enabled</th>
+<th>Max CPUs</th>
+<th>Max Mem</th>
+<th>Max Walltime</th>
+<th>Max Run</th>
+<th>Jobs Running</th>
+<th>Job States</th>
+</tr>
+{% for q in queues %}
+<tr>
+  <td>
+{% if q.acl_user_enable %}
+  <a href=# class="titled">{{ q.queue_name }}<span>This queue is restricted to specified persons.</span></a> 
+{% else %}
+  {{ q.queue_name }} 
+{% endif %}
+  </td>
+  <td>
+{% if q.enabled %}
+yes
+{% else %}
+<span style="color:red">no</span>
+{% endif %}
+</td>
+  <td>{{ q.resources_max_ncpus }}</td>
+  <td>{{ q.resources_max_mem }}</td>
+  <td>{{ q.resources_max_walltime }}</td>
+  <td>{{ q.max_run }}</td>
+  <td>{{ q.jobs_running }}</td>
+  <td>
+{% if q.state_count.Queued + q.state_count.Running > 0 %}
+Q={{ q.state_count.Queued }} &nbsp; R={{ q.state_count.Running }}
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+
+{% include 'tail.j2' %}

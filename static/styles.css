@@ -1,0 +1,98 @@
+/* CSS styles */
+
+/* This formats the popup help links. */
+
+a.titled {
+    //border-bottom: 1px dashed;
+    text-decoration: none;
+}
+a.titled:hover {
+    // cursor: help;
+    position: relative;
+}
+a.titled span {
+    display: none;
+}
+a.titled:hover span {
+    display: block;
+    position: absolute;
+    // background: url(../images/status-info.png) #f0f0f0 no-repeat 100% 5%;
+    background: yellow;
+    border: 1px solid red; 
+    //z-index: 100;
+    width: 40ex;
+    //left: 80px;
+    //top: 5px;
+    padding: 5px 5px 5px 5px;   
+    /* space inside the box, top right bottom left */
+    margin:  0px 0ex 0px 10ex;   
+    /* space surrounding the visible box */
+    text-decoration: none;
+}
+
+
+/* Sortable table headings. */
+table.sortable {
+    clear:right;
+}
+
+table.sortable a.sortheader {
+    /* background-color:#FFFFFF; */
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    display: block;
+}
+
+table.sortable span.sortarrow {
+    color: black;
+    text-decoration: none;
+}
+
+
+/* General */
+table.status {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666666;
+    border-collapse: collapse;
+}
+table.status th {
+    padding: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #dedede;
+    font-size: smaller;
+}
+table.status td {
+    padding: 8px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #666666;
+    background-color: #ffffff;
+    font-size: smaller;
+}
+
+svg.myscale {
+    height:30px;
+    background-color: #d9d9d9;
+    border: 1px solid black;
+} 
+
+rect.used {
+    fill: #7BE8B0;
+    stroke-width: 1;
+    stroke: black;
+}
+
+div.fixed {
+    width: 105;
+    display:inline-block;
+}
+
+div.fixed_mem {
+    width: 235; /* This pushes the svg text to the right. */
+    display:inline-block;
+}
+
