@@ -39,7 +39,7 @@ def _epoch_to_localtime(epoch_time, format_str):
 
 def get_nodes (conn):
     '''
-    Get information on the PBS nodes. It is the equivalent of /usr/pbs/bin/pbsnodes -a 
+    Get information on the PBS nodes. It is the equivalent of "pbsnodes -a".
     This function returns a list of nodes, where each node is a dictionary.
 
     Uncommenting the print statements in this function will show information like this:
