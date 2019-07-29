@@ -44,8 +44,8 @@ def get_nodes (conn):
 
     Uncommenting the print statements in this function will show information like this:
 
-      ------------ ermdc20 ------------------
-      Mom : ermdc20
+      ------------ hpcnode20 ------------------
+      Mom : hpcnode20
       Port : 15002
       pbs_version : 14.2.2.20170505010934
       ntype : PBS
@@ -54,10 +54,10 @@ def get_nodes (conn):
       jobs : 100932.hpcnode0/0, 100932.hpcnode0/1, 100932.hpcnode0/2, 100932.hpcnode0/3, 
              100967.hpcnode0/1, 100967.hpcnode0/2, 100967.hpcnode0/3
         resources_available : arch = linux
-        resources_available : host = ermdc20
+        resources_available : host = hpcnode20
         resources_available : mem = 529331720kb
         resources_available : ncpus = 28
-        resources_available : vnode = ermdc20
+        resources_available : vnode = hpcnode20
         resources_assigned : accelerator_memory = 0kb
         resources_assigned : icpus = 0
         resources_assigned : mem = 524288000kb
@@ -203,6 +203,7 @@ def get_jobs(conn):
     This function returns a list of jobs, where each job is a dictionary.
 
     This is the list of resources requested by the job, e.g.:
+
       Resource_List : mem = 120gb
       Resource_List : ncpus = 24
       Resource_List : nodect = 1
@@ -211,8 +212,8 @@ def get_jobs(conn):
       Resource_List : walltime = 200:00:00
     
       This is a non-resource attribute, e.g.  
-        Job_Name : AuCu
-        Job_Owner : 147827@hpcnode0
+        Job_Name : AuCuZn
+        Job_Owner : 999777@hpcnode0
         job_state : Q
         queue : workq
         server : hpcnode0
@@ -388,14 +389,14 @@ def job_attributes_reformat(jobs):
         attributes.pop('error_path', None)
         attributes.pop('output_path', None)
     
-        # exec_host = (ermdc09:mem=8388608kb:ncpus=2) 
+        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2) 
         # TODO exec_vnode might be split across chunks in which case it will look like this: 
         #   exec_vnode is: (vnodeA:ncp us=N:mem=X) + (nodeB:ncpu s=P:mem=Y+ nodeC:mem=Z)
         if attributes['exec_vnode']:
             attributes['exec_vnode'] = attributes['exec_vnode'].split(':')[0]
             attributes['exec_vnode'] = attributes['exec_vnode'][1:]
        
-        # This splits user_name@hpcnode0 to get just the user_name
+        # This splits user_name@hostname to get just the user_name.
         attributes['job_owner'] = attributes['job_owner'].split('@')[0]
     
         # All times are in seconds since the epoch
