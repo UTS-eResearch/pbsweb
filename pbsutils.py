@@ -435,13 +435,13 @@ def job_attributes_reformat(jobs):
         # Change walltimes from H:M:S to H:M 
         if 'resource_list_walltime' in attributes:
             (H,M,S) = attributes['resource_list_walltime'].split(':')
-            attributes['resource_list_walltime'] = '%s:%s' % (H, M)
+            attributes['resource_list_walltime'] = '%s:%s' % (H,M)
         else:
             attributes['resource_list_walltime'] = '%s:%s' % default_resource_list_walltime
         
         if attributes['resources_used_walltime']:
             (H,M,S) = attributes['resources_used_walltime'].split(':')
-            attributes['resources_used_walltime'] = '%s:%s' % (H, M)
+            attributes['resources_used_walltime'] = '%s:%s' % (H,M)
             hours_used     = attributes['resources_used_walltime'].split(':')[0]    
             hours_walltime = attributes['resource_list_walltime'].split(':')[0]    
             attributes['resources_time_left'] = int(hours_walltime) - int(hours_used)
