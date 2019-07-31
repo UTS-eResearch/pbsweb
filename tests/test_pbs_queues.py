@@ -41,8 +41,14 @@ resources_assigned  =>  res_assigned_nodect
 '''
 
 import os,sys
-sys.path.append(os.path.abspath("../"))
-import pbs 
+try:
+    # Running from above the tests directory.
+    sys.path.append(os.path.abspath("./"))
+    import pbs 
+except:
+    # Running from within the tests directory.
+    sys.path.append(os.path.abspath("../"))
+    import pbs 
 
 # You need to set the hostname of the PBS Server.
 pbsserver = 'hpcnode0'
