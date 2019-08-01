@@ -379,10 +379,6 @@ def job_attributes_reformat(jobs):
     '''
 
     for attributes in jobs:
-        # This is a default value for the walltime in case none is set.
-        # TODO walltime this should be got from "resources_default_walltime".
-        #default_resource_list_walltime = ('200', '00')
-       
         # There are some keys that we will never use, remove them. 
         attributes.pop('variable_list', None)
         attributes.pop('submit_arguments', None)
@@ -433,11 +429,9 @@ def job_attributes_reformat(jobs):
         attributes['job_state'] = states[attributes['job_state']]
     
         # Change walltimes from H:M:S to H:M 
-        if 'resource_list_walltime' in attributes:
+        if attributes['resource_list_walltime']:
             (H,M,S) = attributes['resource_list_walltime'].split(':')
             attributes['resource_list_walltime'] = '%s:%s' % (H,M)
-        else:
-            attributes['resource_list_walltime'] = '%s:%s' % default_resource_list_walltime
         
         if attributes['resources_used_walltime']:
             (H,M,S) = attributes['resources_used_walltime'].split(':')
