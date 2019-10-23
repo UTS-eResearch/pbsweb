@@ -25,15 +25,15 @@ You will need the file `pbs_ifl.h` from this PBS installation.
 Where do I find pbs_ifl.h? You can find it in the PBS Professional packages for the 
 execution or server hosts. It's not in the client host package (pbspro-client).
 
-PBS Professional for a *server* host (for 14.2.2):
+PBS Professional for a *server* host (for 18.2.3):
  
     head_node$ rpmquery -ql pbspro-server | grep pbs_ifl
-    /usr/pbs/include/pbs_ifl.h   
+    /opt/pbs/include/pbs_ifl.h
 
-PBS Professional for *execution* hosts (for 14.2.2): 
+PBS Professional for *execution* hosts (for 18.2.3): 
     
     exec_node$ rpmquery -ql pbspro-execution | grep pbs_ifl
-    /usr/pbs/include/pbs_ifl.h    
+    /opt/pbs/include/pbs_ifl.h
 
 It's also to be found on Github here: 
 <https://github.com/PBSPro/pbspro/tree/master/src/include>  
