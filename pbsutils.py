@@ -24,7 +24,7 @@ License:
 
 # List of public objects that are imported by import *.
 __all__ = ['get_nodes', 'get_queues', 'get_jobs', 'get_node_totals', \
-            'node_attributes_reformat', 'queue_attributes_reformat', 'job_attributes_reformat']
+           'node_attributes_reformat', 'queue_attributes_reformat', 'job_attributes_reformat']
 
 import pbs
 import os, datetime, time
