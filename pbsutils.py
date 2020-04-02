@@ -11,12 +11,12 @@ License:
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
@@ -79,7 +79,7 @@ def get_nodes (conn):
         keyname = '%s_%s' % (attribs.name, attribs.resource) 
    
     We then append this dictionary to the list of nodes.
- 
+
     '''
     nodes = [] # This will contain a list of dictionaries.
 
@@ -163,7 +163,7 @@ def get_queues(conn):
     attribute_names = ['resources_max_mem','resources_max_ncpus','resources_max_walltime', \
             'resources_assigned_mem','resources_assigned_ncpus', \
             'resources_default_walltime', 'max_run', 'state_count', 'acl_user_enable']
- 
+
     b = pbs.pbs_statque(conn, '', None, None) 
     while b != None:
         attributes = {} # Init the dictionary to empty.
@@ -369,7 +369,7 @@ def queue_attributes_reformat(queues):
         # Get the jobs queued and running from the state_count and not total_jobs.
         queue['jobs_running'] = queue['state_count']['Running']
         queue['jobs_queued']  = queue['state_count']['Queued']
- 
+
     return queues
     
 def job_attributes_reformat(jobs):
