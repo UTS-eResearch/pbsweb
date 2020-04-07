@@ -37,6 +37,29 @@ def _epoch_to_localtime(epoch_time, format_str):
     temp = time.localtime(int(epoch_time))
     return time.strftime(format_str, temp)
 
+def _show_attr_name_remapping(conn):
+    '''
+    This is a debugging function. It displays all the resources_available, 
+    resources_assigned and their attributes and values.
+    '''
+    b = pbs.pbs_statvnode(conn, '', None, None)
+    while b != None:
+        attributes = {} # Init the dictionary to empty.
+
+        attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
+        attributes['node_name'] = b.name
+        while attribs != None:
+            if attribs.resource != None:
+                print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                keyname = '%s_%s' % (attribs.name, attribs.resource)
+                attributes[keyname] = attribs.value
+            else:
+                attributes[attribs.name] = attribs.value
+
+            attribs = attribs.next
+
+        b = b.next
+
 def get_nodes (conn):
     '''
     Get information on the PBS nodes. It is the equivalent of "pbsnodes -a".
