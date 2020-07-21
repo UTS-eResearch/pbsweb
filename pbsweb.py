@@ -47,7 +47,7 @@ from bottle import route, static_file
 from bottle import jinja2_view as view
 
 # You need to set the hostname of the PBS Server
-pbsserver = 'hpcnode0'
+pbsserver = 'hpccnode0'
 
 ########################
 # Functions defined here

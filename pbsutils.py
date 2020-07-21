@@ -5,18 +5,18 @@ This code was developed by Mike Lake <Mike.Lake@uts.edu.au>.
 
 License:
 
-  Copyright 2019 University of Technology Sydney 
+  Copyright 2019 University of Technology Sydney
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation, either version 3 of the License, or
   (at your option) any later version.
-  
+
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
-  
+
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 
@@ -24,9 +24,9 @@ License:
 
 # List of public objects that are imported by import *.
 __all__ = ['get_nodes', 'get_queues', 'get_jobs', 'get_node_totals', \
-            'node_attributes_reformat', 'queue_attributes_reformat', 'job_attributes_reformat']
+           'node_attributes_reformat', 'queue_attributes_reformat', 'job_attributes_reformat']
 
-import pbs 
+import pbs
 import os, datetime, time
 import re
 
@@ -36,6 +36,29 @@ def _epoch_to_localtime(epoch_time, format_str):
     '''
     temp = time.localtime(int(epoch_time))
     return time.strftime(format_str, temp)
+
+def _show_attr_name_remapping(conn):
+    '''
+    This is a debugging function. It displays all the resources_available, 
+    resources_assigned and their attributes and values.
+    '''
+    b = pbs.pbs_statvnode(conn, '', None, None)
+    while b != None:
+        attributes = {} # Init the dictionary to empty.
+
+        attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
+        attributes['node_name'] = b.name
+        while attribs != None:
+            if attribs.resource != None:
+                print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                keyname = '%s_%s' % (attribs.name, attribs.resource)
+                attributes[keyname] = attribs.value
+            else:
+                attributes[attribs.name] = attribs.value
+
+            attribs = attribs.next
+
+        b = b.next
 
 def get_nodes (conn):
     '''
@@ -51,7 +74,7 @@ def get_nodes (conn):
       ntype : PBS
       state : free
       pcpus : 28
-      jobs : 100932.hpcnode0/0, 100932.hpcnode0/1, 100932.hpcnode0/2, 100932.hpcnode0/3, 
+      jobs : 100932.hpcnode0/0, 100932.hpcnode0/1, 100932.hpcnode0/2, 100932.hpcnode0/3,
              100967.hpcnode0/1, 100967.hpcnode0/2, 100967.hpcnode0/3
         resources_available : arch = linux
         resources_available : host = hpcnode20
@@ -67,8 +90,8 @@ def get_nodes (conn):
         resources_assigned : vmem = 0kb
       resv_enable : True
       sharing : default_shared
-    
-    To make the returned dictionary simpler we rename all the resources_available and 
+
+    To make the returned dictionary simpler we rename all the resources_available and
     resources_assigned above to be a key like this:
         ...
         resources_available : mem  => resources_available_mem
@@ -76,37 +99,37 @@ def get_nodes (conn):
         resources_assigned : ngpus => resources_assigned_ngpus
         ... etc
     This is done in the line below:
-        keyname = '%s_%s' % (attribs.name, attribs.resource) 
-   
+        keyname = '%s_%s' % (attribs.name, attribs.resource)
+
     We then append this dictionary to the list of nodes.
- 
+
     '''
     nodes = [] # This will contain a list of dictionaries.
 
     # The function pbs_statvnode (and likewise pbs_statque & pbs_statjob)
-    # returns a batch_status structure. 
+    # returns a batch_status structure.
     b = pbs.pbs_statvnode(conn, '', None, None)
     while b != None:
         attributes = {} # Init the dictionary to empty.
 
         attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
-        #print '------------', b.name, '------------------' 
+        #print '------------', b.name, '------------------'
         attributes['node_name'] = b.name
-        while attribs != None: 
-            if attribs.resource != None: 
-                # The debugging print below here is indented a bit more to distinguish 
+        while attribs != None:
+            if attribs.resource != None:
+                # The debugging print below here is indented a bit more to distinguish
                 # resource attributes from non-resource attributes.
                 #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
-                keyname = '%s_%s' % (attribs.name, attribs.resource) 
+                keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
-            else: 
+            else:
                 #print '  ', attribs.name, ':', attribs.value
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
-            
+
             # This line must be present or you will loop forever!
             attribs = attribs.next
-        
+
         nodes.append(attributes)
         b = b.next
 
@@ -117,21 +140,21 @@ def get_nodes (conn):
 
 def get_queues(conn):
     '''
-    Get information on the PBS queues. 
+    Get information on the PBS queues.
     This function returns a list of queues, where each queue is a dictionary.
-    
+
     Example: Queue Name = smallq
-    
+
     if attribs.resource == None    <== we get the attribs:
        name       : value
        ----         -----
        queue_type : Execution
        total_jobs : 49
-       state_count : Transit:0 Queued:18 Held:0 Waiting:0 Running:30 Exiting:0 Begun:1 
+       state_count : Transit:0 Queued:18 Held:0 Waiting:0 Running:30 Exiting:0 Begun:1
        max_run : 12
        enabled : True
        started : True
-       
+
     if attribs.resource != None    <== we get the attribs:
        name          :      resource = value
        ----                 --------   -----
@@ -142,29 +165,29 @@ def get_queues(conn):
        resources_assigned : mem      = 598gb
        resources_assigned : ncpus    = 57
        resources_assigned : nodect   = 29
-    
-    To make the returned dictionary simpler we rename the name:resource above 
+
+    To make the returned dictionary simpler we rename the name:resource above
     to be a key like this:
-    
-    resources_max : mem          =>  resources_max_mem       
-    resources_max : ncpus        =>  resources_max_ncpus 
-    resources_max : walltime     =>  resources_max_walltime 
-    resources_default : walltime =>  resources_default_walltime 
-    resources_assigned : mem     =>  resources_assigned_mem 
-    resources_assigned : ncpus   =>  resources_assigned_ncpus 
-    resources_assigned : nodect  =>  resources_assigned_nodect   
+
+    resources_max : mem          =>  resources_max_mem
+    resources_max : ncpus        =>  resources_max_ncpus
+    resources_max : walltime     =>  resources_max_walltime
+    resources_default : walltime =>  resources_default_walltime
+    resources_assigned : mem     =>  resources_assigned_mem
+    resources_assigned : ncpus   =>  resources_assigned_ncpus
+    resources_assigned : nodect  =>  resources_assigned_nodect
     '''
-    
+
     queues = [] # This will contain a list of dictionaries.
-    
+
     # Some of the attributes are not present for all queues so we list them all
     # here and in the loop below set them to None. For instance, a routing queue
     # does not have some of these attributes.
     attribute_names = ['resources_max_mem','resources_max_ncpus','resources_max_walltime', \
             'resources_assigned_mem','resources_assigned_ncpus', \
             'resources_default_walltime', 'max_run', 'state_count', 'acl_user_enable']
- 
-    b = pbs.pbs_statque(conn, '', None, None) 
+
+    b = pbs.pbs_statque(conn, '', None, None)
     while b != None:
         attributes = {} # Init the dictionary to empty.
         for name in attribute_names:
@@ -173,33 +196,33 @@ def get_queues(conn):
         attribs = b.attribs
         #print 'METHODS: ', dir(attribs)  # Uncomment to see what methods are available.
         #print '------------ Queue %s ------------' % b.name
-        attributes['queue_name'] = b.name 
-        while attribs != None: 
-            if attribs.resource != None: 
-                # The print below here is indented a bit more to distinguish 
+        attributes['queue_name'] = b.name
+        while attribs != None:
+            if attribs.resource != None:
+                # The print below here is indented a bit more to distinguish
                 # resource attributes from non-resource attributes.
                 #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
-                keyname = '%s_%s' % (attribs.name, attribs.resource) 
+                keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
-            else: 
+            else:
                 #print '  ', attribs.name, ':', attribs.value
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
-            
+
             attribs = attribs.next
-       
-        # Don't save the defaultq as this is a routing queue. 
+
+        # Don't save the defaultq as this is a routing queue.
         # TODO move this to reformat?
-        if attributes['queue_name'] != 'defaultq':        
+        if attributes['queue_name'] != 'defaultq':
             queues.append(attributes)
-    
+
         b = b.next
-   
+
     return queues
 
 def get_jobs(conn):
     '''
-    Get information on the PBS jobs. 
+    Get information on the PBS jobs.
     This function returns a list of jobs, where each job is a dictionary.
 
     This is the list of resources requested by the job, e.g.:
@@ -210,8 +233,8 @@ def get_jobs(conn):
       Resource_List : place = free
       Resource_List : select = 1:ncpus=24:mem=120GB
       Resource_List : walltime = 200:00:00
-    
-      This is a non-resource attribute, e.g.  
+
+      This is a non-resource attribute, e.g.
         Job_Name : AuCuZn
         Job_Owner : 999777@hpcnode0
         job_state : Q
@@ -219,11 +242,11 @@ def get_jobs(conn):
         server : hpcnode0
       etc ....
 
-    ''' 
+    '''
 
     jobs = [] # This will contain a list of dictionaries.
 
-    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet. 
+    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
@@ -241,16 +264,16 @@ def get_jobs(conn):
         while attribs != None:
             if attribs.resource != None:
                 #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
-                keyname = '%s_%s' % (attribs.name, attribs.resource) 
+                keyname = '%s_%s' % (attribs.name, attribs.resource)
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
-            else: 
+            else:
                 #print '  ', attribs.name, ':', attribs.value
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
-            attribs = attribs.next   
-       
+            attribs = attribs.next
+
         jobs.append(attributes)
         b = b.next
 
@@ -273,7 +296,7 @@ def get_node_totals(nodes):
         totals['cpus_assigned'] = totals['cpus_assigned'] + int(n['resources_assigned_ncpus'])
         totals['mem_available'] = totals['mem_available'] + int(n['resources_available_mem'])
         totals['mem_assigned'] = totals['mem_assigned'] + int(n['resources_assigned_mem'])
-    
+
     totals['cpus_ratio'] = int(100 * float(totals['cpus_assigned']) / float(totals['cpus_available']) )
     totals['mem_ratio']  = int(100 * float(totals['mem_assigned'])  / float(totals['mem_available']) )
 
@@ -287,7 +310,7 @@ def node_attributes_reformat(nodes):
         #    print '    ', attribute, node[attribute]
 
         # There are certain keys that we always want to be present.
-        # If they are not present create them with zero value. 
+        # If they are not present create them with zero value.
         for attribute in \
             ['resources_available_mem', 'resources_available_ncpus', 'resources_available_ngpus', \
              'resources_assigned_mem', 'resources_assigned_ncpus', 'resources_assigned_ngpus']:
@@ -298,9 +321,9 @@ def node_attributes_reformat(nodes):
             node['comment'] = ''
         if 'jobs' not in node.keys():
             node['jobs'] = ''
-       
+
         # Change jobs from string to a list.
-        # jobs is a string like this: 
+        # jobs is a string like this:
         #   105059.hpcnode0/0, 105059.hpcnode0/1, 105059.hpcnode0/2, 105059.hpcnode0/3,     \ Job 105059
         #   105059.hpcnode0/4, 105059.hpcnode0/5, 105059.hpcnode0/6, 105059.hpcnode0/7,     /
         #   105067.hpcnode0/8, 105067.hpcnode0/9, 105067.hpcnode0/10, 105067.hpcnode0/11,   \ Job 105067
@@ -314,36 +337,36 @@ def node_attributes_reformat(nodes):
             jobs_unique = set([j.split('.')[0] for j in jobs_string.split(',')])
             # Turn it back into a list which will now be the unique jobs
             node['jobs'] = list(jobs_unique)
-        else: 
+        else:
             node['jobs'] = []
-      
+
         # Change memory from string with kb (eg '264501336kb') to integer in Gb (eg 264).
-        if node['resources_available_mem']: 
+        if node['resources_available_mem']:
             m = re.match('^([0-9]+)kb$', node['resources_available_mem'])
             node['resources_available_mem'] = '%d' % (int(m.group(1))/1024/1024)
-        if node['resources_assigned_mem']: 
+        if node['resources_assigned_mem']:
             m = re.match('^([0-9]+)kb$', node['resources_assigned_mem'])
             node['resources_assigned_mem'] = '%d' % (int(m.group(1))/1024/1024)
 
-        # Create a new attribute 'state_up' to indicate if the node is up or not as 
-        # 'state' can be one of busy, free, job-busy, job-exclusive, down, or offline. 
+        # Create a new attribute 'state_up' to indicate if the node is up or not as
+        # 'state' can be one of busy, free, job-busy, job-exclusive, down, or offline.
         # If busy, free, job-busy, job-exclusive <-- OK node is up.
         # If down, offline                       <-- Problem, node is down.
         node['state_up'] = True
-        if 'down' in node['state'] or 'offline' in node['state']: 
+        if 'down' in node['state'] or 'offline' in node['state']:
             node['state_up'] = False
-       
+
         # Create a new attribute 'cpu_ratio' to use in the web display.
         if node['resources_available_ncpus'] != 0:
             node['cpu_ratio'] = 100 * int(node['resources_assigned_ncpus']) \
                 / int(node['resources_available_ncpus'])
         else:
             node['cpu_ratio'] = 0
-   
+
         # Create a new attribute 'mem_ratio' to use in the web display.
         node['mem_ratio'] = 100 * int(node['resources_assigned_mem']) \
-            / int(node['resources_available_mem']) 
-   
+            / int(node['resources_available_mem'])
+
     return nodes
 
 def queue_attributes_reformat(queues):
@@ -351,17 +374,17 @@ def queue_attributes_reformat(queues):
     # Here we cover the special case of formatting the state count.
     # It is an attribute like this:
     #   state_count : Transit:0 Queued:11 Held:0 Waiting:0 Running:20 Exiting:0 Begun:0
-    # and we want it as a dictionary like this: 
-    #   state_count { 'Transit':0 'Queued':11 'Held':0 'Waiting':0 'Running':20 'Exiting':0 'Begun':0 
+    # and we want it as a dictionary like this:
+    #   state_count { 'Transit':0 'Queued':11 'Held':0 'Waiting':0 'Running':20 'Exiting':0 'Begun':0
     for queue in queues:
         this_state = {}
         for key in queue.keys():
             if key == 'state_count':
                 state_count_list = queue['state_count'].split()
-                for item in state_count_list: 
+                for item in state_count_list:
                     (name,value) = item.split(':')
                     this_state[name] = int(value)
-            if key == 'max_run': 
+            if key == 'max_run':
                 max_run = int(queue['max_run'].split('=')[1].replace(']',''))
         queue['max_run'] = max_run
         queue['state_count'] = this_state
@@ -369,83 +392,83 @@ def queue_attributes_reformat(queues):
         # Get the jobs queued and running from the state_count and not total_jobs.
         queue['jobs_running'] = queue['state_count']['Running']
         queue['jobs_queued']  = queue['state_count']['Queued']
- 
+
     return queues
-    
+
 def job_attributes_reformat(jobs):
     '''
-    Reformat job attributes like changing epoch time to local time, 
+    Reformat job attributes like changing epoch time to local time,
     queue codes to more understandable words, memory from bytes to MB or GB.
     '''
 
     for attributes in jobs:
-        # There are some keys that we will never use, remove them. 
+        # There are some keys that we will never use, remove them.
         attributes.pop('variable_list', None)
         attributes.pop('submit_arguments', None)
         attributes.pop('error_path', None)
         attributes.pop('output_path', None)
-    
-        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2) 
-        # TODO exec_vnode might be split across chunks in which case it will look like this: 
+
+        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2)
+        # TODO exec_vnode might be split across chunks in which case it will look like this:
         #   exec_vnode is: (vnodeA:ncp us=N:mem=X) + (nodeB:ncpu s=P:mem=Y+ nodeC:mem=Z)
         if attributes['exec_vnode']:
             attributes['exec_vnode'] = attributes['exec_vnode'].split(':')[0]
             attributes['exec_vnode'] = attributes['exec_vnode'][1:]
-       
+
         # This splits user_name@hostname to get just the user_name.
         attributes['job_owner'] = attributes['job_owner'].split('@')[0]
-    
+
         # All times are in seconds since the epoch
         # ctime = time job was created             e.g. ctime = Fri Mar  6 14:36:07 2015
         # qtime = time job entered the queue       e.g. qtime = Fri Mar  6 14:36:07 2015
         # etime = time job became eligible to run  e.g. etime = Fri Mar  6 14:36:07 2015
         # stime = time job started execution       e.g. stime = Fri Mar  6 14:36:07 2015
         # mtime = time job was last modified       e.g. mtime = Tue Mar 17 13:09:19 2015
-    
-        # Calculate a wait time = time started - time entered queue. This will be in seconds.   
+
+        # Calculate a wait time = time started - time entered queue. This will be in seconds.
         if attributes['qtime'] and attributes['stime']:
             attributes['wtime'] = int(attributes['stime']) - int(attributes['qtime'])
             attributes['wtime'] = '%.0f' % (attributes['wtime'] / 3600.0) # convert to hours
         else:
             attributes['wtime'] = ''
-    
-        # Change time since epoch to localtime. 
+
+        # Change time since epoch to localtime.
         # If the job has not yet queued or started then that time will be ''.
         if attributes['qtime']:
-            attributes['qtime'] = _epoch_to_localtime(attributes['qtime'], "%Y-%m-%d at %I:%M %p") 
+            attributes['qtime'] = _epoch_to_localtime(attributes['qtime'], "%Y-%m-%d at %I:%M %p")
         if attributes['stime']:
-            attributes['stime'] = _epoch_to_localtime(attributes['stime'], "%Y-%m-%d at %I:%M %p") 
-     
+            attributes['stime'] = _epoch_to_localtime(attributes['stime'], "%Y-%m-%d at %I:%M %p")
+
         # If the job was queued or started today remove the leading date.
         today = datetime.datetime.now().strftime('%Y-%m-%d')
         if today == attributes['qtime'].split()[0]:
             attributes['qtime'] = attributes['qtime'].replace('%s at' % today, '')
             attributes['stime'] = attributes['stime'].replace('%s at' % today, '')
-    
+
         # Change queue code to a word. For queue states see man qstat.
         states = {'B':'Array job', 'E':'Exiting','F':'Finished','H':'Held','M':'Moved',\
                   'Q':'Queued','R':'Running','S':'Suspend','T':'Transiting','U':'User,suspend',\
                   'W':'Waiting', 'X':'Finished'}
         attributes['job_state'] = states[attributes['job_state']]
-    
-        # Change walltimes from H:M:S to H:M 
+
+        # Change walltimes from H:M:S to H:M
         if attributes['resource_list_walltime']:
             (H,M,S) = attributes['resource_list_walltime'].split(':')
             attributes['resource_list_walltime'] = '%s:%s' % (H,M)
-        
+
         if attributes['resources_used_walltime']:
             (H,M,S) = attributes['resources_used_walltime'].split(':')
             attributes['resources_used_walltime'] = '%s:%s' % (H,M)
-            hours_used     = attributes['resources_used_walltime'].split(':')[0]    
-            hours_walltime = attributes['resource_list_walltime'].split(':')[0]    
+            hours_used     = attributes['resources_used_walltime'].split(':')[0]
+            hours_walltime = attributes['resource_list_walltime'].split(':')[0]
             attributes['resources_time_left'] = int(hours_walltime) - int(hours_used)
-    
+
         # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
-        attributes['resource_list_mem'] = attributes['resource_list_mem'].replace('gb', '') 
-        if attributes['resources_used_mem']: 
+        attributes['resource_list_mem'] = attributes['resource_list_mem'].replace('gb', '')
+        if attributes['resources_used_mem']:
             m = re.match('^([0-9]+)kb$', attributes['resources_used_mem'])
             attributes['resources_used_mem'] = '%d' % (int(m.group(1))/1024/1024)
-        if attributes['resources_used_vmem']: 
+        if attributes['resources_used_vmem']:
             m = re.match('^([0-9]+)kb$', attributes['resources_used_vmem'])
             attributes['resources_used_vmem'] = '%d' % (int(m.group(1))/1024/1024)
 
