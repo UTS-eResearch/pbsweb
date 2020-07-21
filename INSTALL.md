@@ -12,7 +12,7 @@
   - bottle==0.12.13         Bottle micro web framework
   - Jinja2==2.10            Jinja2 templating engine 
   - MarkupSafe==1.1.0       Dependency of Jinja2
-  - uWSGI==2.0.17.1         To run the web app
+  - uWSGI==2.0.19.1         To run the web app
 * apache or nginx
 
 ## Configure and Install Dependencies
@@ -75,6 +75,8 @@ You need Python 2.7 to run this app so enable a Python 2.7 environment first. No
     $ cd /var/www/wsgi/virtualenvs
     $ scl enable python27 bash  <-- See note above.
 
+### Install a virtualenv for the emperor
+
 Install a virtualenv for the emperor to run all the apps.
 Only uwsgi needs to be installed in this environment.
 
@@ -82,10 +84,21 @@ Only uwsgi needs to be installed in this environment.
     $ source emperor/bin/activate
     (emperor)$ pip install --upgrade pip
 
-    $ pip install uwsgi                   
-    $ deactivate
+    (emperor)$ pip install uwsgi                   
 
-Install a virtualenv for the pbsweb application. 
+You can check its been installed and its version like this:
+
+    (emperor) $ uwsgi --version
+    2.0.19.1
+
+Before we move onto installing a virtualenv for the pbsweb application we need
+to deactivate this one.
+
+    (emperor)$ deactivate
+    $ 
+
+### Install a virtualenv for the pbsweb application 
+
 This is the web app so we need to install its dependencies, or you can just
 `pip install -r requirements.txt` 
 
@@ -155,7 +168,7 @@ The Emperor's uWSGI file is `/var/www/wsgi/apps/emperor.ini` is:
     vaccum = true
     virtualenv = /var/www/wsgi/virtualenvs/emperor/
     emperor = /var/www/wsgi/confs
-    daemonize = /var/log/uwsgi.log
+    logto = /var/log/uwsgi.log
 
 Create this `/var/www/wsgi/apps/emperor.ini`. 
 
@@ -235,7 +248,7 @@ The app's uWSGI file is `/var/www/wsgi/confs/pbsweb.ini`:
 
     [uwsgi]
     processes = 1
-    socket = /tmp/%n.sock
+    socket = /var/run/uwsgi/pbsweb.sock
     vaccum = true
     virtualenv   = /var/www/wsgi/virtualenvs/pbsweb/
     wsgi-file    = /var/www/wsgi/apps/pbsweb/pbsweb.py
