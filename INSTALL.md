@@ -2,13 +2,13 @@
 
 ## Software Required
 
-* PBS Professional commercial or open source
+* PBS Professional commercial or open source. We are using version 19.2.6.
   You will need the file `pbs_ifl.h` from your PBS installation.
 * gcc + its dependencies 
 * openssl-devel + its dependencies
 * SWIG - Software Wrapper and Interface Generator
 * Python development packages (python2-devel)
-* Python virtual environment with:
+* Python 2.7 virtual environment with:
   - bottle==0.12.13         Bottle micro web framework
   - Jinja2==2.10            Jinja2 templating engine 
   - MarkupSafe==1.1.0       Dependency of Jinja2
@@ -25,12 +25,12 @@ You will need the file `pbs_ifl.h` from this PBS installation.
 Where do I find pbs_ifl.h? You can find it in the PBS Professional packages for the 
 execution or server hosts. It's not in the client host package (pbspro-client).
 
-PBS Professional for a *server* host (for 18.2.3):
+PBS Professional for a *server* host:
  
     head_node$ rpmquery -ql pbspro-server | grep pbs_ifl
     /opt/pbs/include/pbs_ifl.h
 
-PBS Professional for *execution* hosts (for 18.2.3): 
+or PBS Professional for *execution* hosts: 
     
     exec_node$ rpmquery -ql pbspro-execution | grep pbs_ifl
     /opt/pbs/include/pbs_ifl.h
@@ -43,7 +43,7 @@ came with your PBS installation.
 Once you have found this file copy it to the location on the login
 node where you will later run `swig_compile_pbs.sh` from.
 
-### Install Python Virtual Environments
+### Install Python 2.7 Virtual Environments
 
 Here we will setup two Python virtual environments; one for a uWSGI "Emperor"
 and the other for the PBS web application. The Emperor master process watches
@@ -128,11 +128,6 @@ The SWIG package (swig) needs to be installed.
 SWIG stands for Software Wrapper and Interface Generator and allows us to create a python
 module that allows python scripts to run PBS commands.
 You will also need the PBS `pbs_ifl.h` file that comes with your PBS. 
-
-Note: On my cluster that's running Centos 6.9 SWIG is version 1.3.40 and it will 
-work with Python 2.6 and 2.7, but it is too old to work with Python 3. 
-If you wish to run Python 3.4 or 3.6 then you will 
-need a later SWIG. I had to compile SWIG from source using version 3.0.5.
 
     $ sudo yum install swig
 

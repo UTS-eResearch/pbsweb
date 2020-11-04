@@ -41,8 +41,8 @@ Directories:
 * gcc 
 * openssl-devel 
 * SWIG - Software Wrapper and Interface Generator
-* Python development packages 
-* Python virtual environment with:
+* Python 2.7 development packages 
+* Python 2.7 virtual environment with:
   - bottle      Bottle micro web framework
   - Jinja2      Jinja2 templating engine 
   - uWSGI       To run the web app
@@ -66,5 +66,4 @@ This is the primary API to communicate with the PBS MoM.
 Bottle Python Web Framework: <https://bottlepy.org/docs/0.12/>
 
 SWIG Tutorial: <http://www.swig.org/tutorial.html>
-
 
