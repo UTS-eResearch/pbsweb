@@ -202,7 +202,7 @@ The `/etc/nginx/conf.d/default.conf` file should be similar to this:
         # PBS web app.
         location /statuspbs/ {
             include uwsgi_params;
-            uwsgi_pass unix://tmp/pbsweb.sock;
+            uwsgi_pass unix://var/run/uwsgi/pbsweb.sock;
         }
     
         # Let nginx serve your static files so that requests 
