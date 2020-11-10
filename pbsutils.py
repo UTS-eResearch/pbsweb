@@ -29,7 +29,6 @@ __all__ = ['get_nodes', 'get_queues', 'get_jobs', 'get_node_totals', \
 import pbs
 import os, datetime, time
 import re
-from collections import OrderedDict
 
 def _epoch_to_localtime(epoch_time, format_str):
     '''
@@ -247,11 +246,11 @@ def get_jobs(conn):
 
     jobs = [] # This will contain a list of dictionaries.
 
-    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet.
+    # Some jobs don't yet have a particular attribute as the job hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
-        'resources_used_walltime', 'exec_vnode', 'stime', 'resources_time_left']
+        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'resources_time_left']
 
     b = pbs.pbs_statjob(conn, '', None, None)
     while b != None:
@@ -260,16 +259,16 @@ def get_jobs(conn):
             attributes[name] = ''
 
         attribs = b.attribs
-        #print '----------- %s -------------------' % b.name
+        #print 'DEBUG: ----------- %s -------------------' % b.name
         attributes['job_id'] = b.name.split('.')[0] # b.name is a string like '137550.hpcnode0'
         while attribs != None:
             if attribs.resource != None:
-                #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                #print 'DEBUG resource:      ', attribs.name, ':', attribs.resource, '=', attribs.value
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
             else:
-                #print '  ', attribs.name, ':', attribs.value
+                #print 'DEBUG non-resource:  ', attribs.name, ':', attribs.value
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
@@ -409,16 +408,27 @@ def job_attributes_reformat(jobs):
         attributes.pop('error_path', None)
         attributes.pop('output_path', None)
 
-        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2)
-        # TODO exec_vnode might be split across chunks in which case it will look like this:
-        #   exec_vnode is: (vnodeA:ncp us=N:mem=X) + (nodeB:ncpu s=P:mem=Y+ nodeC:mem=Z)
-        if attributes['exec_vnode']:
-            attributes['exec_vnode'] = attributes['exec_vnode'].split(':')[0]
-            attributes['exec_vnode'] = attributes['exec_vnode'][1:]
+        # Jobs might be split across hosts or vhosts in which case it will look like this:
+        # e.g. exec_node = hpcnode03/1+hpcnode04/1
+        #      exec_vnode = (hpcnode03:ncpus=1:mem=5242880kb)+(hpcnode04:ncpus=1:mem=5242880kb)
+        # Users may wish to use either exec_node or exec_vhost in their HTML templates for 
+        # displaying what host/vnode their job is running on. Here we format both into just strings.
         if attributes['exec_host']:
-            attributes['exec_vnode'] = attributes['exec_host'].split('+')
-            attributes['exec_vnode'] = [s.split('/')[0] for s in attributes['exec_vnode']]
-            attributes['exec_vnode'] = list(OrderedDict.fromkeys(attributes['exec_vnode']))
+            # e.g. exec_host = hpcnode03/1+hpcnode04/1
+            # Splitting on the + will give a list ['hpcnode03/1', 'hpcnode04/1']
+            # Then the list comprehension and split will turn this into ['hpcnode03', 'hpcnode04']
+            # Finally convert this into a string. Use whitespace delimiter so HTML pages will wrap it if needed.
+            attributes['exec_host'] = attributes['exec_host'].split('+')
+            attributes['exec_host'] = [s.split('/')[0] for s in attributes['exec_host']]
+            attributes['exec_host'] = ' '.join(attributes['exec_host'])
+        if attributes['exec_vnode']:
+            # e.g. exec_vnode = (hpcnode03:ncpus=1:mem=5242880kb)+(hpcnode04:ncpus=1:mem=5242880kb)
+            # Splitting on the + will give [(hpcnode03:ncpus=1:mem=5242880kb), (hpcnode04:ncpus=1:mem=5242880kb)]
+            # Then the list comprehension and split etc gives ['hpcnode03', 'hpcnode04']
+            # Finally convert this into a string. Use whitespace delimiter so HTML pages will wrap it if needed.
+            attributes['exec_vnode'] = attributes['exec_vnode'].split('+')
+            attributes['exec_vnode'] = [s.split(':')[0].lstrip('(') for s in attributes['exec_vnode']]
+            attributes['exec_vnode'] = ' '.join(attributes['exec_vnode'])
 
         # This splits user_name@hostname to get just the user_name.
         attributes['job_owner'] = attributes['job_owner'].split('@')[0]
