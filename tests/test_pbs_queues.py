@@ -12,7 +12,7 @@ if attribs.resource == None we get the attribs:
    queue_type : Execution
    total_jobs : 49
    state_count : Transit:0 Queued:18 Held:0 Waiting:0 Running:30 Exiting:0 Begun:1 
-   max_run : 12
+   max_run : [u:PBS_GENERIC=12]
    enabled : True
    started : True
    
