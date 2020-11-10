@@ -414,6 +414,10 @@ def job_attributes_reformat(jobs):
         if attributes['exec_vnode']:
             attributes['exec_vnode'] = attributes['exec_vnode'].split(':')[0]
             attributes['exec_vnode'] = attributes['exec_vnode'][1:]
+        if attributes['exec_host']:
+            attributes['exec_vnode'] = attributes['exec_host'].split('+')
+            attributes['exec_vnode'] = [s.split('/')[0] for s in attributes['exec_vnode']]
+            attributes['exec_vnode'] = list(OrderedDict.fromkeys(attributes['exec_vnode']))
 
         # This splits user_name@hostname to get just the user_name.
         attributes['job_owner'] = attributes['job_owner'].split('@')[0]
@@ -464,7 +468,8 @@ def job_attributes_reformat(jobs):
             attributes['resources_time_left'] = int(hours_walltime) - int(hours_used)
 
         # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
-        attributes['resource_list_mem'] = attributes['resource_list_mem'].replace('gb', '')
+        if 'resource_list_mem' in attributes:
+            attributes['resource_list_mem'] = attributes['resource_list_mem'].replace('gb', '')
         if attributes['resources_used_mem']:
             m = re.match('^([0-9]+)kb$', attributes['resources_used_mem'])
             attributes['resources_used_mem'] = '%d' % (int(m.group(1))/1024/1024)
