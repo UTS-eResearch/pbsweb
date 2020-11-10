@@ -29,6 +29,7 @@ __all__ = ['get_nodes', 'get_queues', 'get_jobs', 'get_node_totals', \
 import pbs
 import os, datetime, time
 import re
+from collections import OrderedDict
 
 def _epoch_to_localtime(epoch_time, format_str):
     '''
