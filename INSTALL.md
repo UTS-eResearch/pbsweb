@@ -9,9 +9,9 @@
 * SWIG - Software Wrapper and Interface Generator
 * Python development packages (python2-devel)
 * Python 2.7 virtual environment with:
-  - bottle==0.12.13         Bottle micro web framework
-  - Jinja2==2.10            Jinja2 templating engine 
-  - MarkupSafe==1.1.0       Dependency of Jinja2
+  - bottle==0.12.19         Bottle micro web framework
+  - Jinja2==2.11.12         Jinja2 templating engine 
+  - MarkupSafe==1.1.1       Dependency of Jinja2
   - uWSGI==2.0.19.1         To run the web app
 * apache or nginx
 
@@ -68,8 +68,9 @@ this application and "other" is some other application.
            ├─ pbsweb        <=== Our PBS web app lives in here.
            └─ other
 
-You need Python 2.7 to run this app so enable a Python 2.7 environment first. Note: I use scl 
-(Software Collection Library) to provide the Python 2.7 environment. You may not need this.
+You need Python 2.7 to run this app so enable a Python 2.7 environment first. 
+Note: I use scl (Software Collection Library) to provide the Python 2.7 environment. 
+You may not need this.
 
     $ mkdir -p /var/www/wsgi/virtualenvs
     $ cd /var/www/wsgi/virtualenvs
@@ -125,8 +126,8 @@ i.e. "`.. -lcrypto -lssl`".
 ### Install and Run SWIG 
 
 The SWIG package (swig) needs to be installed. 
-SWIG stands for Software Wrapper and Interface Generator and allows us to create a python
-module that allows python scripts to run PBS commands.
+SWIG stands for Software Wrapper and Interface Generator and allows us to 
+create a python module that allows python scripts to run PBS commands.
 You will also need the PBS `pbs_ifl.h` file that comes with your PBS. 
 
     $ sudo yum install swig
@@ -144,7 +145,8 @@ top (especially `PYTHON_INCL`) are appropriate for your installation, then run t
 There will be no output if all goes well.
 
 The above script runs `swig` which uses the SWIG interface file `pbs.i` to
-create `pbs.py` and `pbs_wrap.c`. Then it uses `gcc` to compile `pbs_wrap.c` to create `_pbs.so` 
+create `pbs.py` and `pbs_wrap.c`. Then it uses `gcc` to compile `pbs_wrap.c` 
+to create `_pbs.so` 
 The swig generated `pbs.py` imports `_pbs.so` at run time.
 
 ### Configure and Start the Emperor
@@ -178,8 +180,9 @@ Edit `/etc/rc.local` and add:
     /var/www/wsgi/virtualenvs/emperor/bin/uwsgi --ini /var/www/wsgi/emperor.ini
 
 This will also set the correct ownership and permissions for the socket:
-  
-    srw-r-----.   nginx nginx   /tmp/pbsweb.sock
+
+    $ ls -l /var/run/uwsgi/
+    srw-r-----   nginx nginx   /var/run/uwsgi/pbsweb.sock
 
 Note: Emperor will restart any application that stops if the application has an INI file
 under the `confs` directory. If you don't want an application to start rename its 
@@ -244,11 +247,14 @@ The app's uWSGI file is `/var/www/wsgi/confs/pbsweb.ini`:
     [uwsgi]
     processes = 1
     socket = /var/run/uwsgi/pbsweb.sock
+    chmod-socket = 640
     vaccum = true
+    
     virtualenv   = /var/www/wsgi/virtualenvs/pbsweb/
     wsgi-file    = /var/www/wsgi/apps/pbsweb/pbsweb.py
     touch-reload = /var/www/wsgi/apps/pbsweb/pbsweb.py
     chdir        = /var/www/wsgi/apps/pbsweb/
+    
     mount = /statuspbs=pbsweb:app
     manage-script-name = true
 
@@ -287,7 +293,7 @@ Run `pbsweb.py` in the foreground in one terminal i.e.
     (pbsweb)$
 
     (pbsweb)$ ./pbsweb.py
-    Bottle v0.12.13 server starting up (using WSGIRefServer())...
+    Bottle v0.12.19 server starting up (using WSGIRefServer())...
     Listening on http://localhost:8080/
     Hit Ctrl-C to quit.
     
@@ -299,7 +305,8 @@ Any errors will be visible in the terminal.
 
 ### Command Line Tests 
 
-These are a few tests to check `pbs.py` works OK and to demonstrate how to query PBS data structures.
+These are a few tests to check `pbs.py` works OK and to demonstrate how to
+query PBS data structures.
 
     $ source ~/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ 
