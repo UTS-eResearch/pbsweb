@@ -3,7 +3,7 @@
 bottle==0.12.17
 gitdb2==2.0.5
 GitPython==2.1.13
-Jinja2==2.10.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 smmap2==2.0.5
 
