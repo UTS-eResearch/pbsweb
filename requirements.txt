@@ -1,6 +1,6 @@
 # Python requirements for the pbsweb application.
 
-bottle==0.12.17
+bottle==0.12.19
 gitdb2==2.0.5
 GitPython==2.1.13
 Jinja2==2.10.1
