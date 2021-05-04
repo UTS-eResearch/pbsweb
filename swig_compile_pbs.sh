@@ -11,10 +11,10 @@ conf="/etc/pbs.conf"  # PBS configuration file
 
 # Example: If using my laptop.
 #PYTHON_INCL="/usr/include/python2.7"
-#SWIG_EXEC="/usr/bin/swig" 
 
-# Example: If using Python 2.7 in a virtual environment.
+# Example: If using Python in a virtual environment.
 PYTHON_INCL=/var/www/wsgi/virtualenvs/pbsweb/include/python2.7
+
 SWIG_EXEC="/usr/bin/swig"
 
 # You should not need to change anything below here.
