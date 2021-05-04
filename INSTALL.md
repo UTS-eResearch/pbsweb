@@ -2,7 +2,7 @@
 
 ## Software Required
 
-* PBS Professional commercial or open source. We are using version 19.2.6.
+* PBS Professional commercial or open source. We are using PBS Pro version 2020.1.2.
   You will need the file `pbs_ifl.h` from your PBS installation.
 * gcc + its dependencies 
 * openssl-devel + its dependencies
