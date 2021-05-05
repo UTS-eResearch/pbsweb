@@ -45,7 +45,6 @@ def _show_attr_name_remapping(conn):
     b = pbs.pbs_statvnode(conn, '', None, None)
     while b != None:
         attributes = {} # Init the dictionary to empty.
-
         attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
         attributes['node_name'] = b.name
         while attribs != None:
@@ -111,7 +110,6 @@ def get_nodes (conn):
     b = pbs.pbs_statvnode(conn, '', None, None)
     while b != None:
         attributes = {} # Init the dictionary to empty.
-
         attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
         #print '------------', b.name, '------------------'
         attributes['node_name'] = b.name
@@ -226,7 +224,6 @@ def get_jobs(conn):
     This function returns a list of jobs, where each job is a dictionary.
 
     This is the list of resources requested by the job, e.g.:
-
       Resource_List : mem = 120gb
       Resource_List : ncpus = 24
       Resource_List : nodect = 1
@@ -234,7 +231,7 @@ def get_jobs(conn):
       Resource_List : select = 1:ncpus=24:mem=120GB
       Resource_List : walltime = 200:00:00
 
-      This is a non-resource attribute, e.g.
+    These are non-resource attributes, e.g.
         Job_Name : AuCuZn
         Job_Owner : 999777@hpcnode0
         job_state : Q
@@ -255,6 +252,7 @@ def get_jobs(conn):
     b = pbs.pbs_statjob(conn, '', None, None)
     while b != None:
         attributes = {} # Init the dictionary to empty.
+        # Init the values of the attributes.
         for name in attribute_names:
             attributes[name] = ''
 
