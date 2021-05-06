@@ -3,11 +3,12 @@
 ## Introduction
 
 This small web application provides a simple web view of the nodes, queues and jobs 
-on a High Performance Computer Cluster (HPCC) running the PBS batch scheduling system.
+on a High Performance Computer Cluster running the PBS batch scheduling system.
 It was developed using PBS Professional but should also work with the open source PBS.
-General information on PBS can be found at its Wikipedia entry: 
+General information on PBS can be found at its Wikipedia entry 
 [Portable Batch System](https://en.wikipedia.org/wiki/Portable_Batch_System) and the 
 [PBS Professional Open Source Project](https://www.pbspro.org) homepage.
+This project is hosted at the eResearch site at Github <https://github.com/UTS-eResearch/pbsweb>
 
 ![Screenshot showing PBSWeb](pbsweb_screenshot.png)  
 Screenshot showing the web application.
