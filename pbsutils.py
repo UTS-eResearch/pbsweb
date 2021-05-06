@@ -243,11 +243,12 @@ def get_jobs(conn):
 
     jobs = [] # This will contain a list of dictionaries.
 
-    # Some jobs don't yet have a particular attribute as the job hasn't started yet.
+    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
-        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'resources_time_left']
+        'resources_used_walltime', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
+        'resources_used_cpupercent']
 
     b = pbs.pbs_statjob(conn, '', None, None)
     while b != None:
@@ -255,6 +256,8 @@ def get_jobs(conn):
         # Init the values of the attributes.
         for name in attribute_names:
             attributes[name] = ''
+        for name in ['resources_used_walltime', 'resources_used_cput']:
+            attributes[name] = '0:0:0'
 
         attribs = b.attribs
         #print 'DEBUG: ----------- %s -------------------' % b.name
@@ -399,37 +402,37 @@ def job_attributes_reformat(jobs):
     queue codes to more understandable words, memory from bytes to MB or GB.
     '''
 
-    for attributes in jobs:
+    for job in jobs:
         # There are some keys that we will never use, remove them.
-        attributes.pop('variable_list', None)
-        attributes.pop('submit_arguments', None)
-        attributes.pop('error_path', None)
-        attributes.pop('output_path', None)
+        job.pop('variable_list', None)
+        job.pop('submit_arguments', None)
+        job.pop('error_path', None)
+        job.pop('output_path', None)
 
         # Jobs might be split across hosts or vhosts in which case it will look like this:
         # e.g. exec_node = hpcnode03/1+hpcnode04/1
         #      exec_vnode = (hpcnode03:ncpus=1:mem=5242880kb)+(hpcnode04:ncpus=1:mem=5242880kb)
         # Users may wish to use either exec_node or exec_vhost in their HTML templates for 
         # displaying what host/vnode their job is running on. Here we format both into just strings.
-        if attributes['exec_host']:
+        if job['exec_host']:
             # e.g. exec_host = hpcnode03/1+hpcnode04/1
             # Splitting on the + will give a list ['hpcnode03/1', 'hpcnode04/1']
             # Then the list comprehension and split will turn this into ['hpcnode03', 'hpcnode04']
             # Finally convert this into a string. Use whitespace delimiter so HTML pages will wrap it if needed.
-            attributes['exec_host'] = attributes['exec_host'].split('+')
-            attributes['exec_host'] = [s.split('/')[0] for s in attributes['exec_host']]
-            attributes['exec_host'] = ' '.join(attributes['exec_host'])
-        if attributes['exec_vnode']:
+            job['exec_host'] = job['exec_host'].split('+')
+            job['exec_host'] = [s.split('/')[0] for s in job['exec_host']]
+            job['exec_host'] = ' '.join(job['exec_host'])
+        if job['exec_vnode']:
             # e.g. exec_vnode = (hpcnode03:ncpus=1:mem=5242880kb)+(hpcnode04:ncpus=1:mem=5242880kb)
             # Splitting on the + will give [(hpcnode03:ncpus=1:mem=5242880kb), (hpcnode04:ncpus=1:mem=5242880kb)]
             # Then the list comprehension and split etc gives ['hpcnode03', 'hpcnode04']
             # Finally convert this into a string. Use whitespace delimiter so HTML pages will wrap it if needed.
-            attributes['exec_vnode'] = attributes['exec_vnode'].split('+')
-            attributes['exec_vnode'] = [s.split(':')[0].lstrip('(') for s in attributes['exec_vnode']]
-            attributes['exec_vnode'] = ' '.join(attributes['exec_vnode'])
+            job['exec_vnode'] = job['exec_vnode'].split('+')
+            job['exec_vnode'] = [s.split(':')[0].lstrip('(') for s in job['exec_vnode']]
+            job['exec_vnode'] = ' '.join(job['exec_vnode'])
 
         # This splits user_name@hostname to get just the user_name.
-        attributes['job_owner'] = attributes['job_owner'].split('@')[0]
+        job['job_owner'] = job['job_owner'].split('@')[0]
 
         # All times are in seconds since the epoch
         # ctime = time job was created             e.g. ctime = Fri Mar  6 14:36:07 2015
@@ -439,52 +442,52 @@ def job_attributes_reformat(jobs):
         # mtime = time job was last modified       e.g. mtime = Tue Mar 17 13:09:19 2015
 
         # Calculate a wait time = time started - time entered queue. This will be in seconds.
-        if attributes['qtime'] and attributes['stime']:
-            attributes['wtime'] = int(attributes['stime']) - int(attributes['qtime'])
-            attributes['wtime'] = '%.0f' % (attributes['wtime'] / 3600.0) # convert to hours
+        if job['qtime'] and job['stime']:
+            job['wtime'] = int(job['stime']) - int(job['qtime'])
+            job['wtime'] = '%.0f' % (job['wtime'] / 3600.0) # convert to hours
         else:
-            attributes['wtime'] = ''
+            job['wtime'] = ''
 
         # Change time since epoch to localtime.
         # If the job has not yet queued or started then that time will be ''.
-        if attributes['qtime']:
-            attributes['qtime'] = _epoch_to_localtime(attributes['qtime'], "%Y-%m-%d at %I:%M %p")
-        if attributes['stime']:
-            attributes['stime'] = _epoch_to_localtime(attributes['stime'], "%Y-%m-%d at %I:%M %p")
+        if job['qtime']:
+            job['qtime'] = _epoch_to_localtime(job['qtime'], "%Y-%m-%d at %I:%M %p")
+        if job['stime']:
+            job['stime'] = _epoch_to_localtime(job['stime'], "%Y-%m-%d at %I:%M %p")
 
         # If the job was queued or started today remove the leading date.
         today = datetime.datetime.now().strftime('%Y-%m-%d')
-        if today == attributes['qtime'].split()[0]:
-            attributes['qtime'] = attributes['qtime'].replace('%s at' % today, '')
-            attributes['stime'] = attributes['stime'].replace('%s at' % today, '')
+        if today == job['qtime'].split()[0]:
+            job['qtime'] = job['qtime'].replace('%s at' % today, '')
+            job['stime'] = job['stime'].replace('%s at' % today, '')
 
         # Change queue code to a word. For queue states see man qstat.
         states = {'B':'Array job', 'E':'Exiting','F':'Finished','H':'Held','M':'Moved',\
                   'Q':'Queued','R':'Running','S':'Suspend','T':'Transiting','U':'User,suspend',\
                   'W':'Waiting', 'X':'Finished'}
-        attributes['job_state'] = states[attributes['job_state']]
+        job['job_state'] = states[job['job_state']]
 
         # Change walltimes from H:M:S to H:M
-        if attributes['resource_list_walltime']:
-            (H,M,S) = attributes['resource_list_walltime'].split(':')
-            attributes['resource_list_walltime'] = '%s:%s' % (H,M)
+        if job['resource_list_walltime']:
+            (H,M,S) = job['resource_list_walltime'].split(':')
+            job['resource_list_walltime'] = '%s:%s' % (H,M)
 
-        if attributes['resources_used_walltime']:
-            (H,M,S) = attributes['resources_used_walltime'].split(':')
-            attributes['resources_used_walltime'] = '%s:%s' % (H,M)
-            hours_used     = attributes['resources_used_walltime'].split(':')[0]
-            hours_walltime = attributes['resource_list_walltime'].split(':')[0]
-            attributes['resources_time_left'] = int(hours_walltime) - int(hours_used)
+        if job['resources_used_walltime']:
+            (H,M,S) = job['resources_used_walltime'].split(':')
+            job['resources_used_walltime'] = '%s:%s' % (H,M)
+            hours_used     = job['resources_used_walltime'].split(':')[0]
+            hours_walltime = job['resource_list_walltime'].split(':')[0]
+            job['resources_time_left'] = int(hours_walltime) - int(hours_used)
 
         # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
-        if 'resource_list_mem' in attributes:
-            attributes['resource_list_mem'] = attributes['resource_list_mem'].replace('gb', '')
-        if attributes['resources_used_mem']:
-            m = re.match('^([0-9]+)kb$', attributes['resources_used_mem'])
-            attributes['resources_used_mem'] = '%d' % (int(m.group(1))/1024/1024)
-        if attributes['resources_used_vmem']:
-            m = re.match('^([0-9]+)kb$', attributes['resources_used_vmem'])
-            attributes['resources_used_vmem'] = '%d' % (int(m.group(1))/1024/1024)
+        if 'resource_list_mem' in job:
+            job['resource_list_mem'] = job['resource_list_mem'].replace('gb', '')
+        if job['resources_used_mem']:
+            m = re.match('^([0-9]+)kb$', job['resources_used_mem'])
+            job['resources_used_mem'] = '%d' % (int(m.group(1))/1024/1024)
+        if job['resources_used_vmem']:
+            m = re.match('^([0-9]+)kb$', job['resources_used_vmem'])
+            job['resources_used_vmem'] = '%d' % (int(m.group(1))/1024/1024)
 
     return jobs
 
