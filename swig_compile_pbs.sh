@@ -37,7 +37,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Running gcc creates _pbs.so
-gcc -shared -fPIC -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c $PBS_EXEC/lib/libpbs.a \
+gcc -shared -fPIC -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c $PBS_EXEC/lib/libpbs.so \
     -o _pbs.so -L/lib -lcrypto -lssl
 
 # It does not need to be executable.
