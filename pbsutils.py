@@ -247,7 +247,7 @@ def get_jobs(conn):
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
-        'resources_used_walltime', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
+        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
         'resources_used_cpupercent']
 
     b = pbs.pbs_statjob(conn, '', None, None)
