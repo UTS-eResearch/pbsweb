@@ -243,11 +243,12 @@ def get_jobs(conn):
 
     jobs = [] # This will contain a list of dictionaries.
 
-    # Some jobs don't yet have a particular attribute as the job hasn't started yet.
+    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
-        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'resources_time_left']
+        'resources_used_walltime', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
+        'resources_used_cpupercent']
 
     b = pbs.pbs_statjob(conn, '', None, None)
     while b != None:
@@ -255,6 +256,8 @@ def get_jobs(conn):
         # Init the values of the attributes.
         for name in attribute_names:
             attributes[name] = ''
+        for name in ['resources_used_walltime', 'resources_used_cput']:
+            attributes[name] = '0:0:0'
 
         attribs = b.attribs
         #print 'DEBUG: ----------- %s -------------------' % b.name
