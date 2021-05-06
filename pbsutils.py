@@ -467,17 +467,13 @@ def job_attributes_reformat(jobs):
                   'W':'Waiting', 'X':'Finished'}
         job['job_state'] = states[job['job_state']]
 
-        # Change walltimes from H:M:S to H:M
-        if job['resource_list_walltime']:
-            (H,M,S) = job['resource_list_walltime'].split(':')
-            job['resource_list_walltime'] = '%s:%s' % (H,M)
-
         if job['resources_used_walltime']:
             (H,M,S) = job['resources_used_walltime'].split(':')
-            job['resources_used_walltime'] = '%s:%s' % (H,M)
-            hours_used     = job['resources_used_walltime'].split(':')[0]
-            hours_walltime = job['resource_list_walltime'].split(':')[0]
-            job['resources_time_left'] = int(hours_walltime) - int(hours_used)
+            used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
+            (H, M, S) = job['resource_list_walltime'].split(':')
+            list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
+            # TODO maybe convert this to a float with one decimal place? or raw float
+            job['resources_time_left'] = int(list_walltime) - int(used_walltime)
 
         # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
         if 'resource_list_mem' in job:
