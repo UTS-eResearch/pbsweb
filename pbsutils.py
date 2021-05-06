@@ -218,7 +218,7 @@ def get_queues(conn):
 
     return queues
 
-def get_jobs(conn):
+def get_jobs(conn, extend=None):
     '''
     Get information on the PBS jobs.
     This function returns a list of jobs, where each job is a dictionary.
@@ -250,7 +250,7 @@ def get_jobs(conn):
         'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
         'resources_used_cpupercent']
 
-    b = pbs.pbs_statjob(conn, '', None, None)
+    b = pbs.pbs_statjob(conn, '', None, extend)
     while b != None:
         attributes = {} # Init the dictionary to empty.
         # Init the values of the attributes.
