@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -20,20 +20,20 @@ pbsserver = 'hpcnode0'
 
 conn = pbs.pbs_connect(pbsserver) 
 if conn < 0:
-    print 'Error connecting to server.' 
+    print('Error connecting to server.')
     sys.exit(1)
 
 # Returns a batch_status structure.
 b = pbs.pbs_statvnode(conn, '', None, None)
 
 while b != None:
-    print "\n------ Node: %s ------" % b.name
+    print("\n------ Node: %s ------" % b.name)
     attribs = b.attribs 
     while attribs != None: 
         if attribs.resource != None: 
-            print "    %s.%s = %s" % (attribs.name, attribs.resource, attribs.value)
+            print("    %s.%s = %s" % (attribs.name, attribs.resource, attribs.value))
         else:
-            print "    %s = %s" % (attribs.name, attribs.value)
+            print("    %s = %s" % (attribs.name, attribs.value))
     
         attribs = attribs.next
 
