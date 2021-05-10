@@ -467,9 +467,10 @@ def job_attributes_reformat(jobs):
                   'W':'Waiting', 'X':'Finished'}
         job['job_state'] = states[job['job_state']]
 
+        # Calculate a time left from list walltime and used walltime.
         if job['resources_used_walltime']:
             (H,M,S) = job['resources_used_walltime'].split(':')
-            used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
+            used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
             (H, M, S) = job['resource_list_walltime'].split(':')
             list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
             # TODO maybe convert this to a float with one decimal place? or raw float
