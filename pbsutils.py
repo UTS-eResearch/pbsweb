@@ -243,7 +243,7 @@ def get_jobs(conn, extend=None):
 
     jobs = [] # This will contain a list of dictionaries.
 
-    # Some jobs don't yet have a particular attribute as the jobs hasn't started yet.
+    # Some jobs don't yet have a particular attribute as the job hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
