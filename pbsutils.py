@@ -49,7 +49,7 @@ def _show_attr_name_remapping(conn):
         attributes['node_name'] = b.name
         while attribs != None:
             if attribs.resource != None:
-                print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
             else:
@@ -111,17 +111,17 @@ def get_nodes (conn):
     while b != None:
         attributes = {} # Init the dictionary to empty.
         attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
-        #print '------------', b.name, '------------------'
+        #print('------------', b.name, '------------------')
         attributes['node_name'] = b.name
         while attribs != None:
             if attribs.resource != None:
                 # The debugging print below here is indented a bit more to distinguish
                 # resource attributes from non-resource attributes.
-                #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
             else:
-                #print '  ', attribs.name, ':', attribs.value
+                #print('  ', attribs.name, ':', attribs.value)
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
 
@@ -192,18 +192,18 @@ def get_queues(conn):
             attributes[name] = None
 
         attribs = b.attribs
-        #print 'METHODS: ', dir(attribs)  # Uncomment to see what methods are available.
-        #print '------------ Queue %s ------------' % b.name
+        #print('METHODS: ', dir(attribs))  # Uncomment to see what methods are available.
+        #print('------------ Queue %s ------------' % b.name)
         attributes['queue_name'] = b.name
         while attribs != None:
             if attribs.resource != None:
                 # The print below here is indented a bit more to distinguish
                 # resource attributes from non-resource attributes.
-                #print '    ', attribs.name, ':', attribs.resource, '=', attribs.value
+                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
             else:
-                #print '  ', attribs.name, ':', attribs.value
+                #print('  ', attribs.name, ':', attribs.value)
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
 
@@ -260,16 +260,16 @@ def get_jobs(conn, extend=None):
             attributes[name] = '0:0:0'
 
         attribs = b.attribs
-        #print 'DEBUG: ----------- %s -------------------' % b.name
+        #print('-----------', b.name, '-------------------')
         attributes['job_id'] = b.name.split('.')[0] # b.name is a string like '137550.hpcnode0'
         while attribs != None:
             if attribs.resource != None:
-                #print 'DEBUG resource:      ', attribs.name, ':', attribs.resource, '=', attribs.value
+                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
             else:
-                #print 'DEBUG non-resource:  ', attribs.name, ':', attribs.value
+                #print('  ', attribs.name, ':', attribs.value)
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
@@ -306,9 +306,9 @@ def get_node_totals(nodes):
 def node_attributes_reformat(nodes):
 
     for node in nodes:
-        #print '---------'
+        #print('---------')
         #for attribute in node.keys():
-        #    print '    ', attribute, node[attribute]
+        #    print('    ', attribute, node[attribute])
 
         # There are certain keys that we always want to be present.
         # If they are not present create them with zero value.
