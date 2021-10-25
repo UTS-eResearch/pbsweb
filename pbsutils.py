@@ -471,7 +471,7 @@ def job_attributes_reformat(jobs):
         if job['resources_used_walltime']:
             (H,M,S) = job['resources_used_walltime'].split(':')
             used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
-            (H, M, S) = job['resource_list_walltime'].split(':')
+            (H,M,S) = job['resource_list_walltime'].split(':')
             list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
             # TODO maybe convert this to a float with one decimal place? or raw float
             job['resources_time_left'] = int(list_walltime) - int(used_walltime)
