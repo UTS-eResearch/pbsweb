@@ -3,7 +3,7 @@
 ## Software Required
 
 * This software "pbsweb" downloaded from https://github.com/UTS-eResearch/pbsweb 
-* PBS Professional commercial or open source. We are using PBS Pro version 2020.1.2.
+* PBS Professional commercial or open source. We are using PBS Pro version 2021.1.0.
   You will need the file `pbs_ifl.h` from your PBS installation.
 * gcc + its dependencies 
 * openssl-devel + its dependencies
