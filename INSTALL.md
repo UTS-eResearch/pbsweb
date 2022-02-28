@@ -249,6 +249,7 @@ The app's uWSGI file is `/var/www/wsgi/confs/pbsweb.ini`:
     processes = 1
     socket = /var/run/uwsgi/pbsweb.sock
     chmod-socket = 640
+    chown-socket = nginx:nginx
     vaccum = true
     
     virtualenv   = /var/www/wsgi/virtualenvs/pbsweb/
