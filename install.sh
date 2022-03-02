@@ -15,15 +15,16 @@ if [[ $REPLY != "yes" ]]; then
 fi
 
 # Do the install. 
-if [ ! -d $conf ]; then
-    mkdir -p $conf
+if [ ! -d $confs ]; then
+    mkdir -p $confs
 fi
 
 if [ ! -d $dest ]; then
     mkdir -p $dest
 fi
 
-cp pbsweb.ini $confs 
+cp emperor.ini /var/www/wsgi/
+cp pbsweb.ini $confs
 cp pbsweb.py $dest
 cp pbsutils.py $dest
 cp pbs.py $dest
