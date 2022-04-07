@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 '''
@@ -82,11 +82,11 @@ def shell_test():
     This is only used for debugging.
     '''
 
-    print 'Running in the shell only.'
+    print('Running in the shell only.')
     conn = pbs.pbs_connect(pbsserver) 
     if conn < 0:
-        print 'Error connecting to PBS server.'
-        print 'Have you set the PBS server hostname in this code?'
+        print('Error connecting to PBS server.')
+        print('Have you set the PBS server hostname in this code?')
         sys.exit(1)
 
     # Uncomment one or more of the sections below to print info on the nodes,
@@ -96,17 +96,17 @@ def shell_test():
     nodes = get_nodes(conn)
     nodes = node_attributes_reformat(nodes)
     for node in sorted(nodes):
-        print 'Node Name: %s' % node['node_name']
-        print '  Mem:  ', node['resources_assigned_mem'], '/', node['resources_available_mem'], \
-            'GB = ', '%3d' % node['mem_ratio'], '% used'
-        print '  Cores:', node['resources_assigned_ncpus'],'/', node['resources_available_ncpus'], \
-            '=', '%3d' % node['cpu_ratio'], '% used'
+        print('Node Name: %s' % node['node_name'])
+        print('  Mem:  ', node['resources_assigned_mem'], '/', node['resources_available_mem'], \
+            'GB = ', '%3d' % node['mem_ratio'], '% used')
+        print('  Cores:', node['resources_assigned_ncpus'],'/', node['resources_available_ncpus'], \
+            '=', '%3d' % node['cpu_ratio'], '% used')
 
         #for key in node.keys():
-        #    print '   ', key, ' = ', node[key]
+        #    print('   ', key, ' = ', node[key])
 
-    print '\nNode Totals: '
-    print get_node_totals(nodes)
+    print('\nNode Totals: ')
+    print(get_node_totals(nodes))
 
     '''
     # Print queues information
