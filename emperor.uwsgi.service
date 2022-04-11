@@ -1,0 +1,23 @@
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+#PermissionsStartOnly=True
+#ExecStartPre=/usr/bin/mkdir /run/uwsgi
+ExecStart=/var/www/wsgi/virtualenvs/emperor/bin/uwsgi --ini /var/www/wsgi/emperor.ini
+User=nginx
+Group=nginx
+RuntimeDirectory=uwsgi
+RuntimeDirectoryMode=0755
+RuntimeDirectoryPreserve=yes
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+RestartSec=5
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
