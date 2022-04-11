@@ -45,7 +45,14 @@ if [ ! -d $dest ]; then
     mkdir -p $dest
 fi
 
+if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
+    echo "Error: missing pbs.py or _pbs.so"
+    exit 0
+fi
+
 # Copy the configuration files.
+cp emperor.ini /var/www/wsgi/
+
 if [ $1 == 'test' ]; then
     cp pbsweb_test.ini $confs
 elif [ $1 == 'prod' ]; then
