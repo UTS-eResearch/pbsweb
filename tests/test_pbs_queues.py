@@ -51,7 +51,7 @@ except:
     import pbs 
 
 # You need to set the hostname of the PBS Server.
-pbsserver = 'hpcnode0'
+pbsserver = 'pbsserver'
 
 conn = pbs.pbs_connect(pbsserver) 
 if conn < 0:
