@@ -49,10 +49,10 @@ fi
 #    -L/lib -lpthread -lcrypto -lssl \
 #    -o _pbs.so 
 
-echo "compiling ..."
+# Compiling
 gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c # -o tmp.so 
 
-echo 'linking ...'
+# Linking
 #gcc -shared -fpic -L/lib -L/opt/pbs/lib \
 gcc -shared -fpic -L/opt/pbs/lib \
     $PBS_EXEC/lib/libpbs.so pbs_wrap.o \
