@@ -17,13 +17,13 @@ Screenshot showing the web application.
 
 Files:
 
-    pbsweb.py               The main pbsweb application.
-    pbsutils.py             Module containing utility functions for the pbsweb application.
-    swig_compile_pbs.sh     Run this to create _pbs.so
-    pbs.i                   Used by swig_compile_pbs.sh
-    requirements.txt        Python requirements file.
-    pbsweb.ini              Example uWSGI file for this app.
-    install.sh              Installs files into production.
+    pbsweb.py                   The main pbsweb application.
+    pbsutils.py                 Module containing utility functions for the pbsweb application.
+    swig_compile_pbs.sh         Run this to create _pbs.so
+    pbs.i                       Used by swig_compile_pbs.sh
+    requirements.txt            Python requirements file.
+    install_dependencies.sh     Installs the dependencies of pbsweb. Run this first.
+    install_pbsweb.sh           Installs pbsweb into production or test.
 
     tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
     tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
@@ -31,6 +31,7 @@ Files:
 
 Directories:
 
+    conf/    Contains configuration files.
     static/  Contains static resources like stylesheets.
     views/   Contains templates for the pbsweb bottle application.
     tests/   Contains all the tests.
@@ -42,8 +43,8 @@ Directories:
 * gcc 
 * openssl-devel 
 * SWIG - Software Wrapper and Interface Generator
-* Python 2.7 development packages 
-* Python 2.7 virtual environment with:
+* Python 3.8 development packages 
+* Python 3.8 virtual environment with:
   - bottle      Bottle micro web framework
   - Jinja2      Jinja2 templating engine 
   - uWSGI       To run the web app
@@ -69,9 +70,8 @@ Data Directory Cataloger. If not, see https://www.gnu.org/licenses/.
 
 ## References
 
-Information on the "Batch Interface Library" can be found in the "PBS Professional® Programmer's Guide". 
-See the section "Batch Interface Library".
-This is the primary API to communicate with the PBS MoM. 
+Information on the "Batch Interface Library" can be found in the "PBS Professional® Programmer's Guide".
+See the section "Batch Interface Library". This is the primary API to communicate with the PBS MoM. 
 
 Bottle Python Web Framework: <https://bottlepy.org/docs/0.12/>
 
