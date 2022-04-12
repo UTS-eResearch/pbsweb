@@ -76,6 +76,7 @@ cp -r static $dest
 touch $confs/pbsweb.ini
 touch $confs/pbsweb_test.ini
 
+echo ""
 echo "You may have to do this:"
 echo "sudo systemctl restart nginx.service"
 
