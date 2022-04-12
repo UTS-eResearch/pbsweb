@@ -51,12 +51,12 @@ if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
 fi
 
 # Copy the configuration files.
-cp emperor.ini /var/www/wsgi/
+cp confs/emperor.ini /var/www/wsgi/
 
 if [ $1 == 'test' ]; then
-    cp pbsweb_test.ini $confs
+    cp confs/pbsweb_test.ini $confs
 elif [ $1 == 'prod' ]; then
-    cp pbsweb.ini $confs
+    cp confs/pbsweb.ini $confs
 else
     echo "Error, unknown option: $1"
     exit 0
