@@ -193,6 +193,10 @@ At this stage you can test the web application by going to `http://your-server/s
 
 Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
+## Updating pbsweb
+
+{{ todo }}
+
 ## Removing pbsweb
 
 {{ todo }}
