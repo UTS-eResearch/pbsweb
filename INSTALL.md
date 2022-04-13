@@ -7,7 +7,7 @@ SEARCH FOR UPTO   Back to [Mikes Notes](/pbsweb_mikes_notes/)
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
 * Apache or Nginx webserver
 * This software "pbsweb" downloaded from <https://github.com/UTS-eResearch/pbsweb>  {{ todo }} 
-* PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>. 
+* PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
   We are using PBS Pro version 2021.1.0.
 * GCC
 * Openssl-devel
@@ -249,7 +249,6 @@ as in the screenshot in the Introduction.
 
 Any errors will be visible in the terminal.
 
----------------------------------------------------------------------------
 ## Notes
 
 ### The Two Python 3.8 Virtual Environments
@@ -286,6 +285,7 @@ You can check the version of the emperor uWSGI with:
     2.0.20
     (emperor) $ deactivate
 
+Setting your Python to use specific requirements:
 
     $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ python -m pip install --upgrade pip
@@ -294,7 +294,9 @@ You can check the version of the emperor uWSGI with:
     (pbsweb)$ deactivate
     $
 
-As an aside you should regularly check your virtualenvs for any updates.
+You can do the same with the emperor virtual environment.
+
+You should regularly check your Python virtualenvs for any updates.
 Below is an example for the emperor, do the same for the pbsweb environment.
 
     virtualenvs/$ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
@@ -303,12 +305,4 @@ Below is an example for the emperor, do the same for the pbsweb environment.
 
     (pbsweb) $ deactivate
     $ 
-
-### Install Openssl Development
-
-The openssl-devel package provides the libs to link with in the swig compile script 
-i.e. "`.. -lcrypto -lssl`".
-
-    $ sudo dnf install openssl-devel
-
 
