@@ -51,10 +51,17 @@ function check_sudo {
 # Checks
 ########
 
+echo ""
+echo "-------------------------------------------"
+echo "Install Dependencies for pbsweb Application"
+echo "-------------------------------------------"
+echo ""
+
 if [[ $EUID -eq 0 ]]; then
    echo "You should NOT be root to run this script."
    echo "You should run it as an unprivileged user that has sudo rights."
-   echo "NOT be root to run this script. Exiting"
+   echo "Exiting"
+   echo ""
    exit 0
 fi
 this_user="$USER"
@@ -75,14 +82,17 @@ done
 # If there is no existing emperor service then copy this one into place.
 # We will not start it. The user should enable/start it manually.
 if [ ! -f /etc/systemd/system/emperor.uwsgi.service ]; then
+    echo "Installing new systemd service: emperor.uwsgi.service"
     sudo cp confs/emperor.uwsgi.service /etc/systemd/system/
+else
+    echo "Not overwriting existing systemd service: emperor.uwsgi.service"
 fi
 
-# Create a directory for the web sockets.
+echo "Creating directory /run/uwsgi for the web sockets."
 sudo mkdir -p /run/uwsgi
 sudo chown nginx:nginx /run/uwsgi
 
-# Create directories for the application.
+echo "Creating /var/www/wsgi"
 sudo mkdir -p /var/www/wsgi
 sudo chown $this_user:$this_user /var/www/wsgi
 
@@ -95,7 +105,7 @@ for dir in $apps $confs $envs; do
     fi
 done
 
-# Check we do have the correct Python version on this system.
+echo "Checking that the correct Python version exists on this system."
 which $python > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "Could not find the correct Python version on this system. Exiting"
@@ -126,8 +136,9 @@ done
 pip freeze > ${envs}/requirements_pbsweb.txt
 deactivate
 
-echo ''
-echo 'The dependencies for pbs have now been installed.'
-echo 'You should now be able to run "./install_pbsweb.sh"'
-echo ''
+echo ""
+echo "The dependencies for pbs have now been installed."
+echo "You should now run ./swig_compile_pbs.sh"
+echo "Then run ./install_pbsweb.sh"
+echo ""
 
