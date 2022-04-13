@@ -191,6 +191,12 @@ INI file to, for instance, `other.ini_STOPPED`.
 
 At this stage you can test the web application by going to `http://your-server/statuspbs/`
 
+Click the links for the Nodes, Queues and Jobs. All should work mOK.
+
+## Removing pbsweb
+
+{{ todo }}
+
 ## Tests
 
 ### Command Line Tests 
@@ -244,91 +250,59 @@ as in the screenshot in the Introduction.
 Any errors will be visible in the terminal.
 
 ---------------------------------------------------------------------------
+## Notes
 
-### Install the Python 3.8 Development Package
+### The Two Python 3.8 Virtual Environments
 
-    $ sudo dnf install python38-devel
-
-{{ done }} qcis4
-
-### Install Two Python 3.8 Virtual Environments
-
-Here we will setup two Python virtual environments; one for a uWSGI "Emperor"
+There are two Python virtual environments; one for a uWSGI "Emperor"
 and the other for the PBS web application. The Emperor master process watches
 over the apps (called vassals) to make sure they are running.
-If an app/vassal crashes, then the Emperor will reload it. 
+If an app/vassal stops, then the Emperor will reload it. 
 Even if you’re only running a single app using "Emperor" mode is still worth it. 
 
-I place the uWSGI apps under `/var/www/wsgi/`. If you have multiple apps under
-`/var/www/wsgi/` then the structure could be setup like below, where pbsweb is
-this application and "other" is some other application. 
+They are setup using the following directory structure. 
+Where pbsweb is this application and "other" is some other WSGI application. 
+Note you can also have a test pbsweb app for testing purposes.
 
     /var/www/wsgi/
      ├─ emperor.ini
      ├─ apps/
-     │     ├─ pbsweb.py
-     │     └─ other.py
+     │     ├─ pbsweb        <=== Our PBS web app lives in here.
+     │     ├─ pbsweb_test   <=== A test PBS web app in here. 
+     │     └─ other
      ├─ confs/
      │     ├─ pbsweb.ini
+     │     ├─ pbsweb_test.ini
      │     └─ other.ini
      └── virtualenvs/
-           ├─ emperor       <=== The "Emperor" will live in here.
-           ├─ pbsweb        <=== Our PBS web app lives in here.
+           ├─ emperor       <=== The Emperor lives in here.
+           ├─ pbsweb        <=== Our PBS web app uses this Python.
            └─ other
 
-Create a directory for the Python virtual environments first. 
+You can check the version of the emperor uWSGI with:
 
-    $ sudo mkdir -p /var/www/wsgi
-    $ sudo chown you:you /var/www/wsgi    <== TODO sudo chown mlake:mlake /var/www/wsgi
-
-    $ mkdir /var/www/wsgi/virtualenvs
-    $ cd /var/www/wsgi/virtualenvs
-
-First install a virtualenv for the emperor to run all the apps.
-Only uwsgi needs to be installed in this environment.
-
-    $ cd /var/www/wsgi/virtualenvs
-    $ python3.8 -m venv emperor
-
-    $ source emperor/bin/activate
-    (emperor)$ python -m pip install --upgrade pip
-    (emperor)$ pip install pip-review
-    (emperor)$ pip install uwsgi
-
-You can check its been installed and its version like this:
-
+    $ source /var/www/wsgi/virtualenvs/emperor/bin/activate
     (emperor) $ uwsgi --version
     2.0.20
+    (emperor) $ deactivate
 
-Before we move onto installing a virtualenv for the pbsweb application we need
-to deactivate this one.
 
-    (emperor)$ deactivate
-    $ 
-
-Now install a virtualenv for the pbsweb application. 
-As this is the web app so we need to install its dependencies as below, or you can just
-`pip install -r requirements.txt` 
-
-    $ cd /var/www/wsgi/virtualenvs
-    $ python3.8 -m venv pbsweb
-    $ source pbsweb/bin/activate
+    $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ python -m pip install --upgrade pip
-    (pbsweb)$ pip install pip-review
+    (pbsweb)$ pip install -r requirements_pbsweb.txt
 
-    (pbsweb)$ pip install bottle
-    (pbsweb)$ pip install Jinja2
     (pbsweb)$ deactivate
     $
 
 As an aside you should regularly check your virtualenvs for any updates.
 Below is an example for the emperor, do the same for the pbsweb environment.
 
-    virtualenvs/$ source emperor/bin/activate
-    (emperor) ermdc100 virtualenvs/$ pip-review -i
+    virtualenvs/$ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
+    (pbsweb) $ pip-review -i
     Everything up-to-date
-    (emperor) virtualenvs/$ deactivate
-    virtualenvs/$ 
+
+    (pbsweb) $ deactivate
+    $ 
 
 ### Install Openssl Development
 
