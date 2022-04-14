@@ -197,9 +197,26 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
 {{ todo }}
 
+### Updating pbsweb
+
+    $ git pull
+    $ ./install_pbsweb.sh test
+
+### Updating the Python Virtual Environments 
+
+    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
+    (pbsweb)$ pip freeze requirements_pbsweb_before.txt
+    (pbsweb)$ pip-review -i
+
+Similarly with the emperor environment.
+
 ## Removing pbsweb
 
-{{ todo }}
+Read the `install_dependencies.sh` script to see what it installed and where. 
+Remove what you no longer need.
+
+The `install_pbsweb.sh` script only installs files under `/var/www/wsgi/`.
+Remove what you no longer need.
 
 ## Tests
 
@@ -208,9 +225,8 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 These are a few tests to check `pbs.py` works OK and to demonstrate how to
 query PBS data structures.
 
-    $ source ~/virtualenvs/pbsweb/bin/activate
+    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ 
-
     $ cd tests
 
 Prints the nodes available and their attributes:
@@ -224,6 +240,10 @@ Prints the queues available and their attributes:
 Prints the list of jobs and their attributes:
 
     $ ./test_pbs_jobs.py         
+
+Test the `pbsutils.py` code:
+
+    $ ./test_pbsutils.py
 
 ### Web Application Test with Bottle’s in-built Server
 
