@@ -39,7 +39,7 @@ def _epoch_to_localtime(epoch_time, format_str):
 
 def _show_attr_name_remapping(conn):
     '''
-    This is a debugging function. It displays all the resources_available, 
+    This is a debugging function. It displays all the resources_available,
     resources_assigned and their attributes and values.
     '''
     b = pbs.pbs_statvnode(conn, '', None, None)
@@ -238,7 +238,6 @@ def get_jobs(conn, extend=None):
         queue : workq
         server : hpcnode0
       etc ....
-
     '''
 
     jobs = [] # This will contain a list of dictionaries.
@@ -408,11 +407,19 @@ def job_attributes_reformat(jobs):
         job.pop('submit_arguments', None)
         job.pop('error_path', None)
         job.pop('output_path', None)
+        # ---------- older
+        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2)
+        # TODO exec_vnode might be split across chunks in which case it will look like this:
+        #   exec_vnode is: (vnodeA:ncp us=N:mem=X) + (nodeB:ncpu s=P:mem=Y+ nodeC:mem=Z)
+        #if job['exec_vnode']:
+        #    job['exec_vnode'] = job['exec_vnode'].split(':')[0]
+        #    job['exec_vnode'] = job['exec_vnode'][1:]
+        # ----------- end older
 
         # Jobs might be split across hosts or vhosts in which case it will look like this:
         # e.g. exec_node = hpcnode03/1+hpcnode04/1
         #      exec_vnode = (hpcnode03:ncpus=1:mem=5242880kb)+(hpcnode04:ncpus=1:mem=5242880kb)
-        # Users may wish to use either exec_node or exec_vhost in their HTML templates for 
+        # Users may wish to use either exec_node or exec_vhost in their HTML templates for
         # displaying what host/vnode their job is running on. Here we format both into just strings.
         if job['exec_host']:
             # e.g. exec_host = hpcnode03/1+hpcnode04/1
@@ -472,7 +479,7 @@ def job_attributes_reformat(jobs):
             (H,M,S) = job['resources_used_walltime'].split(':')
             used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
             (H,M,S) = job['resource_list_walltime'].split(':')
-            list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0 
+            list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
             # TODO maybe convert this to a float with one decimal place? or raw float
             job['resources_time_left'] = int(list_walltime) - int(used_walltime)
 

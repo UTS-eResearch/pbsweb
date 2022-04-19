@@ -7,6 +7,7 @@ pbs_ifl.h
 pbs.py
 _pbs.so
 pbs_wrap.c
+pbs_wrap.o
 
 # Created when python runs
 *.pyc
