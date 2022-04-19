@@ -238,7 +238,6 @@ def get_jobs(conn, extend=None):
         queue : workq
         server : hpcnode0
       etc ....
-
     '''
 
     jobs = [] # This will contain a list of dictionaries.
