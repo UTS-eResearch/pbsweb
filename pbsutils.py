@@ -408,8 +408,8 @@ def job_attributes_reformat(jobs):
         job.pop('submit_arguments', None)
         job.pop('error_path', None)
         job.pop('output_path', None)
-# exec_host = (hpcnode20:mem=8388608kb:ncpus=2)
         # ---------- older
+        # exec_host = (hpcnode20:mem=8388608kb:ncpus=2)
         # TODO exec_vnode might be split across chunks in which case it will look like this:
         #   exec_vnode is: (vnodeA:ncp us=N:mem=X) + (nodeB:ncpu s=P:mem=Y+ nodeC:mem=Z)
         #if job['exec_vnode']:
