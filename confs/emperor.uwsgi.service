@@ -3,7 +3,6 @@ Description=uWSGI Emperor
 After=syslog.target
 
 [Service]
-#PermissionsStartOnly=True
 #ExecStartPre=/usr/bin/mkdir /run/uwsgi
 ExecStart=/var/www/wsgi/virtualenvs/emperor/bin/uwsgi --ini /var/www/wsgi/emperor.ini
 User=nginx
