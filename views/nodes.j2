@@ -12,37 +12,38 @@ This information and additional detailed information on each node can be found b
 <tr>
 <th>Node</th>
 <th>Status / Comment</th>
-<th>CPU Usage</th>
-<th>GPU Usage</th>
+<th>CPU &amp; GPU Usage</th>
 <th>Memory Usage (GB)</th>
 <th>Jobs</th>
 </tr>
 {% for n in nodes %}
 <tr>
 <td>{{ n.node_name }}</td>
+
 <td>
 {% if n.state_up %}
 <span style="color:green">OK</span> ({{ n.state }}) 
 {% else %}
 <span style="color:red">XX</span> ({{ n.state }}) 
-{% endif %}
-/ <i>{{ n.comment }}</i></td>
+{% endif %} / <i>{{ n.comment }}</i>
+</td>
+
 <td>
 {%if n.resources_available_ncpus %}
 <div class=fixed><svg class=myscale width={{ n.resources_available_ncpus|int *2 }}><rect class=used width={{n.resources_assigned_ncpus|int*2}} height=30 /><text x=20 y=20 text-anchor=middle>{{n.cpu_ratio}}%</text></svg></div> 
 {% else %}
 <div class=fixed>&nbsp;</div>
 {% endif %}
-<svg height=30 width=85><text x=20 y=20>{{ n.resources_assigned_ncpus }} / {{ n.resources_available_ncpus }}</text></svg>
-</td>
-<td>
+<svg height=30 width=110><text x=20 y=20>{{ n.resources_assigned_ncpus }} / {{ n.resources_available_ncpus }} &nbsp;
 {% if n.resources_available_ngpus %}
 {{ n.resources_assigned_ngpus }} / {{ n.resources_available_ngpus }}
 {% else %}
 &nbsp;
 {% endif %}
+</text></svg>
 </td>
-<td><div class=fixed_mem><svg class=myscale width={{ n.resources_available_mem|int/2 }}><rect class=used width={{n.resources_assigned_mem|int/2}} height=30 /><text x=20 y=20 text-anchor=middle>{{n.mem_ratio}}%</text></svg></div> 
+
+<td width=750><div class=fixed_mem><svg class=myscale width={{ n.resources_available_mem|int/2 }}><rect class=used width={{n.resources_assigned_mem|int/2}} height=30 /><text x=20 y=20 text-anchor=middle>{{n.mem_ratio}}%</text></svg></div> 
 <svg height=30 width=110><text x=20 y=20>{{ n.resources_assigned_mem }} / {{ n.resources_available_mem }}</text></svg>
 </td>
 <td>{{ n.jobs|length }}</td>
