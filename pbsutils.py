@@ -451,7 +451,7 @@ def job_attributes_reformat(jobs):
         # Calculate a wait time = time started - time entered queue. This will be in seconds.
         if job['qtime'] and job['stime']:
             job['wtime'] = int(job['stime']) - int(job['qtime'])
-            job['wtime'] = '%.0f' % (job['wtime'] / 3600.0) # convert to hours
+            job['wtime'] = '%.1f' % (job['wtime'] / 3600) # convert to hours
         else:
             job['wtime'] = ''
 
