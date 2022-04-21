@@ -474,14 +474,25 @@ def job_attributes_reformat(jobs):
                   'W':'Waiting', 'X':'Finished'}
         job['job_state'] = states[job['job_state']]
 
-        # Calculate a time left from list walltime and used walltime.
+        # Change list walltime from H:M:S to H:M
+        if job['resource_list_walltime']:
+            (H,M,S) = job['resource_list_walltime'].split(':')
+            job['resource_list_walltime'] = '%s:%s' % (H,M)
+
+        # Change used walltime from H:M:S to H:M
         if job['resources_used_walltime']:
             (H,M,S) = job['resources_used_walltime'].split(':')
-            used_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
-            (H,M,S) = job['resource_list_walltime'].split(':')
-            list_walltime = float(H) + float(M)/60.0 + float(S)/3600.0
-            # TODO maybe convert this to a float with one decimal place? or raw float
-            job['resources_time_left'] = int(list_walltime) - int(used_walltime)
+            job['resources_used_walltime'] = '%s:%s' % (H,M)
+
+        # Calculate a time left from list walltime and used walltime.
+        # Its only in hours:mins now - no seconds.
+        if job['resources_used_walltime']:
+            (H,M) = job['resources_used_walltime'].split(':')
+            used_walltime = float(H) + float(M)/60.0
+            (H,M) = job['resource_list_walltime'].split(':')
+            list_walltime = float(H) + float(M)/60.0
+            # Save with just one decimal place.
+            job['resources_time_left'] = '%.1f' % (list_walltime - used_walltime)
 
         # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
         if 'resource_list_mem' in job:
