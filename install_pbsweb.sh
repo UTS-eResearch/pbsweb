@@ -5,9 +5,9 @@
 
 confs='/var/www/wsgi/confs'
 
-echo ""
+echo "------------------------"
 echo "Install or Update PBSWeb"
-echo ""
+echo "------------------------"
 
 # Check number of args is one.
 if [ $# -lt 1 ]; then
