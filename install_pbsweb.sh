@@ -5,9 +5,12 @@
 
 confs='/var/www/wsgi/confs'
 
+echo ""
+echo "Install or Update PBSWeb"
+echo ""
+
 # Check number of args is one.
 if [ $# -lt 1 ]; then
-    echo ""
     echo "Usage:  $0 test | prod"
     echo ""
     echo "You need to specify either test or prod (for production)."

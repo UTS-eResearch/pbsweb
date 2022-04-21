@@ -1,6 +1,6 @@
 /* CSS styles */
 
-/* This formats the popup help links. */
+/* Formats the popup help links. */
 
 a.titled {
     //border-bottom: 1px dashed;
@@ -30,8 +30,8 @@ a.titled:hover span {
     text-decoration: none;
 }
 
-
 /* Sortable table headings. */
+
 table.sortable {
     clear:right;
 }
@@ -49,8 +49,8 @@ table.sortable span.sortarrow {
     text-decoration: none;
 }
 
-
 /* General */
+
 table.status {
     border-width: 1px;
     border-style: solid;
