@@ -29,20 +29,28 @@ packages="python38-devel openssl-devel swig"
 # Functions
 ###########
 
+function usage {
+    echo "Usage: $0"
+    echo "There are no options for this script."
+    echo "You cannot run this script directly as root."
+    echo "You need to be able to sudo though."
+    echo ""
+}
+
 function check_sudo {
     local sudo_prompt
 
     sudo_prompt=$(sudo -nv 2>&1)
     if [ $? -eq 0 ]; then
         echo "Your sudo access is currently valid."
-	return 0
+        return 0
     fi
 
     echo $sudo_prompt | grep -q '^sudo:'
     if [ $? -eq 0 ]; then
         echo "Please enter your password to use sudo."
-	sudo -v
-	return 0
+        sudo -v
+        return 0
     fi
     echo "You do not have sudo"
 }
@@ -53,9 +61,15 @@ function check_sudo {
 
 echo ""
 echo "-------------------------------------------"
-echo "Install Dependencies for pbsweb Application"
+echo "Install Dependencies for PBSWeb Application"
 echo "-------------------------------------------"
 echo ""
+
+# Check number of args is zero
+if [ $# -gt 0 ]; then
+    usage
+    exit 0;
+fi
 
 if [[ $EUID -eq 0 ]]; then
    echo "You should NOT be root to run this script."
@@ -66,12 +80,19 @@ if [[ $EUID -eq 0 ]]; then
 fi
 this_user="$USER"
 
-# Check this unprivileged user has sudo rights.
-check_sudo
+# Check user really wants to install.
+read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "exiting"
+    exit 0
+fi
 
 ###################
 # Start the install
 ###################
+
+# Check this unprivileged user has sudo rights.
+check_sudo
 
 echo "Installing system packages ..."
 for p in $packages; do
