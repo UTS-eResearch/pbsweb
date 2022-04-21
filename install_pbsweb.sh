@@ -2,12 +2,35 @@
 
 # This installs or updates the application from the git directory
 # to the test or production website application destination.
+#
+# Usage: 
+#
+#   $ ./install_pbsweb.sh test | prod
+
+###############
+# Configuration
+###############
 
 confs='/var/www/wsgi/confs'
 
+###########
+# Functions
+###########
+
+function will_install {
+    # Show the user what will be installed by this script.
+    echo "This script will install the following:"
+    echo "  Configuration files to $confs"
+    echo "  Python code to $dest"
+    echo "  Templates to ${dest}/views"
+    echo ""
+}
+
+echo ""
 echo "------------------------"
 echo "Install or Update PBSWeb"
 echo "------------------------"
+echo ""
 
 # Check number of args is one.
 if [ $# -lt 1 ]; then
@@ -18,6 +41,7 @@ if [ $# -lt 1 ]; then
     exit 1;
 fi
 
+# Check user has entered a valid option.
 if [ $1 == 'test' ]; then
     dest='/var/www/wsgi/apps/pbsweb_test'
 elif [ $1 == 'prod' ]; then
@@ -27,11 +51,13 @@ else
     exit 0
 fi
 
+will_install
+
 # Check user really wants to install.
 # The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD. 
 echo "This will install to ${1^^} i.e $confs and $dest "
-read -r -p "Type \"yes\" to install. Any other key will exit: " REPLY
-if [[ $REPLY != "yes" ]]; then
+read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "exiting"
     exit 0
 fi
@@ -48,6 +74,7 @@ if [ ! -d $dest ]; then
     mkdir -p $dest
 fi
 
+# Exit if these files are not found.
 if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
     echo "Error: missing pbs.py or _pbs.so"
     exit 0
