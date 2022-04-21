@@ -358,14 +358,16 @@ def node_attributes_reformat(nodes):
 
         # Create a new attribute 'cpu_ratio' to use in the web display.
         if node['resources_available_ncpus'] != 0:
-            node['cpu_ratio'] = 100 * int(node['resources_assigned_ncpus']) \
+            cpu_ratio = 100 * int(node['resources_assigned_ncpus']) \
                 / int(node['resources_available_ncpus'])
+            node['cpu_ratio'] = '%3d' % cpu_ratio
         else:
             node['cpu_ratio'] = 0
 
         # Create a new attribute 'mem_ratio' to use in the web display.
-        node['mem_ratio'] = 100 * int(node['resources_assigned_mem']) \
+        mem_ratio = 100 * int(node['resources_assigned_mem']) \
             / int(node['resources_available_mem'])
+        node['mem_ratio'] = '%3d' % mem_ratio
 
     return nodes
 
