@@ -1,7 +1,5 @@
 # Installation 
 
-SEARCH FOR UPTO   Back to [Mikes Notes](/pbsweb_mikes_notes/)
-
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.

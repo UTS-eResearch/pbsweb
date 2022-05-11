@@ -55,7 +55,7 @@ will_install
 
 # Check user really wants to install.
 # The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD. 
-echo "This will install to ${1^^} i.e $confs and $dest "
+echo "This will install to ${1^^}"
 read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
     echo "exiting"
