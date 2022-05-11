@@ -45,16 +45,16 @@ Directories:
 * SWIG - Software Wrapper and Interface Generator
 * Python 3.8 development packages 
 * Python 3.8 virtual environment with:
-  - bottle      Bottle micro web framework
-  - Jinja2      Jinja2 templating engine 
-  - uWSGI       To run the web app
-* apache or nginx
+  - Bottle micro web framework
+  - Jinja2 templating engine 
+  - uWSGI to run the web app
+* apache or nginx web server
 
 Details are provided in the Installation Notes. 
 
 ## License
 
-Copyright 2019 Mike Lake, eResearch
+Copyright 2019 Mike Lake, eResearch UTS
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by the Free Software 
@@ -66,7 +66,7 @@ FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 details.
 
 You should have received a copy of the GNU General Public License along with
-Data Directory Cataloger. If not, see https://www.gnu.org/licenses/.
+with this software. If not, see https://www.gnu.org/licenses/.
 
 ## References
 
