@@ -486,8 +486,9 @@ def job_attributes_reformat(jobs):
             (H,M,S) = job['resources_used_walltime'].split(':')
             job['resources_used_walltime'] = '%s:%s' % (H,M)
 
-        # Calculate a time left from list walltime and used walltime.
         # Its only in hours:mins now - no seconds.
+
+        # Calculate a time left from list walltime and used walltime.
         if job['resources_used_walltime']:
             (H,M) = job['resources_used_walltime'].split(':')
             used_walltime = float(H) + float(M)/60.0
