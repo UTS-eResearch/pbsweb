@@ -259,16 +259,16 @@ def get_jobs(conn, extend=None):
             attributes[name] = '0:0:0'
 
         attribs = b.attribs
-        #print('-----------', b.name, '-------------------')
+        #print('DEBUG: -----------', b.name, '-------------------')
         attributes['job_id'] = b.name.split('.')[0] # b.name is a string like '137550.hpcnode0'
         while attribs != None:
             if attribs.resource != None:
-                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
+                #print('DEBUG resource:     ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
             else:
-                #print('  ', attribs.name, ':', attribs.value)
+                #print('DEBUG non-resource  ', attribs.name, ':', attribs.value)
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
@@ -486,8 +486,9 @@ def job_attributes_reformat(jobs):
             (H,M,S) = job['resources_used_walltime'].split(':')
             job['resources_used_walltime'] = '%s:%s' % (H,M)
 
-        # Calculate a time left from list walltime and used walltime.
         # Its only in hours:mins now - no seconds.
+
+        # Calculate a time left from list walltime and used walltime.
         if job['resources_used_walltime']:
             (H,M) = job['resources_used_walltime'].split(':')
             used_walltime = float(H) + float(M)/60.0

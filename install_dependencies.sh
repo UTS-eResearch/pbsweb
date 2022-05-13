@@ -98,7 +98,6 @@ this_user="$USER"
 # Show the user what will be installed by this script.
 will_install
 
-
 # Check user really wants to install.
 read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
