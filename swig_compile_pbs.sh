@@ -2,6 +2,13 @@
 
 # This script uses the PBS supplied include file pbs_ifl.h (and pbs.i) 
 # to create pbs.py, pbs_wrap.c and _pbs.so.
+#
+# Notes:
+# 1. The package "openssl-devel" provides the libs to link with, 
+#    i.e. "... -lcrypto -lssl".
+#    $ rpmquery -ql openssl-devel | grep lib
+#      /usr/lib64/libcrypto.so
+#      /usr/lib64/libssl.so
 
 #############################
 # Set your configuration here
