@@ -268,7 +268,7 @@ def get_jobs(conn, extend=None):
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
             else:
-                #print('DEBUG non-resource  ', attribs.name, ':', attribs.value)
+                #print('DEBUG non-resource: ', attribs.name, ':', attribs.value)
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
