@@ -202,7 +202,7 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
 ### Updating the Python Virtual Environments 
 
-    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
+    $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ pip freeze requirements_pbsweb_before.txt
     (pbsweb)$ pip-review -i
 
@@ -223,7 +223,7 @@ Remove what you no longer need.
 These are a few tests to check `pbs.py` works OK and to demonstrate how to
 query PBS data structures.
 
-    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
+    $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ 
     $ cd tests
 
