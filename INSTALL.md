@@ -20,7 +20,7 @@
    * [Command Line Tests](#command-line-tests)
    * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
 * [Notes](#notes)
-* [Files and Directories](#files-and-directories)
+   * [Files and Directories](#files-and-directories)
    * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
 
 ## Software Required
