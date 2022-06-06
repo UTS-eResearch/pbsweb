@@ -30,7 +30,7 @@ The install documentation and the install scripts are based on a Red Hat like di
 The application will work on Debian based distributions but you will need to work out 
 the slightly different names for some packages. 
 
-Likewise you can also use Apache instead of ngix but you will need to change some commands.
+Likewise you can also use Apache instead of NGINX but you will need to change some commands.
  
 ## 1. Checkout the pbsweb Repo
 
@@ -83,7 +83,7 @@ node where you will later run `swig_compile_pbs.sh` from.
 
 ## 4. Configure PBS
 
-Now we need to add or nginx to the list of PBS server operators.
+Now we need to add NGINX to the list of PBS server operators.
 
 The app runs as `nginx` so this needs permission to query qstat. Otherwise 
 `pbs.pbs_statjob()` will return an empty list.
@@ -94,7 +94,7 @@ Check the list of current operators:
 
     $ qmgr -c 'print server' | grep operators
 
-Add nginx to the list of operators. Note the use of `+=` and the `@*` at the end!
+Add `nginx` to the list of operators. Note the use of `+=` and the `@*` at the end!
 
     $ qmgr
     Qmgr: set server operators += nginx@*
@@ -103,21 +103,21 @@ Check the list of current operators again:
     
     $ qmgr -c 'print server' | grep operators
 
-## 5. Configure Nginx 
+## 5. Configure NGINX 
 
-There is an example Nginx configuration file in the directory `confs/`. 
+There is an example NGINX configuration file in the directory `confs/`. 
 Note that this configuration example is for a non-TLS site. 
 It's up to you to configure this for a TLS site with a valid certificate.
 
 Edit `conf/nginx_default.conf` to suit and copy it to `conf/default.conf`.
 
-Nginx expects this to be named `default.conf` and also by doing this any upgrades 
-to pbsweb will not overwrite your custom `default.conf`. Then copy it to your nginx 
+NGINX expects this to be named `default.conf` and also by doing this any upgrades 
+to pbsweb will not overwrite your custom `default.conf`. Then copy it to your NGINX 
 web server.
 
     $ sudo cp confs/default.conf /etc/nginx/conf.d/default.conf
 
-Restart nginx and check its status to make sure its running OK:
+Restart NGINX and check its status to make sure its running OK:
 
     $ sudo systemctl restart nginx.service
     $ sudo systemctl status  nginx.service
