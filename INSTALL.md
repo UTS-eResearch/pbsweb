@@ -1,20 +1,45 @@
-# Installation 
+# Installation
+
+* [Software Required](#software-required)
+* [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
+* [1. Checkout the pbsweb Repo](#1-checkout-the-pbsweb-repo)
+* [2. Ensure Host "pbsserver" can be Found](#2-ensure-host-pbsserver-can-be-found)
+* [3. Install the PBS pbs_ifl.h File](#3-install-the-pbs-pbs_iflh-file)
+* [4. Configure PBS](#4-configure-pbs)
+* [5. Configure NGINX](#5-configure-nginx)
+* [6. Run the Dependencies Install Script](#6-run-the-dependencies-install-script)
+* [7. Run the SWIG Script](#7-run-the-swig-script)
+* [8. Run the PBSWeb Install Script](#8-run-the-pbsweb-install-script)
+* [9. Start the Emperor](#9-start-the-emperor)
+* [10. Check pbsweb is Working !](#10-check-pbsweb-is-working-)
+* [Updating pbsweb](#updating-pbsweb)
+   * [Updating pbsweb](#updating-pbsweb-1)
+   * [Updating the Python Virtual Environments](#updating-the-python-virtual-environments)
+* [Removing pbsweb](#removing-pbsweb)
+* [Tests](#tests)
+   * [Command Line Tests](#command-line-tests)
+   * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
+* [Notes](#notes)
+   * [Files and Directories](#files-and-directories)
+   * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
 
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
-* Apache or Nginx webserver
-* This software "pbsweb" downloaded from <https://github.com/UTS-eResearch/pbsweb>  {{ todo }} 
+* This software "pbsweb" downloaded from either <https://github.com/UTS-eResearch/pbsweb>  
+or <https://github.com/speleolinux/pbsweb>.
 * PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
   We are using PBS Pro version 2021.1.0.
-* GCC
+* The file `pbs_ifl.h` from your PBS installation.
+* GCC - the GNU Compiler.
 * Openssl-devel
-* SWIG - Software Wrapper and Interface Generator
-* Python development packages (python38-devel)
+* SWIG - Software Wrapper and Interface Generator.
+* Python 3.8 development packages.
 * Python 3.8 virtual environment with:
-    - Bottle micro web framework
-    - Jinja2 templating engine
-    - UWSGI server to run the web app
+    - Bottle micro web framework,
+    - Jinja2 templating engine,
+    - uWSGI server to run the web app.
+* Apache or NGINX webserver.
 
 There are two install scripts which aid the installation
 (`install_dependencies.sh` & `install_pbsweb.sh`) but there are still quite a
@@ -29,7 +54,7 @@ The install documentation and the install scripts are based on a Red Hat like di
 The application will work on Debian based distributions but you will need to work out 
 the slightly different names for some packages. 
 
-Likewise you can also use Apache instead of ngix but you will need to change some commands.
+Likewise you can also use Apache instead of NGINX but you will need to change some commands.
  
 ## 1. Checkout the pbsweb Repo
 
@@ -82,7 +107,7 @@ node where you will later run `swig_compile_pbs.sh` from.
 
 ## 4. Configure PBS
 
-Now we need to add or nginx to the list of PBS server operators.
+Now we need to add NGINX to the list of PBS server operators.
 
 The app runs as `nginx` so this needs permission to query qstat. Otherwise 
 `pbs.pbs_statjob()` will return an empty list.
@@ -93,7 +118,7 @@ Check the list of current operators:
 
     $ qmgr -c 'print server' | grep operators
 
-Add nginx to the list of operators. Note the use of `+=` and the `@*` at the end!
+Add `nginx` to the list of operators. Note the use of `+=` and the `@*` at the end!
 
     $ qmgr
     Qmgr: set server operators += nginx@*
@@ -102,21 +127,21 @@ Check the list of current operators again:
     
     $ qmgr -c 'print server' | grep operators
 
-## 5. Configure Nginx 
+## 5. Configure NGINX 
 
-There is an example Nginx configuration file in the directory `confs/`. 
+There is an example NGINX configuration file in the directory `confs/`. 
 Note that this configuration example is for a non-TLS site. 
 It's up to you to configure this for a TLS site with a valid certificate.
 
 Edit `conf/nginx_default.conf` to suit and copy it to `conf/default.conf`.
 
-Nginx expects this to be named `default.conf` and also by doing this any upgrades 
-to pbsweb will not overwrite your custom `default.conf`. Then copy it to your nginx 
+NGINX expects this to be named `default.conf` and also by doing this any upgrades 
+to pbsweb will not overwrite your custom `default.conf`. Then copy it to your NGINX 
 web server.
 
     $ sudo cp confs/default.conf /etc/nginx/conf.d/default.conf
 
-Restart nginx and check its status to make sure its running OK:
+Restart NGINX and check its status to make sure its running OK:
 
     $ sudo systemctl restart nginx.service
     $ sudo systemctl status  nginx.service
@@ -202,7 +227,7 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
 ### Updating the Python Virtual Environments 
 
-    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
+    $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ pip freeze requirements_pbsweb_before.txt
     (pbsweb)$ pip-review -i
 
@@ -223,7 +248,7 @@ Remove what you no longer need.
 These are a few tests to check `pbs.py` works OK and to demonstrate how to
 query PBS data structures.
 
-    $ source /varwww/wsgi/virtualenvs/pbsweb/bin/activate
+    $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ 
     $ cd tests
 
@@ -272,6 +297,29 @@ as in the screenshot in the Introduction.
 Any errors will be visible in the terminal.
 
 ## Notes
+
+### Files and Directories
+
+Files:
+
+    pbsweb.py                   The main pbsweb application.
+    pbsutils.py                 Module containing utility functions for the pbsweb application.
+    swig_compile_pbs.sh         Run this to create _pbs.so
+    pbs.i                       Used by swig_compile_pbs.sh
+    requirements.txt            Python requirements file.
+    install_dependencies.sh     Installs the dependencies of pbsweb. Run this first.
+    install_pbsweb.sh           Installs pbsweb into production or test.
+
+    tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
+    tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
+    tests/test_pbs_queues.py       Prints the queues and their attributes.
+
+Directories:
+
+    conf/    Contains configuration files.
+    static/  Contains static resources like stylesheets.
+    views/   Contains templates for the pbsweb bottle application.
+    tests/   Contains all the tests.
 
 ### The Two Python 3.8 Virtual Environments
 
