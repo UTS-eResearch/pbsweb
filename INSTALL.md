@@ -298,7 +298,7 @@ Any errors will be visible in the terminal.
 
 ## Notes
 
-## Files and Directories
+### Files and Directories
 
 Files:
 
