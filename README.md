@@ -14,29 +14,6 @@ and my personal site at <https://github.com/speleolinux/pbsweb>.
 ![Screenshot showing PBSWeb](pbsweb_screenshot.png)  
 Screenshot showing the web application.
 
-## Files and Directories
-
-Files:
-
-    pbsweb.py                   The main pbsweb application.
-    pbsutils.py                 Module containing utility functions for the pbsweb application.
-    swig_compile_pbs.sh         Run this to create _pbs.so
-    pbs.i                       Used by swig_compile_pbs.sh
-    requirements.txt            Python requirements file.
-    install_dependencies.sh     Installs the dependencies of pbsweb. Run this first.
-    install_pbsweb.sh           Installs pbsweb into production or test.
-
-    tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
-    tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
-    tests/test_pbs_queues.py       Prints the queues and their attributes.
-
-Directories:
-
-    conf/    Contains configuration files.
-    static/  Contains static resources like stylesheets.
-    views/   Contains templates for the pbsweb bottle application.
-    tests/   Contains all the tests.
-
 ## Software Required
 
 See INSTALL.md
