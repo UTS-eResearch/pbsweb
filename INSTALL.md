@@ -1,4 +1,27 @@
-# Installation 
+# Installation
+
+* [Software Required](#software-required)
+* [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
+* [1. Checkout the pbsweb Repo](#1-checkout-the-pbsweb-repo)
+* [2. Ensure Host "pbsserver" can be Found](#2-ensure-host-pbsserver-can-be-found)
+* [3. Install the PBS pbs_ifl.h File](#3-install-the-pbs-pbs_iflh-file)
+* [4. Configure PBS](#4-configure-pbs)
+* [5. Configure NGINX](#5-configure-nginx)
+* [6. Run the Dependencies Install Script](#6-run-the-dependencies-install-script)
+* [7. Run the SWIG Script](#7-run-the-swig-script)
+* [8. Run the PBSWeb Install Script](#8-run-the-pbsweb-install-script)
+* [9. Start the Emperor](#9-start-the-emperor)
+* [10. Check pbsweb is Working !](#10-check-pbsweb-is-working-)
+* [Updating pbsweb](#updating-pbsweb)
+   * [Updating pbsweb](#updating-pbsweb-1)
+   * [Updating the Python Virtual Environments](#updating-the-python-virtual-environments)
+* [Removing pbsweb](#removing-pbsweb)
+* [Tests](#tests)
+   * [Command Line Tests](#command-line-tests)
+   * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
+* [Notes](#notes)
+* [Files and Directories](#files-and-directories)
+   * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
 
 ## Software Required
 
