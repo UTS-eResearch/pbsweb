@@ -3,18 +3,19 @@
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
-* Apache or Nginx webserver
 * This software "pbsweb" downloaded from <https://github.com/UTS-eResearch/pbsweb>  {{ todo }} 
 * PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
   We are using PBS Pro version 2021.1.0.
-* GCC
+* The file `pbs_ifl.h` from your PBS installation.
+* GCC - the GNU Compiler.
 * Openssl-devel
-* SWIG - Software Wrapper and Interface Generator
-* Python development packages (python38-devel)
+* SWIG - Software Wrapper and Interface Generator.
+* Python 3.8 development packages.
 * Python 3.8 virtual environment with:
-    - Bottle micro web framework
-    - Jinja2 templating engine
-    - UWSGI server to run the web app
+    - Bottle micro web framework,
+    - Jinja2 templating engine,
+    - uWSGI server to run the web app.
+* Apache or NGINX webserver.
 
 There are two install scripts which aid the installation
 (`install_dependencies.sh` & `install_pbsweb.sh`) but there are still quite a
