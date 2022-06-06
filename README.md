@@ -9,6 +9,7 @@ General information on PBS can be found at its Wikipedia entry
 [Portable Batch System](https://en.wikipedia.org/wiki/Portable_Batch_System) and the 
 [PBS Professional Open Source Project](https://www.pbspro.org) homepage.
 This project is hosted at the eResearch site at Github <https://github.com/UTS-eResearch/pbsweb>
+and my personal site at <https://github.com/speleolinux/pbsweb>.
 
 ![Screenshot showing PBSWeb](pbsweb_screenshot.png)  
 Screenshot showing the web application.

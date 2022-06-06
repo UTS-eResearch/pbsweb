@@ -3,7 +3,8 @@
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
-* This software "pbsweb" downloaded from <https://github.com/UTS-eResearch/pbsweb>  {{ todo }} 
+* This software "pbsweb" downloaded from either <https://github.com/UTS-eResearch/pbsweb>  
+or <https://github.com/speleolinux/pbsweb>.
 * PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
   We are using PBS Pro version 2021.1.0.
 * The file `pbs_ifl.h` from your PBS installation.
