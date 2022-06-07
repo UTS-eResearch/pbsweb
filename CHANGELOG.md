@@ -1,5 +1,11 @@
 # Change Log
 
+Important changes to this project will be documented in this file.
+
+## Unreleased 
+
+Changes: Use Python 3.8 instead of Python 2.7.
+
 ## 1.1.0 -- 12 Nov 2020
 
 12 Nov 2020
