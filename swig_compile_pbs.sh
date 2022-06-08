@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# This script uses the PBS supplied include file pbs_ifl.h (and pbs.i) 
+# This script uses the PBS supplied include file pbs_ifl.h and pbs.i
 # to create pbs.py, pbs_wrap.c and _pbs.so.
+# This script must be run as a normal user and not run as root.
+#
+# Usage: 
+# 
+#   $ ./swig_compile_pbs.sh
 #
 # Notes:
 # 1. The package "openssl-devel" provides the libs to link with, 
@@ -14,16 +19,31 @@
 # Set your configuration here
 #############################
 
-conf="/etc/pbs.conf"  # PBS configuration file
+# Location of your PBS configuration file
+conf="/etc/pbs.conf"  
 
 # Specify here where the include files are for the version of Python that you are using.
 # If you are using a Python in a virtual environment then use the include location that 
 # the virtual env was derived from.
 PYTHON_INCL="/usr/include/python3.8"
 
+# Location of the swig exectable.
 SWIG_EXEC="/usr/bin/swig"
 
 # You should not need to change anything below here.
+
+#################
+# Start the Build
+#################
+
+# Make sure the user is not running this script as root.
+if [[ $EUID -eq 0 ]]; then
+   echo "You should NOT be root to run this script."
+   echo "You should run it as an unprivileged user."
+   echo "Exiting"
+   echo ""
+   exit 0
+fi
 
 # Make sure we have a PBS config file.
 if [ ! -f $conf ]; then
@@ -57,10 +77,10 @@ fi
 #    -o _pbs.so 
 
 # Compiling
-gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c # -o tmp.so 
+gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c
 
 # Linking
-#gcc -shared -fpic -L/lib -L/opt/pbs/lib \
+# Not sure if we need to also add -L/lib
 gcc -shared -fpic -L/opt/pbs/lib \
     $PBS_EXEC/lib/libpbs.so pbs_wrap.o \
     -lpthread -lcrypto -lssl -lsec \
