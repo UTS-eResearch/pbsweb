@@ -127,11 +127,9 @@ There is an example NGINX configuration file in the directory `confs/`.
 Note that this configuration example is for a non-TLS site. 
 It's up to you to configure this for a TLS site with a valid certificate.
 
-Edit `conf/nginx_default.conf` to suit and copy it to `conf/default.conf`.
-
-NGINX expects this to be named `default.conf` and also by doing this any upgrades 
-to PBSWeb will not overwrite your custom `default.conf`. Then copy it to your NGINX 
-web server.
+Copy `conf/nginx_default.conf` to `conf/default.conf` and edit that to suit
+your NGINX setup. NGINX expects it to be named `default.conf`.
+Then copy it to your NGINX web server.
 
     $ sudo cp confs/default.conf /etc/nginx/conf.d/default.conf
 
@@ -149,15 +147,13 @@ It will ask for your password for sudo.
 
     $ ./install_dependencies.sh
 
-You can run this script again at any time. It will not overwrite existing files or directories.
+You can run this script again at any time.
 
 ### 7. Run the SWIG Script
 
 The SWIG package (swig) will have been installed by the `install_dependencies.sh` 
-script above.
-
-SWIG stands for Software Wrapper and Interface Generator and allows us to 
-create a python module that allows python scripts to run PBS commands.
+script above. SWIG stands for Software Wrapper and Interface Generator and allows 
+us to create a python module that allows python scripts to run PBS commands.
 You will also need the PBS `pbs_ifl.h` file that comes with your PBS. 
 
 Edit the shell script `swig_compile.sh` and ensure that the variables at the
@@ -182,7 +178,8 @@ you can run this script without sudo.
 
 Your nearly finished :-) 
 
-This install script has now setup the uWSGI applications so we can now start the 
+This install script has now setup the uWSGI applications so we can now start the
+uWSGI processes. 
 
 ### 9. Start the Emperor
 
@@ -202,7 +199,7 @@ automatically at system startup time.
 
 Note: Emperor will restart any application that stops if the application has an INI file
 under the `confs` directory. If you don't want an application to start rename its 
-INI file to, for instance, `other.ini_STOPPED`.
+INI file to, for instance, `pbsweb_test.ini_OFF`.
 
 ### 10. Check PBSWeb is Working !
 
@@ -212,16 +209,27 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
 ## Updating the Python Virtual Environments 
 
+Occasionally you can check if there are updates to the Python packages in the
+two virtual environments.
+
     $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
     (pbsweb)$ pip freeze > requirements_pbsweb_before.txt
     (pbsweb)$ pip-review -i
 
-Similarly with the emperor environment.
+Using `pip-review -i` will do an interactive check for updates.
+
+Similarly check for updates for the emperor environment.
 
 ## Updating PBSWeb
 
+Update your repo with the latest PBSWeb code and update your test application:
+
     $ git pull
     $ ./install_pbsweb.sh test
+
+If this test application still works OK then you can update the production application:
+
+    $ ./install_pbsweb.sh prod
 
 ## Removing PBSWeb
 
