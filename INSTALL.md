@@ -195,16 +195,16 @@ This install script has now setup the uWSGI applications so we can now start the
 Now we can start the uWSGI emperor service. This will start its "vassals" i.e. 
 the pbsweb application.
     
-    # systemctl start emperor.uwsgi.service
+    $ sudo systemctl start emperor.uwsgi.service
 
 Checks its status with:
 
-    # systemctl status emperor.uwsgi.service
+    $ sudo systemctl status emperor.uwsgi.service
 
 If there are no errors you can now "enable" it so that it will load
 automatically at system startup time.
 
-    # systemctl enable emperor.uwsgi.service
+    $ sudo systemctl enable emperor.uwsgi.service
 
 Note: Emperor will restart any application that stops if the application has an INI file
 under the `confs` directory. If you don't want an application to start rename its 
@@ -216,22 +216,18 @@ At this stage you can test the web application by going to `http://your-server/s
 
 Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
-## Updating pbsweb
-
-{{ todo }}
-
-### Updating pbsweb
-
-    $ git pull
-    $ ./install_pbsweb.sh test
-
-### Updating the Python Virtual Environments 
+## Updating the Python Virtual Environments 
 
     $ source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
-    (pbsweb)$ pip freeze requirements_pbsweb_before.txt
+    (pbsweb)$ pip freeze > requirements_pbsweb_before.txt
     (pbsweb)$ pip-review -i
 
 Similarly with the emperor environment.
+
+## Updating pbsweb
+
+    $ git pull
+    $ ./install_pbsweb.sh test
 
 ## Removing pbsweb
 
@@ -298,17 +294,18 @@ Any errors will be visible in the terminal.
 
 ## Notes
 
-### Files and Directories
+### Main Files and Directories
 
 Files:
 
     pbsweb.py                   The main pbsweb application.
     pbsutils.py                 Module containing utility functions for the pbsweb application.
-    swig_compile_pbs.sh         Run this to create _pbs.so
+    swig_compile_pbs.sh         Run this to create _pbs.so and pbs.py
     pbs.i                       Used by swig_compile_pbs.sh
-    requirements.txt            Python requirements file.
     install_dependencies.sh     Installs the dependencies of pbsweb. Run this first.
     install_pbsweb.sh           Installs pbsweb into production or test.
+    requirements_emperor.txt    Python requirements file, known versions that work.
+    requirements_pbsweb.txt     Python requirements file, known versions that work.
 
     tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
     tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
