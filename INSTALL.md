@@ -1,32 +1,32 @@
-# Installation
+# Installing PBSWeb
 
 * [Software Required](#software-required)
-* [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
-* [1. Checkout the pbsweb Repo](#1-checkout-the-pbsweb-repo)
-* [2. Ensure Host "pbsserver" can be Found](#2-ensure-host-pbsserver-can-be-found)
-* [3. Install the PBS pbs_ifl.h File](#3-install-the-pbs-pbs_iflh-file)
-* [4. Configure PBS](#4-configure-pbs)
-* [5. Configure NGINX](#5-configure-nginx)
-* [6. Run the Dependencies Install Script](#6-run-the-dependencies-install-script)
-* [7. Run the SWIG Script](#7-run-the-swig-script)
-* [8. Run the PBSWeb Install Script](#8-run-the-pbsweb-install-script)
-* [9. Start the Emperor](#9-start-the-emperor)
-* [10. Check pbsweb is Working !](#10-check-pbsweb-is-working-)
-* [Updating pbsweb](#updating-pbsweb)
-   * [Updating pbsweb](#updating-pbsweb-1)
-   * [Updating the Python Virtual Environments](#updating-the-python-virtual-environments)
-* [Removing pbsweb](#removing-pbsweb)
+* [Installation Procedure](#installation-procedure)
+   * [1. Checkout the PBSWeb Repo](#1-checkout-the-pbsweb-repo)
+   * [2. Ensure Host "pbsserver" can be Found](#2-ensure-host-pbsserver-can-be-found)
+   * [3. Install the PBS pbs_ifl.h File](#3-install-the-pbs-pbs_iflh-file)
+   * [4. Configure PBS](#4-configure-pbs)
+   * [5. Configure NGINX](#5-configure-nginx)
+   * [6. Run the Dependencies Install Script](#6-run-the-dependencies-install-script)
+   * [7. Run the SWIG Script](#7-run-the-swig-script)
+   * [8. Run the PBSWeb Install Script](#8-run-the-pbsweb-install-script)
+   * [9. Start the Emperor](#9-start-the-emperor)
+   * [10. Check PBSWeb is Working !](#10-check-pbsweb-is-working-)
+* [Updating the Python Virtual Environments](#updating-the-python-virtual-environments)
+* [Updating PBSWeb](#updating-pbsweb)
+* [Removing PBSWeb](#removing-pbsweb)
 * [Tests](#tests)
    * [Command Line Tests](#command-line-tests)
    * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
 * [Notes](#notes)
-   * [Files and Directories](#files-and-directories)
+   * [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
    * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
+   * [List of Main Files and Directories](#list-of-main-files-and-directories)
 
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
-* This software "pbsweb" downloaded from either <https://github.com/UTS-eResearch/pbsweb>  
+* This software "PBSWeb" downloaded from either <https://github.com/UTS-eResearch/pbsweb>  
 or <https://github.com/speleolinux/pbsweb>.
 * PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
   We are using PBS Pro version 2021.1.0.
@@ -48,15 +48,9 @@ the install script because some of those steps are risky to automate in a script
 
 Follow the procedure below to perform the installation. 
 
-## Note on Linux Distribution and Webserver
-
-The install documentation and the install scripts are based on a Red Hat like distribution. 
-The application will work on Debian based distributions but you will need to work out 
-the slightly different names for some packages. 
-
-Likewise you can also use Apache instead of NGINX but you will need to change some commands.
+## Installation Procedure
  
-## 1. Checkout the pbsweb Repo
+### 1. Checkout the PBSWeb Repo
 
     $ cd
     $ mkdir git
@@ -65,9 +59,9 @@ Likewise you can also use Apache instead of NGINX but you will need to change so
 
 This will have downloaded the code into the directory `~/git/pbsweb/`.
 
-## 2. Ensure Host "pbsserver" can be Found
+### 2. Ensure Host "pbsserver" can be Found
 
-The pbsweb application expects to communicate with the PBS server via the 
+The PBSWeb application expects to communicate with the PBS server via the 
 hostname "pbsserver". The PBS server is usuallly the same as the head node.
 The easiest way to set this up is to ensure that "pbsserver" is an alias for 
 your head node in your `/etc/hosts` file. 
@@ -84,7 +78,7 @@ It will probably look like this:
 The hostname "pbsserver" is set in `pbsweb.py`. Its better to do the above
 rather than edit `pbsweb.py`.
  
-## 3. Install the PBS `pbs_ifl.h` File
+### 3. Install the PBS `pbs_ifl.h` File
 
 You will need the file `pbs_ifl.h` from your PBS installation. 
 
@@ -105,7 +99,7 @@ node where you will later run `swig_compile_pbs.sh` from.
     $ cd ~/git/pbsweb/
     $ cp /opt/pbs/include/pbs_ifl.h .
 
-## 4. Configure PBS
+### 4. Configure PBS
 
 Now we need to add NGINX to the list of PBS server operators.
 
@@ -127,7 +121,7 @@ Check the list of current operators again:
     
     $ qmgr -c 'print server' | grep operators
 
-## 5. Configure NGINX 
+### 5. Configure NGINX 
 
 There is an example NGINX configuration file in the directory `confs/`. 
 Note that this configuration example is for a non-TLS site. 
@@ -136,7 +130,7 @@ It's up to you to configure this for a TLS site with a valid certificate.
 Edit `conf/nginx_default.conf` to suit and copy it to `conf/default.conf`.
 
 NGINX expects this to be named `default.conf` and also by doing this any upgrades 
-to pbsweb will not overwrite your custom `default.conf`. Then copy it to your NGINX 
+to PBSWeb will not overwrite your custom `default.conf`. Then copy it to your NGINX 
 web server.
 
     $ sudo cp confs/default.conf /etc/nginx/conf.d/default.conf
@@ -146,7 +140,7 @@ Restart NGINX and check its status to make sure its running OK:
     $ sudo systemctl restart nginx.service
     $ sudo systemctl status  nginx.service
 
-## 6. Run the Dependencies Install Script
+### 6. Run the Dependencies Install Script
 
 This script will some system packages, system file and two python virtual environments.
 
@@ -157,7 +151,7 @@ It will ask for your password for sudo.
 
 You can run this script again at any time. It will not overwrite existing files or directories.
 
-## 7. Run the SWIG Script
+### 7. Run the SWIG Script
 
 The SWIG package (swig) will have been installed by the `install_dependencies.sh` 
 script above.
@@ -177,7 +171,7 @@ The above script runs `swig` which uses the SWIG interface file `pbs.i` to
 create `pbs.py` and `pbs_wrap.c`. Then it uses `gcc` to compile `pbs_wrap.c` 
 to create `_pbs.so`. The swig generated `pbs.py` imports `_pbs.so` at run time.
 
-## 8. Run the PBSWeb Install Script
+### 8. Run the PBSWeb Install Script
 
 Like the script to install the dependencies, this script
 will not run if you try to run it as root. 
@@ -190,10 +184,10 @@ Your nearly finished :-)
 
 This install script has now setup the uWSGI applications so we can now start the 
 
-## 9. Start the Emperor
+### 9. Start the Emperor
 
 Now we can start the uWSGI emperor service. This will start its "vassals" i.e. 
-the pbsweb application.
+the PBSWeb application.
     
     $ sudo systemctl start emperor.uwsgi.service
 
@@ -210,7 +204,7 @@ Note: Emperor will restart any application that stops if the application has an 
 under the `confs` directory. If you don't want an application to start rename its 
 INI file to, for instance, `other.ini_STOPPED`.
 
-## 10. Check pbsweb is Working !
+### 10. Check PBSWeb is Working !
 
 At this stage you can test the web application by going to `http://your-server/statuspbs/`
 
@@ -224,12 +218,12 @@ Click the links for the Nodes, Queues and Jobs. All should work mOK.
 
 Similarly with the emperor environment.
 
-## Updating pbsweb
+## Updating PBSWeb
 
     $ git pull
     $ ./install_pbsweb.sh test
 
-## Removing pbsweb
+## Removing PBSWeb
 
 Read the `install_dependencies.sh` script to see what it installed and where. 
 Remove what you no longer need.
@@ -294,29 +288,13 @@ Any errors will be visible in the terminal.
 
 ## Notes
 
-### Main Files and Directories
+### Note on Linux Distribution and Webserver
 
-Files:
+The install documentation and the install scripts are based on a Red Hat like distribution. 
+The application will work on Debian based distributions but you will need to work out 
+the slightly different names for some packages. 
 
-    pbsweb.py                   The main pbsweb application.
-    pbsutils.py                 Module containing utility functions for the pbsweb application.
-    swig_compile_pbs.sh         Run this to create _pbs.so and pbs.py
-    pbs.i                       Used by swig_compile_pbs.sh
-    install_dependencies.sh     Installs the dependencies of pbsweb. Run this first.
-    install_pbsweb.sh           Installs pbsweb into production or test.
-    requirements_emperor.txt    Python requirements file, known versions that work.
-    requirements_pbsweb.txt     Python requirements file, known versions that work.
-
-    tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
-    tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
-    tests/test_pbs_queues.py       Prints the queues and their attributes.
-
-Directories:
-
-    conf/    Contains configuration files.
-    static/  Contains static resources like stylesheets.
-    views/   Contains templates for the pbsweb bottle application.
-    tests/   Contains all the tests.
+Likewise you can also use Apache instead of NGINX but you will need to change some commands.
 
 ### The Two Python 3.8 Virtual Environments
 
@@ -327,8 +305,8 @@ If an app/vassal stops, then the Emperor will reload it.
 Even if you’re only running a single app using "Emperor" mode is still worth it. 
 
 They are setup using the following directory structure. 
-Where pbsweb is this application and "other" is some other WSGI application. 
-Note you can also have a test pbsweb app for testing purposes.
+Where PBSWeb is this application and "other" is some other WSGI application. 
+Note you can also have a test PBSWeb app for testing purposes.
 
     /var/www/wsgi/
      ├─ emperor.ini
@@ -372,4 +350,28 @@ Below is an example for the emperor, do the same for the pbsweb environment.
 
     (pbsweb) $ deactivate
     $ 
+
+### List of Main Files and Directories
+
+Files:
+
+    pbsweb.py                   The main PBSWeb application.
+    pbsutils.py                 Module containing utility functions for the PBSWeb application.
+    swig_compile_pbs.sh         Run this to create _pbs.so and pbs.py
+    pbs.i                       Used by swig_compile_pbs.sh
+    install_dependencies.sh     Installs the dependencies of PBSWeb. Run this first.
+    install_pbsweb.sh           Installs PBSWeb into production or test.
+    requirements_emperor.txt    Python requirements file, known versions that work.
+    requirements_pbsweb.txt     Python requirements file, known versions that work.
+
+    tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
+    tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
+    tests/test_pbs_queues.py       Prints the queues and their attributes.
+
+Directories:
+
+    conf/    Contains configuration files.
+    static/  Contains static resources like stylesheets.
+    views/   Contains templates for the PBSWeb bottle application.
+    tests/   Contains all the tests.
 
