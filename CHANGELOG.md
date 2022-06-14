@@ -1,14 +1,15 @@
 # Change Log
 
 Important changes to this project will be documented in this file.
-
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2-0.0.html).
 
 ## Unreleased 
 
 None yet.
 
-## 2.0.0 -- TODO June 2022
+## 2.0.0 - 14 June 2022
+
+2022-06-14: Release version 2.0.0 tagged v2.0.0
 
 2022-06-08:
 
@@ -17,7 +18,7 @@ None yet.
 - Lots of minor fixes.
 - Improved documentation.
 
-## 1.1.0 -- 12 Nov 2020
+## 1.1.0 - 12 Nov 2020
 
 2020-11-12: Corrected info on the sockets.
 
@@ -79,11 +80,11 @@ None yet.
  - Fix link to license.
  - Updated README & added screenshot.
 
-## 1.0.0 -- 23 Jan 2019
+## 1.0.0 - 23 Jan 2019
 
 Initial git commit and public release.
 
-## 0.1 -- Prior to 2019
+## 0.1.0 - Prior to 2019
 
 2018-11-28: Changed to use jinja2 templates.
 
