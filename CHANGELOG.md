@@ -7,7 +7,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2-0.0.htm
 
 None yet.
 
-## 2.0.0 - TODO June 2022
+## 2.0.0 - 14 June 2022
+
+2022-06-14: Release version 2.0.0 tagged v2.0.0
 
 2022-06-08:
 
@@ -82,7 +84,7 @@ None yet.
 
 Initial git commit and public release.
 
-## 0.1 - Prior to 2019
+## 0.1.0 - Prior to 2019
 
 2018-11-28: Changed to use jinja2 templates.
 
