@@ -38,7 +38,7 @@ if [ $# -lt 1 ]; then
     echo ""
     echo "You need to specify either test or prod (for production)."
     echo ""
-    exit 1;
+    exit 0;
 fi
 
 # Check user has entered a valid option.
@@ -48,6 +48,15 @@ elif [ $1 == 'prod' ]; then
     dest='/var/www/wsgi/apps/pbsweb'
 else
     echo "Error, unknown option: $1"
+    echo "Exiting."
+    exit 0
+fi
+
+# Exit if these files are not found.
+if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
+    echo "Error: missing pbs.py or _pbs.so"
+    echo "Perhaps you forgot to run the SWIG script?"
+    echo "Exiting."
     exit 0
 fi
 
@@ -72,12 +81,6 @@ fi
 
 if [ ! -d $dest ]; then
     mkdir -p $dest
-fi
-
-# Exit if these files are not found.
-if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
-    echo "Error: missing pbs.py or _pbs.so"
-    exit 0
 fi
 
 # Copy the configuration files.
