@@ -3,7 +3,7 @@
 # This installs or updates the application from the git directory
 # to the test or production website application destination.
 #
-# Usage: 
+# Usage:
 #
 #   $ ./install_pbsweb.sh test | prod
 
@@ -21,10 +21,41 @@ function will_install {
     # Show the user what will be installed by this script.
     echo "This script will install the following:"
     echo "  Configuration files to $confs"
-    echo "  Python code to $dest"
+    echo "  PBSWeb $version_num to $dest"
     echo "  Templates to ${dest}/views"
     echo ""
 }
+
+function update_version {
+    # If this repo is checked out at a tagged release version then just use the
+    # tag number only for the displayed version, like 2.0.0. If this repo is not
+    # at a tagged release then we wish to know the exact patch that a user might
+    # be using so use the long "git describe" string like 2.0.0-6-g382c9e0.
+    # The command "git describe" string format is:
+    #   'tag' - 'number of commits' - 'abbreviated commit name'
+    # e.g. git describe v2.0.0 --long
+    #      v2.0.0-0-g7ef3b13  <== The middle number is zero.
+    #
+    # ie.g. git describe --long
+    #      v2.0.0-6-g382c9e0  <== The middle number is not zero.
+    #
+    description=$(git describe --long)
+
+    version_num=$(echo $description | cut -d '-' -f1)
+    num_commits=$(echo $description | cut -d '-' -f2)
+    name_commit=$(echo $description | cut -d '-' -f3)
+    if [ $num_commits -eq 0 ]; then
+        # This is a tagged release.
+        cat pbsweb.py | sed "s/VERSION_STRING/$version_num/" > pbsweb.tmp
+    else
+        # This version has commits after the last tagged release.
+        cat pbsweb.py | sed "s/VERSION_STRING/$description/" > pbsweb.tmp
+    fi
+}
+
+######
+# Main
+######
 
 echo ""
 echo "------------------------"
@@ -60,10 +91,11 @@ if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
     exit 0
 fi
 
+update_version
 will_install
 
 # Check user really wants to install.
-# The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD. 
+# The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD.
 echo "This will install to ${1^^}"
 read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -96,10 +128,11 @@ else
 fi
 
 # Copy the python code.
-cp pbsweb.py $dest
+cp pbsweb.tmp ${dest}/pbsweb.py
 cp pbsutils.py $dest
 cp pbs.py $dest
 cp _pbs.so $dest
+rm -f pbsweb.tmp
 
 # Copy the HTML templates.
 cp -r views $dest

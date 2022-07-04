@@ -49,6 +49,9 @@ from bottle import jinja2_view as view
 # You need to set the hostname of the PBS Server
 pbsserver = 'hpcnode0'
 
+# This will be automatically updated by the install script.
+version = "VERSION_STRING"
+
 ########################
 # Functions defined here
 ########################
@@ -145,7 +148,7 @@ def nodes_page():
     nodes = node_attributes_reformat(nodes)
     node_totals = get_node_totals(nodes)
     now = datetime.datetime.now().strftime('%Y.%m.%d at %I:%M:%S %P')
-    return {'now':now, 'nodes':nodes, 'node_totals':node_totals} 
+    return {'now':now, 'nodes':nodes, 'node_totals':node_totals, 'version':version}
 
 @route('/queues')
 @view('queues.j2')
@@ -155,7 +158,7 @@ def queues_page():
     pbs.pbs_disconnect(conn)
     queues = queue_attributes_reformat(queues)
     now = datetime.datetime.now().strftime('%Y.%m.%d at %I:%M:%S %P')
-    return {'now':now, 'queues':queues}
+    return {'now':now, 'queues':queues, 'version':version}
 
 @route('/jobs')
 @view('jobs.j2')
@@ -165,14 +168,14 @@ def jobs_page():
     pbs.pbs_disconnect(conn)
     jobs = job_attributes_reformat(jobs)
     now = datetime.datetime.now().strftime('%Y.%m.%d at %I:%M:%S %P')
-    return {'now':now, 'jobs':jobs} 
+    return {'now':now, 'jobs':jobs, 'version':version}
 
 @route('/test')
 @view('test.j2')
 def test_page(): 
     now = datetime.datetime.now().strftime('%Y.%m.%d at %I:%M:%S %P')
     ncpus = [24,36,64]
-    return {'now':now, 'ncpus':ncpus}
+    return {'now':now, 'ncpus':ncpus, 'version':version}
 
 # Serve static files such as CSS, images and javascript. 
 # When running using run(host='localhost') this section will be invoked. 
