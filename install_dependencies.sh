@@ -9,6 +9,7 @@
 #
 #   $ ./install_dependencies.sh
 #
+# You can run this script again at any time.
 
 ###############
 # Configuration
@@ -86,6 +87,7 @@ if [ $# -gt 0 ]; then
     exit 0;
 fi
 
+# Check user is not running this script as root.
 if [[ $EUID -eq 0 ]]; then
    echo "You should NOT be root to run this script."
    echo "You should run it as an unprivileged user that has sudo rights."
@@ -94,6 +96,16 @@ if [[ $EUID -eq 0 ]]; then
    exit 0
 fi
 this_user="$USER"
+
+# Check that the required Python version exists on this system."
+which $python > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Could not find the required Python version on this system."
+    echo "The required version of Python is: $python"
+    echo "Try to install this version of Python and run this script again."
+    echo "Exiting."
+    exit 0
+fi
 
 # Show the user what will be installed by this script.
 will_install
@@ -144,14 +156,8 @@ for dir in $apps $confs $envs; do
     fi
 done
 
-echo "Checking that the correct Python version exists on this system."
-which $python > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "Could not find the correct Python version on this system. Exiting"
-    exit 0
-fi
-
 echo "Creating $python virtual environments."
+# Running these steps again does not raise any errors.
 $python -m venv ${envs}/emperor --prompt="emperor"
 $python -m venv ${envs}/pbsweb  --prompt="pbsweb"
 

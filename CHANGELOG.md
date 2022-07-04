@@ -5,7 +5,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2-0.0.htm
 
 ## Unreleased 
 
-None yet.
+- In `install_dependencies.sh`, moved python check to earlier. Minor changes to comments.
+
+This will become version 2.0.1
 
 ## 2.0.0 - 14 June 2022
 
@@ -13,7 +15,7 @@ None yet.
 
 2022-06-08:
 
-- Now uses Python 3-8 instead of Python 2-7.
+- Now uses Python 3.8 instead of Python 2.7.
 - Improved install scripts.
 - Lots of minor fixes.
 - Improved documentation.
@@ -24,8 +26,8 @@ None yet.
 
 2020-11-10:
 
- - max_runs updated to correct format.
- - Changed to make exec_hosts and exec_vnodes consistent.
+ - Updated `max_runs` to correct format.
+ - Changed to make `exec_hosts` and `exec_vnodes` consistent.
  - Merge pull requests from Hendrik von Schöning.
 
 2020-11-06:
@@ -42,7 +44,7 @@ None yet.
  - Show all hosts used by a job if it is run on multiple nodes (Hendrik von Schöning).
  - More stable when no memory resources were allocated (Hendrik von Schöning).
     
-2020-07-29: Updated max_run to correct syntax.
+2020-07-29: Updated `max_run` to correct syntax.
 
 2020-07-21:
 
@@ -50,7 +52,7 @@ None yet.
  - Changed hostname.
  - Changed python include.
 
-2020-04-07: Added _show_attr_name_remapping debugging function.
+2020-04-07: Added `_show_attr_name_remapping` debugging function.
 
 2020-04-02: Removed whitespace.
 
@@ -58,7 +60,7 @@ None yet.
 
 2019-08-01:
  
- - Attrib resource_list_walltime is always present.
+ - Attrib `resource_list_walltime` is always present.
  - Changed limit to requested.
 
 2019-07-31:
