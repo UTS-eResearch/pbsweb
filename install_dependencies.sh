@@ -9,6 +9,7 @@
 #
 #   $ ./install_dependencies.sh
 #
+# You can run this script again at any time.
 
 ###############
 # Configuration
@@ -156,6 +157,7 @@ for dir in $apps $confs $envs; do
 done
 
 echo "Creating $python virtual environments."
+# Running these steps again does not raise any errors.
 $python -m venv ${envs}/emperor --prompt="emperor"
 $python -m venv ${envs}/pbsweb  --prompt="pbsweb"
 
