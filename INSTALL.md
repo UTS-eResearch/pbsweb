@@ -78,7 +78,7 @@ To install a tagged release first list the tagged releases available:
 
 List the tagged releases:
 
-    $ pbsweb
+    $ cd pbsweb
     $ git tag
     v1.0.0
     v1.1.0
@@ -94,7 +94,7 @@ at the latest version. You can see this by running `git branch`.
     * (HEAD detached at v2.0.0)
       master
 
-Just remember that after the install you should swich back to the latest
+Just remember that after the install you should switch back to the latest
 version by checking out the "master" branch with this command:
 
     $ git checkout master
