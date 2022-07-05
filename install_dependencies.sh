@@ -160,6 +160,13 @@ done
 echo "Copying two PBSWeb configuration files for Nginx into /etc/nginx/conf.d/"
 sudo cp confs/nginx_pbsweb.conf /etc/nginx/conf.d/pbsweb.conf
 sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf
+# Reload nginx and check that there are no errors.
+sudo /usr/sbin/nginx -s reload
+if [ $? -ne 0 ]; then
+    # An error has occurred. Warn the user and continue the install.
+    echo "  ERROR: A reload of nginx failed. Check the status of your nginx web server."
+    echo "  The installation will continue."
+fi
 
 echo "Creating $python virtual environments."
 # Running these steps again does not raise any errors.
