@@ -7,26 +7,27 @@
     * [3. Ensure Host "pbsserver" can be Found](#3-ensure-host-pbsserver-can-be-found)
     * [4. Install the PBS pbs_ifl.h File](#4-install-the-pbs-pbs_iflh-file)
     * [5. Configure PBS](#5-configure-pbs)
-    * [6. Configure NGINX](#6-configure-nginx)
-    * [7. Run the Dependencies Install Script](#7-run-the-dependencies-install-script)
-    * [8. Run the SWIG Script](#8-run-the-swig-script)
-    * [9. Run the PBSWeb Install Script](#9-run-the-pbsweb-install-script)
-    * [10. Start the Emperor](#10-start-the-emperor)
-    * [11. Check PBSWeb is Working](#11-check-pbsweb-is-working)
+    * [6. Run the Dependencies Install Script](#6-run-the-dependencies-install-script)
+    * [7. Run the SWIG Script](#7-run-the-swig-script)
+    * [8. Run the PBSWeb Install Script](#8-run-the-pbsweb-install-script)
+    * [9. Start the Emperor](#9-start-the-emperor)
+    * [10. Check PBSWeb is Working](#10-check-pbsweb-is-working)
 * [Updating the Python Virtual Environments](#updating-the-python-virtual-environments)
 * [Updating PBSWeb](#updating-pbsweb)
 * [Removing PBSWeb](#removing-pbsweb)
 * [Tests](#tests)
-   * [Command Line Tests](#command-line-tests)
-   * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
+    * [Command Line Tests](#command-line-tests)
+    * [Web Application Test with Bottle’s in-built Server](#web-application-test-with-bottles-in-built-server)
 * [Notes](#notes)
-   * [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
-   * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
-   * [List of Main Files and Directories](#list-of-main-files-and-directories)
+    * [Obtaining the Version Number](#obtaining-the-version-number)
+    * [Note on Linux Distribution and Webserver](#note-on-linux-distribution-and-webserver)
+    * [The Two Python 3.8 Virtual Environments](#the-two-python-38-virtual-environments)
+    * [List of Main Files and Directories](#list-of-main-files-and-directories)
 
 ## Software Required
 
 * A Linux distrubution, either Centos 8, Rocky Linux 8 or recent Fedora.
+  [(See Note)](#note-on-linux-distribution-and-webserver)
 * This software "PBSWeb" downloaded from either <https://github.com/UTS-eResearch/pbsweb>  
 or <https://github.com/speleolinux/pbsweb>.
 * PBS Professional from <https://www.pbsworks.com> or OpenPBS from <https://www.pbspro.org>.     
@@ -40,7 +41,8 @@ or <https://github.com/speleolinux/pbsweb>.
     - Bottle micro web framework,
     - Jinja2 templating engine,
     - uWSGI server to run the web app.
-* Apache or NGINX webserver.
+* NGINX webserver.
+  [(See Note)](#note-on-linux-distribution-and-webserver)
 
 There are two install scripts which aid the installation
 (`install_dependencies.sh` & `install_pbsweb.sh`) but there are still quite a
@@ -168,35 +170,21 @@ Check the list of current operators again:
     
     $ qmgr -c 'print server' | grep operators
 
-### 6. Configure NGINX 
+### 6. Run the Dependencies Install Script
 
-There is an example NGINX configuration file in the directory `confs/`. 
-Note that this configuration example is for a non-TLS site. 
-It's up to you to configure this for a TLS site with a valid certificate.
+This script will install some system packages, create directories and services for
+the UWSGI service, copy two PBSWeb configuration files for the Nginx web server,
+and create two python virtual environments. When you run this script it will display
+details of what will be installed. 
 
-Copy `conf/nginx_default.conf` to `conf/default.conf` and edit that to suit
-your NGINX setup. NGINX expects it to be named `default.conf`.
-Then copy it to your NGINX web server.
-
-    $ sudo cp confs/default.conf /etc/nginx/conf.d/default.conf
-
-Restart NGINX and check its status to make sure its running OK:
-
-    $ sudo systemctl restart nginx.service
-    $ sudo systemctl status  nginx.service
-
-### 7. Run the Dependencies Install Script
-
-This script will some system packages, system file and two python virtual environments.
-
-This script will not run if you try to run it as root. Run it as a user that has sudo privileges.
-It will ask for your password for sudo.
+This script will not run if you try to run it as root. Run it as a user that
+has sudo privileges. It will ask for your password for sudo.
 
     $ ./install_dependencies.sh
 
-You can run this script again at any time.
+*You can run this script again at any time.*
 
-### 8. Run the SWIG Script
+### 7. Run the SWIG Script
 
 The SWIG package (swig) will have been installed by the `install_dependencies.sh` 
 script above. SWIG stands for Software Wrapper and Interface Generator and allows 
@@ -214,7 +202,7 @@ The above script runs `swig` which uses the SWIG interface file `pbs.i` to
 create `pbs.py` and `pbs_wrap.c`. Then it uses `gcc` to compile `pbs_wrap.c` 
 to create `_pbs.so`. The swig generated `pbs.py` imports `_pbs.so` at run time.
 
-### 9. Run the PBSWeb Install Script
+### 8. Run the PBSWeb Install Script
 
 Like the script to install the dependencies, this script
 will not run if you try to run it as root. 
@@ -228,7 +216,9 @@ Your nearly finished :-)
 This install script has now setup the uWSGI applications so we can now start the
 uWSGI processes. 
 
-### 10. Start the Emperor
+*You can run this script again to install a later PBSWeb version.*
+
+### 9. Start the Emperor
 
 Now we can start the uWSGI emperor service. This will start its "vassals" i.e. 
 the PBSWeb application.
@@ -248,7 +238,7 @@ Note: Emperor will restart any application that stops if the application has an 
 under the `confs` directory. If you don't want an application to start rename its 
 INI file to, for instance, `pbsweb_test.ini_OFF`.
 
-### 11. Check PBSWeb is Working
+### 10. Check PBSWeb is Working
 
 At this stage you can test the web application by going to `http://your-server/statuspbs/`
 
@@ -343,13 +333,31 @@ Any errors will be visible in the terminal.
 
 ## Notes
 
+### Obtaining the Version Number
+
+The version number of the PBSWeb that has been installed can be found two ways.
+
+1. It will be listed near the beginning of the installed program `/var/www/wsgi/apps/pbsweb/pbsweb.py`
+   as the value of the variable "version".    
+2. It will be displayed at the bottom of the PSWeb pages.
+
+There are two possible formats for the version.
+
+A format like this `v2.0.0` will be shown on tagged release versions.
+
+A format like this `v2.0.0-6-g382c9e0` will be shown for versions later than a
+tagged release. There are three parts separated by hyphens. The first part is
+the version number of the last tagged release, the middle number is the number
+of checkins since, and the last part is the short git repo checkin hash.
+
 ### Note on Linux Distribution and Webserver
 
 The install documentation and the install scripts are based on a Red Hat like distribution. 
 The application will work on Debian based distributions but you will need to work out 
 the slightly different names for some packages. 
 
-Likewise you can also use Apache instead of NGINX but you will need to change some commands.
+Likewise you can also use Apache instead of NGINX but you will need to change 
+the Nginx configuration files and some commands.
 
 ### The Two Python 3.8 Virtual Environments
 

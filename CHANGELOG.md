@@ -6,8 +6,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2-0.0.htm
 ## Unreleased 
 
 - In `install_dependencies.sh`, moved python check to earlier. Minor changes to comments.
+- In `install_pbsweb.sh`, moved missing files check to earlier.
+- Added PBSWeb conf files for Nginx, added lines to install them in install script.
+  Removed section on configuring Nginx from install doc.
 
-This will become version 2.0.1
+This will become version 2.1.0
 
 ## 2.0.0 - 14 June 2022
 
