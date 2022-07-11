@@ -3,6 +3,9 @@
 
 '''
 Test pbsutils.py
+    
+See the end of this script for how to show filtered jobs
+based on any string in the job attributes.
 '''
 
 import os, sys, datetime, time
@@ -27,6 +30,7 @@ except:
 def print_nodes(conn):
     nodes = get_nodes(conn)
     nodes = node_attributes_reformat(nodes)
+    print('=== Showing Attributes of all Nodes ===')
     for node in nodes:
         print('Node Name:  %s' % node['node_name'])
         for key in node.keys():
@@ -38,6 +42,7 @@ def print_nodes(conn):
 def print_queues(conn):
     queues = get_queues(conn)
     queues = queue_attributes_reformat(queues)
+    print('=== Showing Attributes of all Queues ===')
     for queue in queues:
         print('------ Queue Name: %s ------' % queue['queue_name'])
         for key in queue.keys():
@@ -46,6 +51,7 @@ def print_queues(conn):
 def print_jobs(conn):
     jobs = get_jobs(conn)
     jobs = job_attributes_reformat(jobs)
+    print('=== Showing Attributes of all Jobs ===')
     for job in jobs:
         print('\n------ Job ID: %s; Job Name: %s ------' % (job['job_id'], job['job_name']))
         for key in job.keys():
@@ -54,6 +60,7 @@ def print_jobs(conn):
 def print_jobs_filtered(conn):
     jobs = get_jobs(conn)
     jobs = job_attributes_reformat(jobs)
+    print('=== Showing Attributes of Filtered Jobs ===')
     for job in jobs:
         print('\n------ Job ID: %s; Job Name: %s ------' % (job['job_id'], job['job_name']))
         for key in job.keys():
