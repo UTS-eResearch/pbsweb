@@ -9,7 +9,7 @@ This code was developed by Mike Lake <Mike.Lake@uts.edu.au>.
 
 License:
 
-  Copyright 2019 University of Technology Sydney 
+  Copyright 2019 Mike Lake & University of Technology Sydney 
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
