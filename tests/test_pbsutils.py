@@ -15,37 +15,14 @@ try:
     # Running from above the tests directory.
     sys.path.append(os.path.abspath("./"))
     import pbs 
-    from pbsutils import get_nodes, get_queues, get_jobs
+    from pbsutils import get_nodes, get_queues, get_jobs, get_node_totals
     from pbsutils import node_attributes_reformat, queue_attributes_reformat, job_attributes_reformat
 except:
     # Running from within the tests directory.
     sys.path.append(os.path.abspath("../"))
     import pbs 
-    from pbsutils import get_nodes, get_queues, get_jobs
+    from pbsutils import get_nodes, get_queues, get_jobs, get_node_totals
     from pbsutils import node_attributes_reformat, queue_attributes_reformat, job_attributes_reformat
-
-def get_node_totals(nodes):
-    '''
-    Get totals of some attributes for all the nodes.
-    '''
-    totals = {}
-    totals['jobs_total'] = 0     # Total of all jobs across the cluster.
-    totals['cpus_available'] = 0 # Total of all available cpus across the cluster.
-    totals['cpus_assigned'] = 0  # Total of all assigned cpus across the cluster.
-    totals['mem_available'] = 0  # Total of all available memory across the cluster.
-    totals['mem_assigned'] = 0   # Total of all assigned memory across the cluster.
-
-    for n in nodes:
-        totals['jobs_total'] = totals['jobs_total'] + len(n['jobs'])
-        totals['cpus_available'] = totals['cpus_available'] + int(n['resources_available_ncpus'])
-        totals['cpus_assigned'] = totals['cpus_assigned'] + int(n['resources_assigned_ncpus'])
-        totals['mem_available'] = totals['mem_available'] + int(n['resources_available_mem'])
-        totals['mem_assigned'] = totals['mem_assigned'] + int(n['resources_assigned_mem'])
-    
-    totals['cpus_ratio'] = int(100 * float(totals['cpus_assigned']) / float(totals['cpus_available']) )
-    totals['mem_ratio']  = int(100 * float(totals['mem_assigned'])  / float(totals['mem_available']) )
-
-    return totals
 
 def print_nodes(conn):
     nodes = get_nodes(conn)
