@@ -1,6 +1,12 @@
 '''
 Module that contains utility functions for the pbsweb application.
 
+In thsi module there are some functions which have a debug variable set to
+False. Setting this to True in a function will show additional information
+when you run the command line test scripts under the test directory.
+However DO NOT set debug to True for your production system. The output 
+will go to your web application and it will be likely to fail.
+
 This code was developed by Mike Lake <Mike.Lake@uts.edu.au>.
 
 License:
@@ -64,7 +70,7 @@ def get_nodes (conn):
     Get information on the PBS nodes. It is the equivalent of "pbsnodes -a".
     This function returns a list of nodes, where each node is a dictionary.
 
-    Uncommenting the print statements in this function will show information like this:
+    Setting debug to True in this function will show information like this:
 
       ------------ hpcnode20 ------------------
       Mom : hpcnode20
@@ -89,20 +95,9 @@ def get_nodes (conn):
         resources_assigned : vmem = 0kb
       resv_enable : True
       sharing : default_shared
-
-    To make the returned dictionary simpler we rename all the resources_available and
-    resources_assigned above to be a key like this:
-        ...
-        resources_available : mem  => resources_available_mem
-        resources_assigned : ncpus => resources_assigned_ncpus
-        resources_assigned : ngpus => resources_assigned_ngpus
-        ... etc
-    This is done in the line below:
-        keyname = '%s_%s' % (attribs.name, attribs.resource)
-
-    We then append this dictionary to the list of nodes.
-
     '''
+
+    debug = False
     nodes = [] # This will contain a list of dictionaries.
 
     # The function pbs_statvnode (and likewise pbs_statque & pbs_statjob)
@@ -111,23 +106,33 @@ def get_nodes (conn):
     while b != None:
         attributes = {} # Init the dictionary to empty.
         attribs = b.attribs # The parameter attrib is a pointer to an attrl structure.
-        #print('------------', b.name, '------------------')
+        if debug:
+            print('------------', b.name, '------------------')
         attributes['node_name'] = b.name
         while attribs != None:
+            # To make the returned dictionary simpler we use a key name derived
+            # from merging the attribute name and attribute resource like this:
+            #   resources_available : mem  => resources_available_mem
+            #   resources_assigned : ncpus => resources_assigned_ncpus
+            #   resources_assigned : ngpus => resources_assigned_ngpus
+            #   etc ...
             if attribs.resource != None:
                 # The debugging print below here is indented a bit more to distinguish
                 # resource attributes from non-resource attributes.
-                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
+                if debug:
+                    print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
             else:
-                #print('  ', attribs.name, ':', attribs.value)
+                if debug:
+                    print('  ', attribs.name, ':', attribs.value)
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
 
             # This line must be present or you will loop forever!
             attribs = attribs.next
 
+        # We then append this dictionary to the list of nodes.
         nodes.append(attributes)
         b = b.next
 
@@ -163,27 +168,17 @@ def get_queues(conn):
        resources_assigned : mem      = 598gb
        resources_assigned : ncpus    = 57
        resources_assigned : nodect   = 29
-
-    To make the returned dictionary simpler we rename the name:resource above
-    to be a key like this:
-
-    resources_max : mem          =>  resources_max_mem
-    resources_max : ncpus        =>  resources_max_ncpus
-    resources_max : walltime     =>  resources_max_walltime
-    resources_default : walltime =>  resources_default_walltime
-    resources_assigned : mem     =>  resources_assigned_mem
-    resources_assigned : ncpus   =>  resources_assigned_ncpus
-    resources_assigned : nodect  =>  resources_assigned_nodect
     '''
 
+    debug = False
     queues = [] # This will contain a list of dictionaries.
 
     # Some of the attributes are not present for all queues so we list them all
     # here and in the loop below set them to None. For instance, a routing queue
     # does not have some of these attributes.
     attribute_names = ['resources_max_mem','resources_max_ncpus','resources_max_walltime', \
-            'resources_assigned_mem','resources_assigned_ncpus', \
-            'resources_default_walltime', 'max_run', 'state_count', 'acl_user_enable']
+        'resources_assigned_mem','resources_assigned_ncpus', 'resources_default_walltime', \
+        'max_run', 'state_count', 'acl_user_enable']
 
     b = pbs.pbs_statque(conn, '', None, None)
     while b != None:
@@ -192,18 +187,33 @@ def get_queues(conn):
             attributes[name] = None
 
         attribs = b.attribs
-        #print('METHODS: ', dir(attribs))  # Uncomment to see what methods are available.
-        #print('------------ Queue %s ------------' % b.name)
+        if debug:
+            # You can also get what methods are available by uncommenting the next print.
+            # Look for the methods without an underscore e.g.
+            #   'name', 'next', ' op', 'resource', 'this', 'value'.
+            #print('METHODS: ', dir(attribs))
+            print('------------ Queue %s ------------' % b.name)
         attributes['queue_name'] = b.name
         while attribs != None:
+            # To make the returned dictionary simpler we rename the name:resource above
+            # to be a key like this:
+            #   resources_max : mem          =>  resources_max_mem
+            #   resources_max : ncpus        =>  resources_max_ncpus
+            #   resources_max : walltime     =>  resources_max_walltime
+            #   resources_default : walltime =>  resources_default_walltime
+            #   resources_assigned : mem     =>  resources_assigned_mem
+            #   resources_assigned : ncpus   =>  resources_assigned_ncpus
+            #   resources_assigned : nodect  =>  resources_assigned_nodect
             if attribs.resource != None:
-                # The print below here is indented a bit more to distinguish
-                # resource attributes from non-resource attributes.
-                #print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
+                if debug:
+                    # The print here is indented a bit more to distinguish
+                    # resource attributes from non-resource attributes.
+                    print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 attributes[keyname] = attribs.value
             else:
-                #print('  ', attribs.name, ':', attribs.value)
+                if debug:
+                    print('  ', attribs.name, ':', attribs.value)
                 # e.g. acl_user_enable : True
                 attributes[attribs.name] = attribs.value
 
@@ -240,14 +250,15 @@ def get_jobs(conn, extend=None):
       etc ....
     '''
 
+    debug = False
     jobs = [] # This will contain a list of dictionaries.
 
     # Some jobs don't yet have a particular attribute as the job hasn't started yet.
     # We have to create that key and set it to something, otherwise we get errors like:
     #   NameError("name 'resources_used_ncpus' is not defined",)
     attribute_names = ['resources_used_ncpus', 'resources_used_mem', 'resources_used_vmem', \
-        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'etime', 'resources_time_left', \
-        'resources_used_cpupercent']
+        'resources_used_walltime', 'exec_host', 'exec_vnode', 'stime', 'etime', \
+        'resources_time_left', 'resources_used_cpupercent']
 
     b = pbs.pbs_statjob(conn, '', None, extend)
     while b != None:
@@ -259,16 +270,21 @@ def get_jobs(conn, extend=None):
             attributes[name] = '0:0:0'
 
         attribs = b.attribs
-        #print('DEBUG: -----------', b.name, '-------------------')
+        if debug:
+            print('-----------', b.name, '-------------------')
         attributes['job_id'] = b.name.split('.')[0] # b.name is a string like '137550.hpcnode0'
         while attribs != None:
             if attribs.resource != None:
-                #print('DEBUG resource:     ', attribs.name, ':', attribs.resource, '=', attribs.value)
+                if debug:
+                    # The print here is indented a bit more to distinguish
+                    # resource attributes from non-resource attributes.
+                    print('    ', attribs.name, ':', attribs.resource, '=', attribs.value)
                 keyname = '%s_%s' % (attribs.name, attribs.resource)
                 keyname = keyname.lower()
                 attributes[keyname] = attribs.value
             else:
-                #print('DEBUG non-resource: ', attribs.name, ':', attribs.value)
+                if debug:
+                    print('  ', attribs.name, ':', attribs.value)
                 keyname = attribs.name.lower()
                 attributes[keyname] = attribs.value
 
