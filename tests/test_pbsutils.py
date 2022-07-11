@@ -29,14 +29,8 @@ def print_nodes(conn):
     nodes = node_attributes_reformat(nodes)
     for node in nodes:
         print('Node Name:  %s' % node['node_name'])
-        print('     Mem:  ', node['resources_assigned_mem'], '/', node['resources_available_mem'], \
-            'GB = ', '%3d' % node['mem_ratio'], '% used')
-        print('     Cores:', node['resources_assigned_ncpus'],'/', node['resources_available_ncpus'], \
-            '=', '%3d' % node['cpu_ratio'], '% used')
-        
-        # Lots more keys can be shown.
-        #for key in node.keys():
-        #    print('    ', key, ' = ', node[key])
+        for key in node.keys():
+            print('    ', key, ' = ', node[key])
 
     print('\nNode Totals: ')
     print(get_node_totals(nodes))
@@ -66,7 +60,6 @@ def print_jobs_filtered(conn):
             if 'time' in key: 
                 print('  ', key, ' = ', job[key])
 
-
 if __name__ == '__main__':
 
     conn = pbs.pbs_connect(pbsserver) 
@@ -80,7 +73,6 @@ if __name__ == '__main__':
         sys.exit()
 
     if sys.argv[1] == 'nodes':
-        print('Nodes')
         print_nodes(conn)
     elif sys.argv[1] == 'queues':
         print_queues(conn)
