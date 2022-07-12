@@ -1,7 +1,7 @@
 '''
 Module that contains utility functions for the pbsweb application.
 
-In thsi module there are some functions which have a debug variable set to
+In this module there are some functions which have a debug variable set to
 False. Setting this to True in a function will show additional information
 when you run the command line test scripts under the test directory.
 However DO NOT set debug to True for your production system. The output 
