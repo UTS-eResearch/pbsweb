@@ -20,7 +20,7 @@ See INSTALL.md
 
 ## License
 
-Copyright 2019 Mike Lake, eResearch UTS
+Copyright 2019 Mike Lake & University of Technology Sydney
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software 
