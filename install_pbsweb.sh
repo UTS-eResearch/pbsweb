@@ -21,7 +21,7 @@ function will_install {
     # Show the user what will be installed by this script.
     echo "This script will install the following:"
     echo "  Configuration files to $confs"
-    echo "  PBSWeb $version_num to $dest"
+    echo "  PBSWeb $version_string to $dest"
     echo "  Templates to ${dest}/views"
     echo ""
 }
@@ -41,16 +41,17 @@ function update_version {
     #
     description=$(git describe --long)
 
-    version_num=$(echo $description | cut -d '-' -f1)
-    num_commits=$(echo $description | cut -d '-' -f2)
-    name_commit=$(echo $description | cut -d '-' -f3)
+    version_num=$(echo $description | cut -d '-' -f1)  # e.g. v2.0.0
+    num_commits=$(echo $description | cut -d '-' -f2)  # e.g. 6
+    name_commit=$(echo $description | cut -d '-' -f3)  # e.g. g382c9e0
     if [ $num_commits -eq 0 ]; then
         # This is a tagged release.
-        cat pbsweb.py | sed "s/VERSION_STRING/$version_num/" > pbsweb.tmp
+	version_string=$version_num
     else
         # This version has commits after the last tagged release.
-        cat pbsweb.py | sed "s/VERSION_STRING/$description/" > pbsweb.tmp
+	version_string=$description
     fi
+    cat pbsweb.py | sed "s/VERSION_STRING/$version_string/" > pbsweb.tmp
 }
 
 ######
