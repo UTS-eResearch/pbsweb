@@ -1,7 +1,7 @@
 '''
 Module that contains utility functions for the pbsweb application.
 
-In this module there are some functions which have a debug variable set to
+In thsi module there are some functions which have a debug variable set to
 False. Setting this to True in a function will show additional information
 when you run the command line test scripts under the test directory.
 However DO NOT set debug to True for your production system. The output 
@@ -389,11 +389,17 @@ def node_attributes_reformat(nodes):
 
 def queue_attributes_reformat(queues):
 
-    # Here we cover the special case of formatting the state count.
-    # It is an attribute like this:
+    # Here we cover the special cases of formatting state_count and max_run.
+    #
+    # state_count is an attribute like this:
     #   state_count : Transit:0 Queued:11 Held:0 Waiting:0 Running:20 Exiting:0 Begun:0
     # and we want it as a dictionary like this:
     #   state_count { 'Transit':0 'Queued':11 'Held':0 'Waiting':0 'Running':20 'Exiting':0 'Begun':0
+    #
+    # max_run may or may not be defined for a queue. If it is set, and not None,
+    # it will be like this [u:PBS_GENERIC=48] and we use split to extract the number.
+    # Otherwise it will be "None", see get_queues().
+
     for queue in queues:
         this_state = {}
         for key in queue.keys():
@@ -402,10 +408,10 @@ def queue_attributes_reformat(queues):
                 for item in state_count_list:
                     (name,value) = item.split(':')
                     this_state[name] = int(value)
-            if key == 'max_run':
+                queue['state_count'] = this_state
+            if key == 'max_run' and queue['max_run']:
                 max_run = int(queue['max_run'].split('=')[1].replace(']',''))
-        queue['max_run'] = max_run
-        queue['state_count'] = this_state
+                queue['max_run'] = max_run
 
         # Get the jobs queued and running from the state_count and not total_jobs.
         queue['jobs_running'] = queue['state_count']['Running']
