@@ -1,16 +1,20 @@
 # Change Log
 
 Important changes to this project will be documented in this file.
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2-0.0.html).
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased 
 
-- In `install_dependencies.sh`, moved python check to earlier. Minor changes to comments.
-- In `install_pbsweb.sh`, moved missing files check to earlier.
-- Added PBSWeb conf files for Nginx, added lines to install them in install script.
-  Removed section on configuring Nginx from install doc.
+None. 
 
-This will become version 2.1.0
+## 2.1.0 - 13 July 2022
+
+Release version 2.1.0 tagged v2.1.0
+
+- User no longer needs to configure Nginx themselves. The install script will do this.
+- Web page will display a more detailed version number if not a tagged release.
+- Fixed bug where a queue with no `max_run` set would raise an error.
+- Fixed error where `pbsserver` was not specified in `pbsweb.py`.
 
 ## 2.0.0 - 14 June 2022
 

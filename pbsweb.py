@@ -46,8 +46,8 @@ import bottle
 from bottle import route, static_file
 from bottle import jinja2_view as view
 
-# You need to set the hostname of the PBS Server
-pbsserver = 'hpcnode0'
+# This hostname should be set in your /etc/hosts file as an alias to your head node.
+pbsserver = 'pbsserver'
 
 # This will be automatically updated by the install script.
 version = "VERSION_STRING"
