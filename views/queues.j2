@@ -28,7 +28,7 @@ for detailed information on each queue. Q = number of queued jobs, R = number of
 {% endif %}
   </td>
   <td>
-{% if q.enabled %}
+{% if q.enabled == "True" %}
 yes
 {% else %}
 <span style="color:red">no</span>
