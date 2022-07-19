@@ -117,9 +117,9 @@ def shell_test():
     queues = get_queues(conn)
     queues = queue_attributes_reformat(queues)
     for queue in queues:
-        print '------ Queue Name: %s ------' % queue['queue_name']
+        print('\n------ Queue Name: %s ------' % queue['queue_name'])
         for key in queue.keys():
-            print '  ', key, ' = ', queue[key]
+            print('  ', key, ' = ', queue[key])
     '''
 
     '''
@@ -127,9 +127,9 @@ def shell_test():
     jobs = get_jobs(conn)
     jobs = job_attributes_reformat(jobs)
     for job in jobs:
-        print '\n------ Job ID: %s; Job Name: %s ------' % (job['job_id'], job['job_name'])
+        print('\n------ Job ID: %s; Job Name: %s ------' % (job['job_id'], job['job_name']))
         for key in job.keys():
-            print '  ', key, ' = ', job[key]
+            print('  ', key, ' = ', job[key])
     '''
 
 #####################
