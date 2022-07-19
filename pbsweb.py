@@ -98,7 +98,8 @@ def shell_test():
     # Print nodes information
     nodes = get_nodes(conn)
     nodes = node_attributes_reformat(nodes)
-    for node in sorted(nodes):
+    nodes.sort(key=lambda x: x['node_name'], reverse=False)
+    for node in nodes:
         print('Node Name: %s' % node['node_name'])
         print('  Mem:  ', node['resources_assigned_mem'], '/', node['resources_available_mem'], \
             'GB = ', '%3d' % node['mem_ratio'], '% used')
