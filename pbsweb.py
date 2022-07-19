@@ -79,10 +79,9 @@ def get_node_totals(nodes):
 
     return totals
 
-def shell_test():
+def shell_test_nodes():
     '''
-    Function to do some tests/debugging when running in the shell.
-    This is only used for debugging.
+    Debugging function to print NODE information when running in the shell.
     '''
 
     print('Running in the shell only.')
@@ -91,9 +90,6 @@ def shell_test():
         print('Error connecting to PBS server.')
         print('Have you set the PBS server hostname in this code?')
         sys.exit(1)
-
-    # Uncomment one or more of the sections below to print info on the nodes,
-    # queues and jobs.
 
     # Print nodes information
     nodes = get_nodes(conn)
@@ -112,7 +108,18 @@ def shell_test():
     print('\nNode Totals: ')
     print(get_node_totals(nodes))
 
+def shell_test_queues():
     '''
+    Debugging function to print QUEUE information when running in the shell.
+    '''
+
+    print('Running in the shell only.')
+    conn = pbs.pbs_connect(pbsserver) 
+    if conn < 0:
+        print('Error connecting to PBS server.')
+        print('Have you set the PBS server hostname in this code?')
+        sys.exit(1)
+
     # Print queues information
     queues = get_queues(conn)
     queues = queue_attributes_reformat(queues)
@@ -120,9 +127,19 @@ def shell_test():
         print('\n------ Queue Name: %s ------' % queue['queue_name'])
         for key in queue.keys():
             print('  ', key, ' = ', queue[key])
+
+def shell_test_jobs():
+    '''
+    Debugging function to print JOBS information when running in the shell.
     '''
 
-    '''
+    print('Running in the shell only.')
+    conn = pbs.pbs_connect(pbsserver) 
+    if conn < 0:
+        print('Error connecting to PBS server.')
+        print('Have you set the PBS server hostname in this code?')
+        sys.exit(1)
+
     # Print jobs information
     jobs = get_jobs(conn)
     jobs = job_attributes_reformat(jobs)
@@ -130,7 +147,6 @@ def shell_test():
         print('\n------ Job ID: %s; Job Name: %s ------' % (job['job_id'], job['job_name']))
         for key in job.keys():
             print('  ', key, ' = ', job[key])
-    '''
 
 #####################
 # Routes defined here
@@ -199,7 +215,9 @@ if __name__ == '__main__':
     #
     # Use this to run like a command line app i.e. ./pbsweb.py 
     # You must have run() above commented out.
-    shell_test()
+    #shell_test_nodes()
+    shell_test_queues()
+    #shell_test_jobs()
 else:
     app = application = bottle.default_app()
 
