@@ -102,9 +102,9 @@ def shell_test():
     for node in nodes:
         print('Node Name: %s' % node['node_name'])
         print('  Mem:  ', node['resources_assigned_mem'], '/', node['resources_available_mem'], \
-            'GB = ', '%3d' % node['mem_ratio'], '% used')
+            'GB = ', '%s' % node['mem_ratio'], '% used')
         print('  Cores:', node['resources_assigned_ncpus'],'/', node['resources_available_ncpus'], \
-            '=', '%3d' % node['cpu_ratio'], '% used')
+            '=', '%s' % node['cpu_ratio'], '% used')
 
         #for key in node.keys():
         #    print('   ', key, ' = ', node[key])
