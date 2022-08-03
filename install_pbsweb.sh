@@ -120,9 +120,9 @@ fi
 cp confs/emperor.ini /var/www/wsgi/
 
 if [ $1 == 'test' ]; then
-    cp confs/pbsweb_test.ini $confs
+    cp confs/pbsweb_test.ini ${confs}/
 elif [ $1 == 'prod' ]; then
-    cp confs/pbsweb.ini $confs
+    cp confs/pbsweb.ini ${confs}/
 else
     echo "Error, unknown option: $1"
     exit 0
@@ -140,8 +140,8 @@ cp -r views $dest
 cp -r static $dest
 
 # Touch the wsgi conf as this install may have updated any of the above files.
-touch $confs/pbsweb.ini
-touch $confs/pbsweb_test.ini
+touch ${confs}/pbsweb.ini
+touch ${confs}/pbsweb_test.ini
 
 echo ""
 echo "You may have to do this:"
