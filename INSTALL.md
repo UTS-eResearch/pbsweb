@@ -132,7 +132,11 @@ rather than edit `pbsweb.py`.
 You will need the file `pbs_ifl.h` from your PBS installation. 
 
 Where do I find `pbs_ifl.h`? For PBS Professional its in the development package.
-It's not in the client, execution or server packages.
+It's not in the client, execution or server packages. So you will need to install
+this package. In my case its named similarly to this `pbspro-devel-2021.1.0.x86_64.rpm`
+
+    $ rpm -i pbspro-devel-2021.1.0.x86_64.rpm
+    $
 
     $ rpmquery -ql pbspro-devel | grep pbs_ifl
     /opt/pbs/include/pbs_ifl.h
@@ -146,7 +150,7 @@ Once you have found this file copy it to the location on the login
 node where you will later run `swig_compile_pbs.sh` from.
 
     $ cd ~/git/pbsweb/
-    $ cp /opt/pbs/include/pbs_ifl.h .
+    $ cp /opt/pbs/include/pbs_ifl.h .  <== Do not forget the dot at the end.
 
 ### 5. Configure PBS
 
