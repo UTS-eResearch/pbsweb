@@ -146,4 +146,8 @@ touch ${confs}/pbsweb_test.ini
 echo ""
 echo "You may have to do this:"
 echo "sudo systemctl restart nginx.service"
+echo ""
+echo "An example PBSWeb page should now be available at:"
+echo "http://your_server/pbsweb.html"
+echo ""
 
