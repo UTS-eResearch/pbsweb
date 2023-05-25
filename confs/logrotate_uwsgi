@@ -1,0 +1,12 @@
+# Logrotate file for uWSGI, installed by PBSWeb.
+/var/log/uwsgi.log {
+    create 0664 nginx root
+    size 1M
+    rotate 1
+    missingok
+    nocompress
+    postrotate
+        systemctl restart emperor.uwsgi.service 2>/dev/null || true
+    endscript
+}
+
