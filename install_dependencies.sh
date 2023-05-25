@@ -24,7 +24,7 @@ envs='/var/www/wsgi/virtualenvs'
 python=python3.8
 
 # System packages to be installed via dnf.
-packages="python38-devel openssl-devel swig"
+packages="nginx python38-devel openssl-devel swig"
 
 ###########
 # Functions
@@ -157,11 +157,18 @@ for dir in $apps $confs $envs; do
     fi
 done
 
-echo "Copying two PBSWeb configuration files for Nginx into /etc/nginx/conf.d/"
+echo "Copying PBSWeb configuration files for Nginx into /etc/nginx/"
+if [[ -f /etc/nginx/nginx.conf && ! -f /etc/nginx/nginx.conf_ORIGINAL ]]; then
+    echo "Once only backup of existing nginx.conf to nginx.conf_ORIGINAL"
+    sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf_ORIGINAL
+fi
+sudo cp confs/nginx.conf /etc/nginx/
+sudo cp confs/nginx_default.conf /etc/nginx/conf.d/default.conf
 sudo cp confs/nginx_pbsweb.conf /etc/nginx/conf.d/pbsweb.conf
-sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf
-# Reload nginx and check that there are no errors.
-sudo /usr/sbin/nginx -s reload
+sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf_OFF
+
+# Start nginx and check that there are no errors.
+sudo systemctl start nginx
 if [ $? -ne 0 ]; then
     # An error has occurred. Warn the user and continue the install.
     echo "  ERROR: A reload of nginx failed. Check the status of your nginx web server."
