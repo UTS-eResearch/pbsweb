@@ -15,6 +15,7 @@
 # Configuration
 ###############
 
+html='/var/www/html'
 apps='/var/www/wsgi/apps'
 confs='/var/www/wsgi/confs'
 envs='/var/www/wsgi/virtualenvs'
@@ -166,6 +167,9 @@ sudo cp confs/nginx.conf /etc/nginx/
 sudo cp confs/nginx_default.conf /etc/nginx/conf.d/default.conf
 sudo cp confs/nginx_pbsweb.conf /etc/nginx/conf.d/pbsweb.conf
 sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf_OFF
+
+echo "Copying example PBS Status page into /var/www/html/"
+sudo cp static/pbsweb.html /var/www/html/
 
 # Start nginx and check that there are no errors.
 sudo systemctl start nginx
