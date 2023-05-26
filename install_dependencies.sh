@@ -41,16 +41,16 @@ function usage {
 
 function will_install {
     # Show the user what will be installed by this script.
-    echo "This script will install the following:"
-    echo -n "  System packages:"
+    echo "This script will perform the following:"
+    echo -n "  Install system packages:"
     for p in $packages; do
         echo -n "  $p"
     done
     echo ""
-    echo "  A systemd service \"emperor.uwsgi.service\" if not already installed."
+    echo "  Install a systemd service \"emperor.uwsgi.service\" if not already installed."
     echo "  Create directories /run/uwsgi and /var/www/wsgi"
-    echo "  Copy two PBSWeb configuration files for Nginx into /etc/nginx/conf.d/"
-    echo "  Two $python environments under $envs"
+    echo "  Copy configuration files to /etc/nginx/ and /var/www/"
+    echo "  Install two $python environments under $envs"
     echo ""
 }
 
