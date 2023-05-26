@@ -168,6 +168,9 @@ sudo cp confs/nginx_default.conf /etc/nginx/conf.d/default.conf
 sudo cp confs/nginx_pbsweb.conf /etc/nginx/conf.d/pbsweb.conf
 sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf_OFF
 
+echo "Copying UWSGI configuration file into /var/www/wsgi/"
+sudo cp confs/emperor.ini /var/www/wsgi/
+
 echo "Copying example PBS Status page into /var/www/html/"
 sudo cp static/pbsweb.html /var/www/html/
 

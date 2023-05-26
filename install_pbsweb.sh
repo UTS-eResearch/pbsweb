@@ -117,8 +117,6 @@ if [ ! -d $dest ]; then
 fi
 
 # Copy the configuration files.
-cp confs/emperor.ini /var/www/wsgi/
-
 if [ $1 == 'test' ]; then
     cp confs/pbsweb_test.ini ${confs}/
 elif [ $1 == 'prod' ]; then
