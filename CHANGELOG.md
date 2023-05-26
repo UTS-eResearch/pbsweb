@@ -3,9 +3,12 @@
 Important changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased 
+## Unreleased
 
-None. 
+- Added a log rotate so WSGI logs get rotated.
+- Added an example PBSWeb HTML page.
+- Added nginx config files and ensure nginx starts.
+- Minor changes and some bugs fixed.
 
 ## 2.1.0 - 13 July 2022
 
