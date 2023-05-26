@@ -49,7 +49,7 @@ function will_install {
     echo ""
     echo "  Install a systemd service \"emperor.uwsgi.service\" if not already installed."
     echo "  Create directories /run/uwsgi and /var/www/wsgi"
-    echo "  Copy configuration files to /etc/nginx/ and /var/www/"
+    echo "  Copy configuration files to /etc/nginx/  & /var/www/ & /etc/logrotate.d/"
     echo "  Install two $python environments under $envs"
     echo ""
 }
@@ -170,6 +170,9 @@ sudo cp confs/nginx_pbsweb_test.conf /etc/nginx/conf.d/pbsweb_test.conf_OFF
 
 echo "Copying UWSGI configuration file into /var/www/wsgi/"
 sudo cp confs/emperor.ini /var/www/wsgi/
+
+echo "Copying UWSGI log rotate file into //etc/logrotate.d/"
+sudo cp confs/logrotate_uwsgi /etc/logrotate.d/uwsgi
 
 echo "Copying example PBS Status page into /var/www/html/"
 sudo cp static/pbsweb.html /var/www/html/
