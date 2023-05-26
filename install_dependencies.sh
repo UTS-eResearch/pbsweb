@@ -175,7 +175,7 @@ sudo cp static/pbsweb.html /var/www/html/
 sudo systemctl start nginx
 if [ $? -ne 0 ]; then
     # An error has occurred. Warn the user and continue the install.
-    echo "  ERROR: A reload of nginx failed. Check the status of your nginx web server."
+    echo "  ERROR: nginx failed to start. Check the status of your nginx web server."
     echo "  The installation will continue."
 fi
 
