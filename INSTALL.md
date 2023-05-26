@@ -127,9 +127,9 @@ It will probably look like this:
 The hostname "pbsserver" is set in `pbsweb.py`. Its better to do the above
 rather than edit `pbsweb.py`.
  
-### 4. Install the PBS `pbs_ifl.h` File
+### 4. Copy your PBS `pbs_ifl.h` File
 
-You will need the file `pbs_ifl.h` from your PBS installation. 
+You will need a copy of the file `pbs_ifl.h` from your PBS installation. 
 
 Where do I find `pbs_ifl.h`? For PBS Professional its in the development package.
 It's not in the client, execution or server packages. So you will need to install
@@ -177,12 +177,12 @@ Check the list of current operators again:
 ### 6. Run the Dependencies Install Script
 
 This script will install some system packages, create directories and services for
-the UWSGI service, copy two PBSWeb configuration files for the Nginx web server,
+the UWSGI service, copy PBSWeb configuration files for the Nginx web server,
 and create two python virtual environments. When you run this script it will display
 details of what will be installed. 
 
 This script will not run if you try to run it as root. Run it as a user that
-has sudo privileges. It will ask for your password for sudo.
+has sudo privileges. It will ask for your password to use sudo.
 
     $ ./install_dependencies.sh
 
