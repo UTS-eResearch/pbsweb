@@ -85,7 +85,7 @@ else
 fi
 
 # Exit if these files are not found.
-if [ ! \( -f pbs.py -a -f _pbs.so \) ]; then
+if [ ! \( -f src/pbs.py -a -f src/_pbs.so \) ]; then
     echo "Error: missing pbs.py or _pbs.so"
     echo "Perhaps you forgot to run the SWIG script?"
     echo "Exiting."
