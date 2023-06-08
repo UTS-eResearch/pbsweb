@@ -1,3 +1,7 @@
+# Example requirements file for the PBSWeb virtual environment.
+# This is not used to install the environment. It is only here
+# to show what versions of python packages are known to work. 
+
 bottle==0.12.21
 Jinja2==3.1.2
 MarkupSafe==2.1.1

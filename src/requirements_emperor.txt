@@ -1,3 +1,7 @@
+# Example requirements file for the Emperor virtual environment.
+# This is not used to install the environment. It is only here
+# to show what versions of python packages are known to work. 
+
 packaging==21.3
 pip-review==1.1.1
 pyparsing==3.0.9
