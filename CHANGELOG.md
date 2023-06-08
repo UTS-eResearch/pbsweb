@@ -1,6 +1,6 @@
 # Change Log
 
-Important changes to this project will be documented in this file.
+Important changes to this project that affect users will be documented in this file.    
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
@@ -8,11 +8,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Added a log rotate so WSGI logs get rotated.
 - Added an example PBSWeb HTML page.
 - Added nginx config files and ensure nginx starts.
-- Minor changes and some bugs fixed.
+- Fixed missing comparison in template for queue.
+- Fixed print statements for Python 3.
+- Fixed bug as cpu and mem ratios are strings.
+- Fixed bug as in Python 3 dictionaries are no longer orderable.
+- Moved code and templates to under src/
 
 ## 2.1.0 - 13 July 2022
 
-Release version 2.1.0 tagged v2.1.0
+2022-07-13: Tagged v2.1.0
 
 - User no longer needs to configure Nginx themselves. The install script will do this.
 - Web page will display a more detailed version number if not a tagged release.
@@ -21,7 +25,7 @@ Release version 2.1.0 tagged v2.1.0
 
 ## 2.0.0 - 14 June 2022
 
-2022-06-14: Release version 2.0.0 tagged v2.0.0
+2022-06-14: Tagged v2.0.0
 
 2022-06-08:
 
@@ -31,6 +35,8 @@ Release version 2.1.0 tagged v2.1.0
 - Improved documentation.
 
 ## 1.1.0 - 12 Nov 2020
+
+2020-11-12: Tagged v1.1.0
 
 2020-11-12: Corrected info on the sockets.
 
