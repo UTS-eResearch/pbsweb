@@ -130,10 +130,13 @@ rather than edit `pbsweb.py`.
 ### 4. Copy your PBS `pbs_ifl.h` File
 
 You will need a copy of the file `pbs_ifl.h` from your PBS installation. 
+Where do I find `pbs_ifl.h`? 
 
-Where do I find `pbs_ifl.h`? For PBS Professional its in the development package.
+For PBS Professional its in the development package.
 It's not in the client, execution or server packages. So you will need to install
 this package. In my case its named similarly to this `pbspro-devel-2021.1.0.x86_64.rpm`
+The `pbs_ifl.h` is not included in this code as you should use the version that
+came with your PBS installation. 
 
     $ rpm -i pbspro-devel-2021.1.0.x86_64.rpm
     $
@@ -144,13 +147,11 @@ this package. In my case its named similarly to this `pbspro-devel-2021.1.0.x86_
 For OpenPBS it's to be found on Github here: 
 <https://github.com/PBSPro/pbspro/tree/master/src/include>  
 
-The `pbs_ifl.h` is not included in this code as you should use the version that
-came with your PBS installation. 
-Once you have found this file copy it to the location on the login
-node where you will later run `swig_compile_pbs.sh` from.
+Once you have found this file copy it to the "src" directory.
+The  `swig_compile_pbs.sh` script will look for it there.
 
     $ cd ~/git/pbsweb/
-    $ cp /opt/pbs/include/pbs_ifl.h .  <== Do not forget the dot at the end.
+    $ cp /opt/pbs/include/pbs_ifl.h  src/
 
 ### 5. Configure PBS
 
