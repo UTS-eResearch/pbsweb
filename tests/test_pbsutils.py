@@ -16,13 +16,13 @@ pbsserver = 'pbsserver'
 
 try:
     # Running from above the tests directory.
-    sys.path.append(os.path.abspath("./"))
+    sys.path.append(os.path.abspath("./src"))
     import pbs 
     from pbsutils import get_nodes, get_queues, get_jobs, get_node_totals
     from pbsutils import node_attributes_reformat, queue_attributes_reformat, job_attributes_reformat
 except:
     # Running from within the tests directory.
-    sys.path.append(os.path.abspath("../"))
+    sys.path.append(os.path.abspath("../src"))
     import pbs 
     from pbsutils import get_nodes, get_queues, get_jobs, get_node_totals
     from pbsutils import node_attributes_reformat, queue_attributes_reformat, job_attributes_reformat

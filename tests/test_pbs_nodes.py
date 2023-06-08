@@ -8,11 +8,11 @@ Show information on the nodes.
 import os, sys
 try:
     # Running from above the tests directory.
-    sys.path.append(os.path.abspath("./"))
+    sys.path.append(os.path.abspath("./src"))
     import pbs 
 except:
     # Running from within the tests directory.
-    sys.path.append(os.path.abspath("../"))
+    sys.path.append(os.path.abspath("../src"))
     import pbs 
 
 # You need to set the hostname of the PBS Server.
