@@ -51,7 +51,7 @@ function update_version {
         # This version has commits after the last tagged release.
 	version_string=$description
     fi
-    cat pbsweb.py | sed "s/VERSION_STRING/$version_string/" > pbsweb.tmp
+    cat src/pbsweb.py | sed "s/VERSION_STRING/$version_string/" > src/pbsweb.tmp
 }
 
 ######
@@ -127,15 +127,15 @@ else
 fi
 
 # Copy the python code.
-cp pbsweb.tmp ${dest}/pbsweb.py
-cp pbsutils.py $dest
-cp pbs.py $dest
-cp _pbs.so $dest
-rm -f pbsweb.tmp
+cp src/pbsweb.tmp ${dest}/pbsweb.py
+cp src/pbsutils.py $dest
+cp src/pbs.py $dest
+cp src/_pbs.so $dest
+rm -f src/pbsweb.tmp
 
 # Copy the HTML templates.
-cp -r views $dest
-cp -r static $dest
+cp -r src/views $dest
+cp -r src/static $dest
 
 # Touch the wsgi conf as this install may have updated any of the above files.
 touch ${confs}/pbsweb.ini

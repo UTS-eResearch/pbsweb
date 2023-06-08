@@ -175,7 +175,7 @@ echo "Copying UWSGI log rotate file into /etc/logrotate.d/"
 sudo cp confs/logrotate_uwsgi /etc/logrotate.d/uwsgi
 
 echo "Copying example PBS Status page into /var/www/html/"
-sudo cp static/pbsweb.html /var/www/html/
+sudo cp src/static/pbsweb.html /var/www/html/
 
 # Start nginx and check that there are no errors.
 sudo systemctl start nginx

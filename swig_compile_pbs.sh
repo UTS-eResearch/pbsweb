@@ -60,7 +60,7 @@ fi
 export LD_RUN_PATH=$PBS_EXEC/lib
 
 # Running swig creates pbs.py and pbs_wrap.c
-$SWIG_EXEC -I$PBS_EXEC/include -python pbs.i
+$SWIG_EXEC -I$PBS_EXEC/include -python src/pbs.i
 
 if [ $? -ne 0 ]; then
     echo 'Error: You are probably missing the file: /opt/pbs/include/pbs_ifl.h'
@@ -84,8 +84,8 @@ gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c
 gcc -shared -fpic -L/opt/pbs/lib \
     $PBS_EXEC/lib/libpbs.so pbs_wrap.o \
     -lpthread -lcrypto -lssl -lsec \
-    -o _pbs.so 
+    -o src/_pbs.so 
 
 # It does not need to be executable.
-chmod ugo-x _pbs.so
+chmod ugo-x src/_pbs.so
 
