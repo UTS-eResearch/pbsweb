@@ -59,7 +59,7 @@ fi
 # If you link with libpbs.a then LD_RUN_PATH will not be needed.
 export LD_RUN_PATH=$PBS_EXEC/lib
 
-# Running swig creates pbs.py and pbs_wrap.c
+# Running swig creates pbs.py and pbs_wrap.c under the src/ directory.
 $SWIG_EXEC -I$PBS_EXEC/include -python src/pbs.i
 
 if [ $? -ne 0 ]; then
@@ -77,12 +77,12 @@ fi
 #    -o _pbs.so 
 
 # Compiling
-gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include pbs_wrap.c
+gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include src/pbs_wrap.c -o src/pbs_wrap.o 
 
 # Linking
 # Not sure if we need to also add -L/lib
 gcc -shared -fpic -L/opt/pbs/lib \
-    $PBS_EXEC/lib/libpbs.so pbs_wrap.o \
+    $PBS_EXEC/lib/libpbs.so src/pbs_wrap.o \
     -lpthread -lcrypto -lssl -lsec \
     -o src/_pbs.so 
 
