@@ -1,0 +1,42 @@
+{% include 'head.html' %}
+
+<p><b>CPU:</b> Used | Requested &nbsp; <b>Memory:</b> Real Used | Virtual Used | Requested </p>
+
+<table class="status sortable" id="4ty7gd4">
+<tr>
+  <th>Job ID</th>
+  <th>Queue</th>
+  <th>CPU</th>
+  <th>Memory (GB)</th>
+  <th>Time Used | Wall Time (H:M)</th>
+  <th>Time Left (hrs)</th>
+  <th>Queued at Time</th>
+  <th>Started at Time</th>
+  <th>Wait Time (hrs)</th>
+  <th>Job State</th>
+  <th>Exec Hosts</th>
+</tr>
+{% for job in jobs %}
+<tr>
+  <td>{{ job.job_id }}</td>
+  <td>{{ job.queue }}</td>
+  <td>{{ job.resources_used_ncpus }}     | {{ job.resource_list_ncpus }}</td>
+  <td>{{ job.resources_used_mem }}       | {{ job.resources_used_vmem }} | {{ job.resource_list_mem }}</td>
+  <td> {{ job.resources_used_walltime }} | {{ job.resource_list_walltime }} </td>
+  <td>
+  <!-- <div class=fixed>
+  <svg class=myscale width={{ job.resource_list_walltime }}> 
+      <rect class=used width={{ job.resource_used_walltime }} height=30 />
+  </svg></div> -->
+  {{ job.resources_time_left }}
+  </td>
+  <td>{{ job.qtime }}</td>
+  <td>{{ job.stime }}</td>
+  <td>{{ job.wtime }}</td>
+  <td>{{ job.job_state }}</td>
+  <td>{{ job.exec_vnode }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% include 'tail.j2' %}
