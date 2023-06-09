@@ -7,5 +7,5 @@ rm -f src/pbs.pyc
 rm -f src/pbsutils.pyc
 rm -f src/pbs_wrap.c
 rm -f src/pbs_wrap.o
-rm -fr __pycache__
+rm -fr src/__pycache__
 
