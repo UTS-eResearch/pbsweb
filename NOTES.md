@@ -110,10 +110,10 @@ Files:
 
     tests/
       run_all_tests.sh
-      testapp.py              A simple WSGI app for testing.
-      test_pbs_minimal.py     Just test if the pbs module can be loaded.
-      test_pbs_jobs.py        Prints the current jobs and their attributes.
-      test_pbs_nodes.py       Prints all nodes and their attributes.
-      test_pbs_queues.py      Prints the queues and their attributes.
-      test_pbsutils.py        Test pbsutils.py with nodes or queues or jobs
+      testapp.py                A simple WSGI app for testing.
+      test_pbs_minimal.py       Just test if the pbs module can be loaded.
+      test_pbs_jobs.py          Prints the current jobs and their attributes.
+      test_pbs_nodes.py         Prints all nodes and their attributes.
+      test_pbs_queues.py        Prints the queues and their attributes.
+      test_pbsutils.py          Test pbsutils.py with nodes or queues or jobs
 
