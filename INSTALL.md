@@ -264,12 +264,17 @@ Similarly check for updates for the emperor environment.
 
 ## Updating PBSWeb
 
-Update your repo with the latest PBSWeb code and update your test application:
+Update your repo with the latest PBSWeb code.
 
     $ git pull
+
+Update your test application.
+
     $ ./install_pbsweb.sh test
 
-If this test application still works OK then you can update the production application:
+View the app at http://your-server/statuspbs_test/
+
+If this test application still works OK then you can update the production application.
 
     $ ./install_pbsweb.sh prod
 
@@ -423,23 +428,28 @@ Below is an example for the emperor, do the same for the pbsweb environment.
 
 Files:
 
-    pbsweb.py                   The main PBSWeb application.
-    pbsutils.py                 Module containing utility functions for the PBSWeb application.
-    swig_compile_pbs.sh         Run this to create _pbs.so and pbs.py
-    pbs.i                       Used by swig_compile_pbs.sh
     install_dependencies.sh     Installs the dependencies of PBSWeb. Run this first.
+    swig_compile_pbs.sh         Run this to create _pbs.so and pbs.py
     install_pbsweb.sh           Installs PBSWeb into production or test.
-    requirements_emperor.txt    Python requirements file, known versions that work.
-    requirements_pbsweb.txt     Python requirements file, known versions that work.
+    clean.sh                    Remove files which are not needed at runtime.
+    
+    conf/                       Contains configuration files.
+    
+    src/
+      pbsweb.py                 The main PBSWeb application.
+      pbsutils.py               Module containing utility functions for the PBSWeb application.
+      pbs.i                     Used by swig_compile_pbs.sh
+      requirements_emperor.txt  Python requirements file, known versions that work.
+      requirements_pbsweb.txt   Python requirements file, known versions that work.
+      static/                   Contains static resources like stylesheets.
+      views/                    Contains templates for the PBSWeb application.
 
-    tests/test_pbs_jobs.py         Prints the current jobs and their attributes. 
-    tests/test_pbs_nodes_all.py    Prints all nodes and their attributes. 
-    tests/test_pbs_queues.py       Prints the queues and their attributes.
-
-Directories:
-
-    conf/    Contains configuration files.
-    static/  Contains static resources like stylesheets.
-    views/   Contains templates for the PBSWeb bottle application.
-    tests/   Contains all the tests.
+    tests/
+      run_all_tests.sh
+      testapp.py              A simple WSGI app for testing.
+      test_pbs_minimal.py     Just test if the pbs module can be loaded.
+      test_pbs_jobs.py        Prints the current jobs and their attributes.
+      test_pbs_nodes.py       Prints all nodes and their attributes.
+      test_pbs_queues.py      Prints the queues and their attributes.
+      test_pbsutils.py        Test pbsutils.py with nodes or queues or jobs
 
