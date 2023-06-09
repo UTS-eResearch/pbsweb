@@ -1,6 +1,6 @@
 # git ignore
 
-# Provided by PBS
+# Provided by PBS Professional or OpenPBS
 pbs_ifl.h
 
 # These are created by swig and gcc
