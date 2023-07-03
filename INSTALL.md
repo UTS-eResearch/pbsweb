@@ -208,7 +208,11 @@ will not run if you try to run it as root.
 The `install_dependencies.sh` script will have setup the permissions so that
 you can run this script without sudo.
 
-    $ ./install_pbsweb.sh
+    $ ./install_pbsweb.sh test
+
+or 
+
+    $ ./install_pbsweb.sh prod
 
 Your nearly finished :-) 
 
