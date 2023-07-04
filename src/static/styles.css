@@ -51,6 +51,8 @@ table.sortable span.sortarrow {
 
 /* General */
 
+span.pbscommand { font-family:monospace; font-size:120%; }
+
 table.status {
     border-width: 1px;
     border-style: solid;
