@@ -49,7 +49,8 @@ function will_install {
     echo ""
     echo "  Install a systemd service \"emperor.uwsgi.service\" if not already installed."
     echo "  Create directories /run/uwsgi and /var/www/wsgi"
-    echo "  Copy configuration files to /etc/nginx/ & /var/www/ & /etc/logrotate.d/"
+    echo "  Copy configuration files to /etc/nginx/ & /var/www/wsgi/ & /etc/logrotate.d/"
+    echo "  Copy an example PBS Status page into /var/www/html/"
     echo "  Install two $python environments under $envs"
     echo ""
 }
@@ -145,7 +146,7 @@ echo "Creating directory /run/uwsgi for the web sockets."
 sudo mkdir -p /run/uwsgi
 sudo chown nginx:nginx /run/uwsgi
 
-echo "Creating /var/www/wsgi"
+echo "Creating directory /var/www/wsgi for the web apps."
 sudo mkdir -p /var/www/wsgi
 sudo chown $this_user:$this_user /var/www/wsgi
 
