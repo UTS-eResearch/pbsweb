@@ -1,38 +1,62 @@
 # Change Log
 
 Important changes to this project that affect users will be documented in this file.    
-This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) and
+the [Conventional Commits specification](https://www.conventionalcommits.org/en/v1.0.0/).
 
 ## Unreleased
 
-- Added a log rotate so WSGI logs get rotated.
+Breaking changes: none
+
+New features:
+
+- Added a bash script to run all tests.
+- Added a log rotate configuration file so WSGI logs get rotated.
 - Added an example PBSWeb HTML page.
-- Added nginx config files and ensure nginx starts.
+- Added nginx config files and changed install dependencies script so nginx should start.
+
+Fixes:
+
 - Fixed missing comparison in template for queue.
 - Fixed print statements for Python 3.
 - Fixed bug as cpu and mem ratios are strings.
 - Fixed bug as in Python 3 dictionaries are no longer orderable.
-- Moved code and templates to under src/
+- Fixed clean script to not remove the pbs.py or .so
+
+Other changes;
+
+- Moved code and templates to under src/ in this repository.
+- Replaced span elements with CSS. Changed some font sizes.
+- Removed version information from pbsweb.py
 
 ## 2.1.0 - 13 July 2022
 
-2022-07-13: Tagged v2.1.0
+This release is tagged v2.1.0
 
-- User no longer needs to configure Nginx themselves. The install script will do this.
-- Web page will display a more detailed version number if not a tagged release.
+Breaking changes: none
+
+New features:
+
+- User no longer needs to configure Nginx themselves. The install dependencies script will do this.
+- Web pages will display a more detailed version number if not a tagged release.
+
+Fixes:
+
 - Fixed bug where a queue with no `max_run` set would raise an error.
 - Fixed error where `pbsserver` was not specified in `pbsweb.py`.
 
 ## 2.0.0 - 14 June 2022
 
-2022-06-14: Tagged v2.0.0
+This release is tagged v2.0.0
 
-2022-06-08:
+Breaking changes: Now uses Python 3.8 instead of Python 2.7.
 
-- Now uses Python 3.8 instead of Python 2.7.
+New features:
+
 - Improved install scripts.
-- Lots of minor fixes.
 - Improved documentation.
+
+Fixes: Lots of minor fixes.
 
 ## 1.1.0 - 12 Nov 2020
 
