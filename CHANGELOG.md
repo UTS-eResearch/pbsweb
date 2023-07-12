@@ -6,6 +6,12 @@ the [Conventional Commits specification](https://www.conventionalcommits.org/en/
 
 ## Unreleased
 
+None yet.
+
+## 2.2.0 - 12 July 2023
+
+This release is tagged v2.2.0
+
 Breaking changes: none
 
 New features:
