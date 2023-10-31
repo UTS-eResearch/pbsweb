@@ -50,7 +50,8 @@ fi
 
 # Copy the HTML templates.
 cp src/views/head_UTS.html $dest/views/head.html
-cp src/views/jobs_UTS.j2 $dest/views/jobs.j2
+cp src/views/nodes_UTS.j2  $dest/views/nodes.j2
+cp src/views/jobs_UTS.j2   $dest/views/jobs.j2
 
 # Copy the javascript which enables us to sort columns.
 cp src/static/sorttable.js $dest/static/
