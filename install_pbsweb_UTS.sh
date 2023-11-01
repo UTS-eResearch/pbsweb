@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script customises PBSWeb for the University of Technology Sydney.
-# PBSWeb must have already been installed via the normal install script. 
+# PBSWeb must have already been installed via the normal install script.
 # This script overwrites the standard templates with UTS specific templates.
 #
 # sudo is not needed to run the script.
@@ -36,7 +36,7 @@ else
 fi
 
 # Check user really wants to install.
-# The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD. 
+# The variable ${1^^} just uppercases the first arg i.e. it will show TEST or PROD.
 echo "This will install to ${1^^}"
 read -r -p "Type \"y\" to install. Any other key will exit: " REPLY
 if [[ ! $REPLY =~ ^[Yy]$ ]]; then
@@ -48,14 +48,15 @@ fi
 # Do the install
 ################
 
-# Copy the HTML templates.
-cp src/views/head_UTS.html $dest/views/head.html
+# Copy over the custom UTS HTML templates.
+# Only head, nodes & jobs are different to the standard templates.
+cp src/views/head_UTS.j2 $dest/views/head.j2
 cp src/views/nodes_UTS.j2  $dest/views/nodes.j2
 cp src/views/jobs_UTS.j2   $dest/views/jobs.j2
 
 # Copy the javascript which enables us to sort columns.
 cp src/static/sorttable.js $dest/static/
- 
+
 # Touch the wsgi confs to get wsgi to reload the templates.
 touch $confs/pbsweb.ini
 touch $confs/pbsweb_test.ini
