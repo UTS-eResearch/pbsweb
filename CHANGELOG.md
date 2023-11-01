@@ -6,7 +6,13 @@ the [Conventional Commits specification](https://www.conventionalcommits.org/en/
 
 ## Unreleased
 
-None yet.
+Breaking changes: none
+
+Other changes:
+
+- 01 November 2023: Changed file extension from `src/views/head.html` to `src/views/head.j2`
+  and changed `node.js`, `queues.js` & `jobs.js` to use this new filename.     
+  Also some minor changes to UTS custom scripts and templates.
 
 ## 2.2.0 - 12 July 2023
 
@@ -29,7 +35,7 @@ Fixes:
 - Fixed bug as in Python 3 dictionaries are no longer orderable.
 - Fixed clean script to not remove the pbs.py or .so
 
-Other changes;
+Other changes:
 
 - Moved code and templates to under src/ in this repository.
 - Replaced span elements with CSS. Changed some font sizes.
