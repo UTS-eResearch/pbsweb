@@ -11,7 +11,7 @@ Breaking changes: none
 Other changes:
 
 - 01 November 2023: Changed file extension from `src/views/head.html` to `src/views/head.j2`
-  and changed `node.js`, `queues.js` & `jobs.js` to use this new filename.     
+  and changed `node.js`, `queues.js` & `jobs.js` to use this new filename.
   Also some minor changes to UTS custom scripts and templates.
 
 ## 2.2.0 - 12 July 2023
