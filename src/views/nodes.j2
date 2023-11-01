@@ -1,4 +1,4 @@
-{% include 'head.html' %}
+{% include 'head.j2' %}
 
 <p>Current total CPU usage {{ node_totals.cpus_ratio }}% &nbsp;  {{ node_totals.cpus_assigned }} / {{ node_totals.cpus_available }} cores. &nbsp;
 Current memory usage {{ node_totals.mem_ratio }}% &nbsp;  {{ node_totals.mem_assigned }} / {{ node_totals.mem_available }} GB. &nbsp; 
