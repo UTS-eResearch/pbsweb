@@ -88,17 +88,17 @@ at the latest version. You can see this by running `git branch`.
 
     $ git branch
     * (HEAD detached at v2.0.0)
-      master
+      main
 
 Just remember that after the install you should switch back to the latest
-version by checking out the "master" branch with this command:
+version by checking out the "main" branch with this command:
 
-    $ git checkout master
+    $ git checkout main
 
-And you can check your now at the up-to-date master branch:
+And you can check your now at the up-to-date main branch:
 
     $ git branch
-    * master
+    * main
 
 Now proceed to the next step.
 
