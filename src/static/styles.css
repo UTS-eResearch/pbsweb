@@ -89,7 +89,8 @@ rect.used {
 }
 
 div.fixed {
-    width: 105;
+    /* A width of 105 is about right with 56 cores. Use 125 if you have 64 cores. */
+    width: 125;
     display:inline-block;
 }
 
