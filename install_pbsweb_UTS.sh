@@ -53,7 +53,8 @@ fi
 cp src/views/head_UTS.j2 $dest/views/head.j2
 cp src/views/nodes_UTS.j2  $dest/views/nodes.j2
 cp src/views/jobs_UTS.j2   $dest/views/jobs.j2
-
+# Copy the styles.
+cp src/static/styles.css $dest/static/
 # Copy the javascript which enables us to sort columns.
 cp src/static/sorttable.js $dest/static/
 
@@ -63,5 +64,6 @@ touch $confs/pbsweb_test.ini
 
 echo ""
 echo "You probably do not need to do this:"
-echo "sudo systemctl restart nginx.service"
+echo "  sudo systemctl restart nginx.service"
+echo "You may need to force your browser to update its cache!"
 
