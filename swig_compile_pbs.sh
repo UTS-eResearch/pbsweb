@@ -79,12 +79,24 @@ fi
 # Compiling
 gcc -c -shared -fpic -I$PYTHON_INCL -I$PBS_EXEC/include src/pbs_wrap.c -o src/pbs_wrap.o 
 
+if [ ! -f src/pbs_wrap.o ]; then
+    echo "Error: Compiling did not produce an object file. Exiting."
+    exit 0
+fi
+
 # Linking
 # Not sure if we need to also add -L/lib
+# You might need to also add -lsec. I removed it as I was getting the error:
+#   "/usr/bin/ld: cannot find -lsec"
 gcc -shared -fpic -L/opt/pbs/lib \
     $PBS_EXEC/lib/libpbs.so src/pbs_wrap.o \
-    -lpthread -lcrypto -lssl -lsec \
+    -lpthread -lcrypto -lssl \
     -o src/_pbs.so 
+
+if [ ! -f src/_pbs.so ]; then
+    echo "Error: Linking did not produce a shared object file. Exiting."
+    exit 0
+fi
 
 # It does not need to be executable.
 chmod ugo-x src/_pbs.so
