@@ -48,7 +48,7 @@ function test_pbsutils {
         if [ $? -eq 0 ]; then
             echo -e "$pass test_pbsutils.py $arg"
         else
-            echo -e "$fail test_pbsutils.py $arg"
+            echo -e "$fail test_pbsutils.py $arg   ^^^ Error is above. ^^^"
         fi
 done
 }
@@ -60,14 +60,21 @@ done
 thisdir="$(pwd)"
 thisdir="${thisdir##*/}"
 
+echo ""
 if [ "$thisdir" == "tests" ]; then
-    # The Python virtual environment needs to be loaded.
-    source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
+    # Load your Python virtual environment if it exists.
+    if [ -f /var/www/wsgi/virtualenvs/pbsweb/bin/activate ]; then
+        source /var/www/wsgi/virtualenvs/pbsweb/bin/activate
+	echo -n "Using this python3: "; which python3	
+    else
+	echo -n "Using this python3: "; which python3	
+    fi
+    echo ""
     test_pbs
     test_pbsutils
-    deactivate
 else
     echo "The tests need to be run from within the tests directory."
     echo "Exiting."
 fi
+echo ""
 
