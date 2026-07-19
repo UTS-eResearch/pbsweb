@@ -32,7 +32,7 @@ function test_pbs {
     test_pbs_jobs.py"
 
     for test in $tests; do
-        python $test > /dev/null 2>&1
+        python3 $test > /dev/null 2>&1
         if [ $? -eq 0 ]; then
             echo -e "$pass $test"
         else
@@ -44,7 +44,7 @@ function test_pbs {
 function test_pbsutils {
     # This just tests the pbsutils.py module.
     for arg in nodes queues jobs; do
-        python test_pbsutils.py $arg > /dev/null
+        python3 test_pbsutils.py $arg > /dev/null
         if [ $? -eq 0 ]; then
             echo -e "$pass test_pbsutils.py $arg"
         else
