@@ -321,9 +321,9 @@ def get_node_totals(nodes):
 def node_attributes_reformat(nodes):
 
     for node in nodes:
-        #print('---------')
+        #print('DEBUG: ---------')
         #for attribute in node.keys():
-        #    print('    ', attribute, node[attribute])
+        #    print('    ', attribute, '=', node[attribute])
 
         # There are certain keys that we always want to be present.
         # If they are not present create them with zero value.
@@ -357,12 +357,53 @@ def node_attributes_reformat(nodes):
             node['jobs'] = []
 
         # Change memory from string with kb (eg '264501336kb') to integer in Gb (eg 264).
+        # Note 2026.07.19
+        #
+        # PBSPro 2024.1.0 always returned the 'resources_available_mem' with units of 'kb',
+        # so the two if statements below used to work for PBSPro 2024.
+        #if node['resources_available_mem']:
+        #    m = re.match('^([0-9]+)kb$', node['resources_available_mem'])
+        #    node['resources_available_mem'] = '%d' % (int(m.group(1))/1024/1024)
+        #if node['resources_assigned_mem']:
+        #    m = re.match('^([0-9]+)kb$', node['resources_assigned_mem'])
+        #    node['resources_assigned_mem'] = '%d' % (int(m.group(1))/1024/1024)
+        #
+        # PBSPro version 2026.0.0 can return either with units of 'kb' or 'mb' or 'gb',
+        #   resources_available.mem = 395401392kb
+        #   resources_available.mem = 124144mb
+        #   resources_available.mem = 186gb
+        # so we now have to use these lines for PBS 2026.
+        # We wish all mem values to be in GB.
         if node['resources_available_mem']:
-            m = re.match('^([0-9]+)kb$', node['resources_available_mem'])
-            node['resources_available_mem'] = '%d' % (int(m.group(1))/1024/1024)
+            m = re.match('^([0-9]+)(kb|mb|gb)$', node['resources_available_mem'], re.IGNORECASE)
+            value = int(m.group(1))
+            unit = m.group(2)
+            # print('DEBUG: ', 'value=', value, 'unit=', unit, 'from string: ', node['resources_available_mem'])
+            # TODO If we move to Python 3.10 we can use the cleaner match statement instead.
+            if unit == 'kb':
+                node['resources_available_mem'] = '%d' % (value/1024/1024)
+            elif unit == 'mb':
+                node['resources_available_mem'] = '%d' % (value/1024)
+            elif unit == 'gb':
+                node['resources_available_mem'] = '%d' % value
+            else:
+                # This will be the divisor when we calulate the memory ratio (assigned/available),
+                # so we set it to a non-zero value just-in-case. We should never be at this line though.
+                node['resources_available_mem'] = 1 
         if node['resources_assigned_mem']:
-            m = re.match('^([0-9]+)kb$', node['resources_assigned_mem'])
-            node['resources_assigned_mem'] = '%d' % (int(m.group(1))/1024/1024)
+            m = re.match('^([0-9]+)(kb|mb|gb)$', node['resources_assigned_mem'], re.IGNORECASE)
+            value = int(m.group(1))
+            unit = m.group(2)
+            if unit == 'kb':
+                node['resources_assigned_mem'] = '%d' % (value/1024/1024)
+            elif unit == 'mb':
+                node['resources_assigned_mem'] = '%d' % (value/1024)
+            elif unit == 'gb':
+                node['resources_assigned_mem'] = '%d' % value
+            else:
+                # This will be the dividend when we calulate the memory ratio (assigned/available),
+                # so we can set this to zero. We should never be at this line though.
+                node['resources_assigned_mem'] = 0 
 
         # Create a new attribute 'state_up' to indicate if the node is up or not as
         # 'state' can be one of busy, free, job-busy, job-exclusive, down, or offline.
@@ -519,7 +560,8 @@ def job_attributes_reformat(jobs):
             # Save with just one decimal place.
             job['resources_time_left'] = '%.1f' % (list_walltime - used_walltime)
 
-        # Change memory from string in kb (eg '264501336kb') to integer Gb (eg 264).
+        # Change memory from string in kb (eg '264501336kb') to integer in gb (e.g. 264).
+        # TODO check if this value could be in mb or gb like the nodes section.
         if 'resource_list_mem' in job:
             job['resource_list_mem'] = job['resource_list_mem'].replace('gb', '')
         if job['resources_used_mem']:
