@@ -1,0 +1,55 @@
+{% include 'head.j2' %}
+
+<p>Current total CPU usage {{ node_totals.cpus_ratio }}% &nbsp;  {{ node_totals.cpus_assigned }} / {{ node_totals.cpus_available }} cores. &nbsp;
+Current memory usage {{ node_totals.mem_ratio }}% &nbsp;  {{ node_totals.mem_assigned }} / {{ node_totals.mem_available }} GB. &nbsp; 
+Current jobs {{ node_totals.jobs_total }}.<br>
+In the table below the CPU Usage is shown as assigned/available; Memory Usage is assigned/available in GB. <br>
+If a node is a GPU node then GPU usage is assigned/available and job submission may be restricted to those in the GPU queue group.<br>
+This information and additional detailed information on each node can be found by running 
+&quot;<span class="pbscommand">pbsnodes -a</span>&quot;.
+</p>
+
+<table class="status sortable" id="4ty7gd4">
+<tr>
+<th>Node</th>
+<th>Status / Comment</th>
+<th>CPU &amp; GPU Usage</th>
+<th>Memory Usage (GB)</th>
+<th>Jobs</th>
+</tr>
+{% for n in nodes %}
+<tr>
+<td>{{ n.node_name }}</td>
+
+<td>
+{% if n.state_up %}
+<span style="color:green">OK</span> ({{ n.state }}) 
+{% else %}
+<span style="color:red">XX</span> ({{ n.state }}) 
+{% endif %} / <i>{{ n.comment }}</i>
+</td>
+
+<td>
+{%if n.resources_available_ncpus %}
+<div class=fixed><svg class=myscale width={{ n.resources_available_ncpus|int *2 }}><rect class=used width={{n.resources_assigned_ncpus|int*2}} height=30 /><text x=20 y=20 text-anchor=middle>{{n.cpu_ratio}}%</text></svg></div> 
+{% else %}
+<div class=fixed>&nbsp;</div>
+{% endif %}
+<svg height=30 width=110><text x=20 y=20>{{ n.resources_assigned_ncpus }} / {{ n.resources_available_ncpus }} &nbsp;
+{% if n.resources_available_ngpus %}
+{{ n.resources_assigned_ngpus }} / {{ n.resources_available_ngpus }}
+{% else %}
+&nbsp;
+{% endif %}
+</text></svg>
+</td>
+
+<td width=750><div class=fixed_mem><svg class=myscale width={{ n.resources_available_mem|int/2 }}><rect class=used width={{n.resources_assigned_mem|int/2}} height=30 /><text x=20 y=20 text-anchor=middle>{{n.mem_ratio}}%</text></svg></div> 
+<svg height=30 width=110><text x=20 y=20>{{ n.resources_assigned_mem }} / {{ n.resources_available_mem }}</text></svg>
+</td>
+<td>{{ n.jobs|length }}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% include 'tail.j2' %}
