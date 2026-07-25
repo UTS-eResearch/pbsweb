@@ -283,4 +283,5 @@ Remove what you no longer need.
 
 The `install_pbsweb.sh` script only installs files under `/var/www/wsgi/`.
 Remove what you no longer need.
+There may also be a `/var/log/uwsgi.log` that can be removed.
 
